@@ -1,0 +1,9 @@
+{
+  "name": "PawGo",
+  "description": "A playful, Scandinavian-designed dog walking companion app with family sharing and gamified motivation.",
+  "requestFramePermissions": [
+    "geolocation",
+    "camera",
+    "microphone"
+  ]
+}
