@@ -22,7 +22,6 @@ const AVATAR_COLORS = [
   'bg-pawgo-yellow',
   'bg-pawgo-red',
   'bg-purple-400',
-  'bg-pink-400',
 ];
 
 export const DogsView: React.FC<DogsProps> = ({ dogs, currentUser, onUpdateDog, onAddDog, onDeleteDog, language }) => {
@@ -244,7 +243,7 @@ export const DogsView: React.FC<DogsProps> = ({ dogs, currentUser, onUpdateDog, 
                    {/* Color Picker */}
                    <div>
                       <label className="text-[10px] font-black text-black dark:text-gray-400 uppercase ml-2 block mb-3 tracking-widest">{t(language, 'pickColor')}</label>
-                      <div className="flex flex-wrap gap-3 px-1">
+                      <div className="flex flex-wrap gap-4 justify-center py-2 px-2">
                         {AVATAR_COLORS.map(color => (
                           <button
                             key={color}
@@ -260,8 +259,8 @@ export const DogsView: React.FC<DogsProps> = ({ dogs, currentUser, onUpdateDog, 
                    {/* Mascot Picker */}
                    <div>
                       <label className="text-[10px] font-black text-black dark:text-gray-400 uppercase ml-2 block mb-3 tracking-widest">{t(language, 'pickMascot')}</label>
-                      <div className="grid grid-cols-4 gap-3 pb-6">
-                         {MASCOT_IDS.map(id => (
+                      <div className="grid grid-cols-4 gap-4 px-2 pb-6">
+                         {MASCOT_IDS.slice(0, 8).map(id => (
                             <button 
                               key={id} 
                               onClick={() => setFormData({...formData, mascotId: id})}
