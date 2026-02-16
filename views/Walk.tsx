@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Dog, ViewState, WalkLog, LanguageCode } from '../types';
 import { Button } from '../components/ui/Button';
@@ -17,6 +16,18 @@ interface WalkProps {
   language: LanguageCode;
 }
 
+// Helper to calculate distance between two coordinates in km
+const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
+  const R = 6371; // Earth radius in km
+  const dLat = (lat2 - lat1) * (Math.PI / 180);
+  const dLon = (lon2 - lon1) * (Math.PI / 180);
+  const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+};
+
 export const WalkView: React.FC<WalkProps> = ({ viewState, setViewState, dogs, onFinishWalk, language }) => {
   const [selectedDogs, setSelectedDogs] = useState<string[]>([]);
   const [seconds, setSeconds] = useState(0);
@@ -24,17 +35,34 @@ export const WalkView: React.FC<WalkProps> = ({ viewState, setViewState, dogs, o
   const [distance, setDistance] = useState(0);
   const [showNoSelectionModal, setShowNoSelectionModal] = useState(false);
   
+  // Real-time tracking state
+  const [currentPosition, setCurrentPosition] = useState<[number, number] | null>(null);
+  const [routePath, setRoutePath] = useState<[number, number][]>([]);
+  
   const mapRef = useRef<L.Map | null>(null);
   const markerRef = useRef<L.Marker | null>(null);
   const polylineRef = useRef<L.Polyline | null>(null);
+  const watchIdRef = useRef<number | null>(null);
+  const lastPosRef = useRef<[number, number] | null>(null);
 
-  // Timer logic
+  // Reset state when entering prep
+  useEffect(() => {
+    if (viewState === 'WALK_PREP') {
+      setSeconds(0);
+      setDistance(0);
+      setCurrentPosition(null);
+      setRoutePath([]);
+      setIsActive(false);
+      lastPosRef.current = null;
+    }
+  }, [viewState]);
+
+  // Timer logic (Real-time seconds)
   useEffect(() => {
     let interval: any = null;
     if (isActive) {
       interval = setInterval(() => {
         setSeconds(s => s + 1);
-        setDistance(d => d + 0.0005); 
       }, 1000);
     } else if (!isActive && seconds !== 0) {
       clearInterval(interval);
@@ -42,63 +70,135 @@ export const WalkView: React.FC<WalkProps> = ({ viewState, setViewState, dogs, o
     return () => clearInterval(interval);
   }, [isActive, seconds]);
 
-  // Map Initialization
+  // Geolocation Tracking Logic
   useEffect(() => {
-    if (viewState === 'WALK_ACTIVE' && !mapRef.current) {
-      setTimeout(() => {
-        const container = document.getElementById('map-container');
-        if (!container) return;
+    if (isActive && viewState === 'WALK_ACTIVE') {
+      if (!navigator.geolocation) {
+        console.error("Geolocation is not supported by this browser.");
+        return;
+      }
 
-        const defaultLat = 59.3293;
-        const defaultLng = 18.0686;
+      watchIdRef.current = navigator.geolocation.watchPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          const newPos: [number, number] = [latitude, longitude];
+          
+          setCurrentPosition(newPos);
+          setRoutePath(prev => [...prev, newPos]);
 
-        const map = L.map('map-container', {
-          zoomControl: false,
-          attributionControl: false
-        }).setView([defaultLat, defaultLng], 17);
-
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-          maxZoom: 20
-        }).addTo(map);
-
-        mapRef.current = map;
-
-        const dogIcon = L.divIcon({
-          className: 'custom-map-marker',
-          html: `<div style="
-            width: 48px; 
-            height: 48px; 
-            background-color: var(--color-primary); 
-            border: 3px solid white; 
-            border-radius: 50%; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            font-size: 24px;
-          ">🐾</div>`,
-          iconSize: [48, 48],
-          iconAnchor: [24, 24]
-        });
-
-        markerRef.current = L.marker([defaultLat, defaultLng], { icon: dogIcon }).addTo(map);
-
-        polylineRef.current = L.polyline([], {
-          color: '#58CC02', 
-          weight: 6,
-          opacity: 0.8,
-          lineCap: 'round',
-        }).addTo(map);
-      }, 100);
+          // Distance Calculation
+          if (lastPosRef.current) {
+            const dist = calculateDistance(lastPosRef.current[0], lastPosRef.current[1], latitude, longitude);
+            // Only add distance if movement is significant (> 5 meters) to reduce jitter while standing still
+            if (dist > 0.005) { 
+              setDistance(d => d + dist);
+              lastPosRef.current = newPos;
+            }
+          } else {
+            lastPosRef.current = newPos;
+          }
+        },
+        (error) => {
+          console.error("Error watching position:", error);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 20000,
+          maximumAge: 0
+        }
+      );
+    } else {
+      if (watchIdRef.current !== null) {
+        navigator.geolocation.clearWatch(watchIdRef.current);
+        watchIdRef.current = null;
+      }
     }
 
     return () => {
-      if (mapRef.current) {
-        mapRef.current.remove();
-        mapRef.current = null;
+      if (watchIdRef.current !== null) {
+        navigator.geolocation.clearWatch(watchIdRef.current);
+        watchIdRef.current = null;
       }
     };
-  }, [viewState]);
+  }, [isActive, viewState]);
+
+  // Map Initialization and Updates
+  useEffect(() => {
+    // 1. Initialize Map
+    if (viewState === 'WALK_ACTIVE' && !mapRef.current) {
+      const container = document.getElementById('map-container');
+      if (!container) return;
+
+      // Default start location (Stockholm) if GPS hasn't kicked in yet
+      const initialPos: [number, number] = currentPosition || [59.3293, 18.0686];
+
+      const map = L.map('map-container', {
+        zoomControl: false,
+        attributionControl: false
+      }).setView(initialPos, 18);
+
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        maxZoom: 20
+      }).addTo(map);
+
+      mapRef.current = map;
+
+      const dogIcon = L.divIcon({
+        className: 'custom-map-marker',
+        html: `<div style="
+          width: 48px; 
+          height: 48px; 
+          background-color: var(--color-primary); 
+          border: 3px solid white; 
+          border-radius: 50%; 
+          display: flex; 
+          align-items: center; 
+          justify-content: center;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+          font-size: 24px;
+        " class="animate-pulse">🐾</div>`,
+        iconSize: [48, 48],
+        iconAnchor: [24, 24]
+      });
+
+      markerRef.current = L.marker(initialPos, { icon: dogIcon }).addTo(map);
+
+      polylineRef.current = L.polyline([], {
+        color: '#58CC02', 
+        weight: 6,
+        opacity: 0.8,
+        lineCap: 'round',
+      }).addTo(map);
+    }
+
+    // 2. Update Map on Position Change
+    if (viewState === 'WALK_ACTIVE' && mapRef.current && currentPosition) {
+      const map = mapRef.current;
+      
+      // Update marker position
+      if (markerRef.current) {
+        markerRef.current.setLatLng(currentPosition);
+      }
+
+      // Pan map to new position
+      map.setView(currentPosition, map.getZoom(), { animate: true });
+
+      // Draw path
+      if (polylineRef.current && routePath.length > 0) {
+        polylineRef.current.setLatLngs(routePath);
+      }
+    }
+
+    // Cleanup on unmount/view change
+    return () => {
+      if (viewState !== 'WALK_ACTIVE' && mapRef.current) {
+        mapRef.current.remove();
+        mapRef.current = null;
+        markerRef.current = null;
+        polylineRef.current = null;
+      }
+    };
+  }, [viewState, currentPosition, routePath]);
 
   const toggleDog = (id: string) => {
     setSelectedDogs(prev => 
@@ -239,8 +339,8 @@ export const WalkView: React.FC<WalkProps> = ({ viewState, setViewState, dogs, o
         <div id="map-container" className="h-full w-full grayscale-[0.1] contrast-[1.05]" />
 
         {/* Status Overlay */}
-        <div className="absolute top-12 left-6 right-6 flex justify-between items-start z-30 pt-safe-top">
-           <div className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-md p-5 rounded-[2rem] shadow-2xl border-2 border-white/50 dark:border-gray-700/50 flex items-center gap-4">
+        <div className="absolute top-12 left-6 right-6 flex justify-between items-start z-[400] pt-safe-top pointer-events-none">
+           <div className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-md p-5 rounded-[2rem] shadow-2xl border-2 border-white/50 dark:border-gray-700/50 flex items-center gap-4 pointer-events-auto">
               <div className="w-12 h-12 bg-pawgo-green rounded-2xl flex items-center justify-center shadow-lg animate-pulse">
                  <IconPlay size={24} className="text-white" />
               </div>
@@ -252,15 +352,15 @@ export const WalkView: React.FC<WalkProps> = ({ viewState, setViewState, dogs, o
            
            <button 
              onClick={() => { if(confirm('Cancel walk?')) setViewState('HOME'); }} 
-             className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-md p-4 rounded-2xl shadow-xl border-2 border-white/50 dark:border-gray-700/50 active:scale-90 transition-all text-black dark:text-white"
+             className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-md p-4 rounded-2xl shadow-xl border-2 border-white/50 dark:border-gray-700/50 active:scale-90 transition-all text-black dark:text-white pointer-events-auto"
            >
              <IconX size={24} />
            </button>
         </div>
 
         {/* Stats Center */}
-        <div className="absolute bottom-10 left-6 right-6 z-30 pb-safe-bottom">
-           <div className="bg-gray-900 dark:bg-black/90 backdrop-blur-xl text-white rounded-[2.5rem] p-7 shadow-2xl border border-white/10 flex justify-between items-center">
+        <div className="absolute bottom-10 left-6 right-6 z-[400] pb-safe-bottom pointer-events-none">
+           <div className="bg-gray-900 dark:bg-black/90 backdrop-blur-xl text-white rounded-[2.5rem] p-7 shadow-2xl border border-white/10 flex justify-between items-center pointer-events-auto">
               <div className="flex gap-8 pl-2">
                 <div className="text-left">
                     <span className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">{t(language, 'distance')}</span>
