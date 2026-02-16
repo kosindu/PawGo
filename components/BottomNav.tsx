@@ -54,8 +54,8 @@ export const BottomNav: React.FC<BottomNavProps> = ({ currentView, onChangeView,
   if (currentView === 'WALK_ACTIVE' || currentView === 'WALK_SUMMARY' || currentView === 'AI_CHAT') return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t-2 border-gray-200 dark:border-gray-800 pb-safe pt-2 pb-2 shadow-[0_-8px_30px_rgba(0,0,0,0.04)] z-50">
-      <div className="flex justify-around items-center max-w-md mx-auto">
+    <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t-2 border-gray-200 dark:border-gray-800 pb-safe-bottom pt-2 px-2 shadow-[0_-8px_30px_rgba(0,0,0,0.04)] z-50">
+      <div className="flex justify-around items-center max-w-md mx-auto mb-2">
         {navItems.map((item) => {
           const isActive = currentView === item.view || (item.view === 'WALK_PREP' && currentView.startsWith('WALK'));
           const Icon = item.icon;

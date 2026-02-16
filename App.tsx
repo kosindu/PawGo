@@ -15,6 +15,7 @@ import { db } from './utils/db';
 import { Button } from './components/ui/Button';
 import { Mascot } from './components/Mascot';
 import { IconX } from './components/Icons';
+import { t } from './utils/translations';
 
 function App() {
   // Global State
@@ -266,9 +267,9 @@ function App() {
   };
 
   return (
-    <div className="h-screen w-full font-sans antialiased text-gray-900 dark:text-gray-100 selection:bg-pawgo-green selection:text-white bg-gray-100 dark:bg-gray-950 overflow-hidden">
-      <main className={`max-w-md mx-auto h-full relative overflow-hidden shadow-2xl transition-colors duration-500 ${currentBgClass}`}>
-        <div className="h-full w-full">
+    <div className="fixed inset-0 w-full h-[100dvh] font-sans antialiased text-gray-900 dark:text-gray-100 selection:bg-pawgo-green selection:text-white bg-gray-100 dark:bg-gray-950 overflow-hidden">
+      <main className={`w-full h-full relative overflow-hidden shadow-2xl transition-colors duration-500 flex flex-col ${currentBgClass}`}>
+        <div className="flex-1 w-full h-full relative overflow-hidden">
            {renderView()}
         </div>
         <BottomNav currentView={currentView} onChangeView={handleNavigation} language={language} />
@@ -288,7 +289,7 @@ function App() {
                    <Mascot mood="happy" />
                 </div>
                 
-                <h2 className="text-2xl font-display font-bold text-black dark:text-white mb-3">Empty Pack?</h2>
+                <h2 className="text-2xl font-display font-bold text-black dark:text-white mb-3">{t(language, 'noPaws')}</h2>
                 <p className="text-gray-500 dark:text-gray-400 font-bold text-sm mb-8 leading-relaxed px-2">
                    You need to add the PAWS first to use this feature!
                 </p>
@@ -302,7 +303,7 @@ function App() {
                   }}
                   className="rounded-2xl h-14 font-black shadow-xl shadow-pawgo-green/20"
                 >
-                   Add PAWS
+                   {t(language, 'addFirstPaw')}
                 </Button>
              </div>
           </div>

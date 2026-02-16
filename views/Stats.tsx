@@ -249,46 +249,48 @@ export const StatsView: React.FC<StatsProps> = ({ walks, dogs, language, accentC
   const currentDayWalks = selectedDayDate ? (walkDatesMap.get(`${selectedDayDate.getFullYear()}-${selectedDayDate.getMonth()}-${selectedDayDate.getDate()}`) || []) : [];
 
   return (
-    <div className="p-6 pt-14 pb-40 h-full overflow-y-auto no-scrollbar">
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h1 className="text-3xl font-display font-bold text-black dark:text-white">{t(language, 'analytics')}</h1>
-          <p className="text-black dark:text-gray-400 font-black text-[10px] uppercase tracking-widest mt-1 opacity-80">{t(language, 'trends')}</p>
-        </div>
-        <div className="flex gap-2">
-           <button 
-             onClick={() => setIsReordering(!isReordering)}
-             className={`p-2.5 rounded-xl border-2 transition-all flex items-center gap-2 ${isReordering ? 'bg-pawgo-green border-pawgo-green text-white shadow-lg' : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-black dark:text-gray-300'}`}
-           >
-              {isReordering ? <IconCheck size={16} /> : <IconEdit size={16} />}
-              <span className="text-[10px] font-black uppercase tracking-widest">{isReordering ? t(language, 'done') : t(language, 'layout')}</span>
-           </button>
-           {!isReordering && (
-            <div className="bg-white/50 dark:bg-gray-800/50 p-1 rounded-xl border-2 border-white dark:border-gray-700 flex backdrop-blur-sm">
-              {(['1W', '1M', '1Y'] as TimeRange[]).map(r => (
-                <button key={r} onClick={() => setTimeRange(r)} className={`px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${timeRange === r ? 'bg-gray-900 text-white dark:bg-white dark:text-black shadow-md' : 'text-black dark:text-gray-400 hover:text-black'}`}>{r}</button>
-              ))}
-            </div>
-           )}
-        </div>
-      </div>
-      <div className="space-y-8">
-        {sectionOrder.map((sid, idx) => (
-          <div key={sid} className={`relative transition-all duration-300 ${isReordering ? 'p-4 border-2 border-dashed border-pawgo-blue/30 rounded-[3rem] bg-pawgo-blue/5 scale-[0.98]' : ''}`}>
-            {isReordering && (
-              <div className="absolute -top-3 left-8 z-10 bg-pawgo-blue text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest shadow-md">
-                {sid.toLowerCase()}
-              </div>
-            )}
-            {isReordering && (
-              <div className="absolute -right-1 top-1/2 -translate-y-1/2 flex flex-col gap-2 z-20">
-                <button onClick={() => moveSection(idx, 'up')} disabled={idx === 0} className={`p-3 rounded-full bg-white dark:bg-gray-800 shadow-xl border-2 ${idx === 0 ? 'opacity-30 border-gray-100' : 'border-pawgo-blue text-pawgo-blue active:scale-90'}`}><IconChevronLeft size={20} className="rotate-90" /></button>
-                <button onClick={() => moveSection(idx, 'down')} disabled={idx === sectionOrder.length - 1} className={`p-3 rounded-full bg-white dark:bg-gray-800 shadow-xl border-2 ${idx === sectionOrder.length - 1 ? 'opacity-30 border-gray-100' : 'border-pawgo-blue text-pawgo-blue active:scale-90'}`}><IconChevronLeft size={20} className="-rotate-90" /></button>
-              </div>
-            )}
-            {sections[sid]}
+    <div className="p-6 pt-safe-top pb-36 h-full overflow-y-auto no-scrollbar">
+      <div className="pt-14">
+        <div className="flex justify-between items-center mb-6">
+          <div>
+            <h1 className="text-3xl font-display font-bold text-black dark:text-white">{t(language, 'analytics')}</h1>
+            <p className="text-black dark:text-gray-400 font-black text-[10px] uppercase tracking-widest mt-1 opacity-80">{t(language, 'trends')}</p>
           </div>
-        ))}
+          <div className="flex gap-2">
+             <button 
+               onClick={() => setIsReordering(!isReordering)}
+               className={`p-2.5 rounded-xl border-2 transition-all flex items-center gap-2 ${isReordering ? 'bg-pawgo-green border-pawgo-green text-white shadow-lg' : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-black dark:text-gray-300'}`}
+             >
+                {isReordering ? <IconCheck size={16} /> : <IconEdit size={16} />}
+                <span className="text-[10px] font-black uppercase tracking-widest">{isReordering ? t(language, 'done') : t(language, 'layout')}</span>
+             </button>
+             {!isReordering && (
+              <div className="bg-white/50 dark:bg-gray-800/50 p-1 rounded-xl border-2 border-white dark:border-gray-700 flex backdrop-blur-sm">
+                {(['1W', '1M', '1Y'] as TimeRange[]).map(r => (
+                  <button key={r} onClick={() => setTimeRange(r)} className={`px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${timeRange === r ? 'bg-gray-900 text-white dark:bg-white dark:text-black shadow-md' : 'text-black dark:text-gray-400 hover:text-black'}`}>{r}</button>
+                ))}
+              </div>
+             )}
+          </div>
+        </div>
+        <div className="space-y-8">
+          {sectionOrder.map((sid, idx) => (
+            <div key={sid} className={`relative transition-all duration-300 ${isReordering ? 'p-4 border-2 border-dashed border-pawgo-blue/30 rounded-[3rem] bg-pawgo-blue/5 scale-[0.98]' : ''}`}>
+              {isReordering && (
+                <div className="absolute -top-3 left-8 z-10 bg-pawgo-blue text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest shadow-md">
+                  {sid.toLowerCase()}
+                </div>
+              )}
+              {isReordering && (
+                <div className="absolute -right-1 top-1/2 -translate-y-1/2 flex flex-col gap-2 z-20">
+                  <button onClick={() => moveSection(idx, 'up')} disabled={idx === 0} className={`p-3 rounded-full bg-white dark:bg-gray-800 shadow-xl border-2 ${idx === 0 ? 'opacity-30 border-gray-100' : 'border-pawgo-blue text-pawgo-blue active:scale-90'}`}><IconChevronLeft size={20} className="rotate-90" /></button>
+                  <button onClick={() => moveSection(idx, 'down')} disabled={idx === sectionOrder.length - 1} className={`p-3 rounded-full bg-white dark:bg-gray-800 shadow-xl border-2 ${idx === sectionOrder.length - 1 ? 'opacity-30 border-gray-100' : 'border-pawgo-blue text-pawgo-blue active:scale-90'}`}><IconChevronLeft size={20} className="-rotate-90" /></button>
+                </div>
+              )}
+              {sections[sid]}
+            </div>
+          ))}
+        </div>
       </div>
       {showDayModal && selectedDayDate && (
         <div className="fixed inset-0 bg-black/70 z-[100] flex items-center justify-center p-6 backdrop-blur-md">

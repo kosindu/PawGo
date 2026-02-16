@@ -144,7 +144,7 @@ export const WalkView: React.FC<WalkProps> = ({ viewState, setViewState, dogs, o
         </div>
 
         {/* Content Header */}
-        <div className="p-6 pt-14 flex justify-between items-center z-30">
+        <div className="p-6 pt-safe-top mt-14 flex justify-between items-center z-30">
           <h1 className="text-3xl font-display font-bold text-black dark:text-white drop-shadow-md">{t(language, 'whosWalking')}</h1>
           <button 
             onClick={() => setViewState('HOME')} 
@@ -239,7 +239,7 @@ export const WalkView: React.FC<WalkProps> = ({ viewState, setViewState, dogs, o
         <div id="map-container" className="h-full w-full grayscale-[0.1] contrast-[1.05]" />
 
         {/* Status Overlay */}
-        <div className="absolute top-12 left-6 right-6 flex justify-between items-start z-30">
+        <div className="absolute top-12 left-6 right-6 flex justify-between items-start z-30 pt-safe-top">
            <div className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-md p-5 rounded-[2rem] shadow-2xl border-2 border-white/50 dark:border-gray-700/50 flex items-center gap-4">
               <div className="w-12 h-12 bg-pawgo-green rounded-2xl flex items-center justify-center shadow-lg animate-pulse">
                  <IconPlay size={24} className="text-white" />
@@ -259,7 +259,7 @@ export const WalkView: React.FC<WalkProps> = ({ viewState, setViewState, dogs, o
         </div>
 
         {/* Stats Center */}
-        <div className="absolute bottom-10 left-6 right-6 z-30">
+        <div className="absolute bottom-10 left-6 right-6 z-30 pb-safe-bottom">
            <div className="bg-gray-900 dark:bg-black/90 backdrop-blur-xl text-white rounded-[2.5rem] p-7 shadow-2xl border border-white/10 flex justify-between items-center">
               <div className="flex gap-8 pl-2">
                 <div className="text-left">
@@ -286,7 +286,7 @@ export const WalkView: React.FC<WalkProps> = ({ viewState, setViewState, dogs, o
 
   if (viewState === 'WALK_SUMMARY') {
     return (
-      <div className="h-full bg-white dark:bg-gray-950 flex flex-col p-8 overflow-y-auto no-scrollbar">
+      <div className="h-full bg-white dark:bg-gray-950 flex flex-col p-8 pt-safe-top pb-safe-bottom overflow-y-auto no-scrollbar">
         <div className="pt-14 pb-8 flex flex-col items-center">
           <div className="bg-pawgo-green/10 dark:bg-pawgo-green/5 p-8 rounded-full mb-6 relative">
              <div className="absolute inset-0 bg-pawgo-green/20 blur-2xl rounded-full animate-pulse"></div>

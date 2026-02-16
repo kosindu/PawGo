@@ -140,8 +140,8 @@ export const HomeView: React.FC<HomeProps> = ({ user, dogs, walks, onChangeView,
 
   return (
     <>
-      <div className="p-6 pt-14 flex flex-col h-full space-y-7 animate-pop pb-40 overflow-y-auto overflow-x-hidden no-scrollbar">
-        <header className="flex justify-between items-center flex-shrink-0">
+      <div className="p-6 pt-safe-top pb-36 h-full flex flex-col space-y-7 animate-pop overflow-y-auto overflow-x-hidden no-scrollbar">
+        <header className="flex justify-between items-center flex-shrink-0 pt-4">
           <div className="flex-1">
             <h1 className="text-3xl font-display font-bold text-black dark:text-white leading-none mb-2">
               {t(language, 'hi')}, {user.name}! <span className="inline-block animate-wave-hand origin-bottom-right">👋</span>

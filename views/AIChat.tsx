@@ -339,7 +339,7 @@ export const AIChatView: React.FC<AIChatViewProps> = ({ user, dogs, language, on
 
   return (
     <div className="flex flex-col h-full bg-gray-50 dark:bg-gray-950 animate-pop">
-      <header className="p-6 pt-14 flex items-center gap-4 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b-2 border-gray-100 dark:border-gray-800 flex-shrink-0 z-10 shadow-sm rounded-b-[2rem]">
+      <header className="p-6 pt-safe-top mt-4 flex items-center gap-4 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b-2 border-gray-100 dark:border-gray-800 flex-shrink-0 z-10 shadow-sm rounded-b-[2rem]">
         <button onClick={onBack} className="p-3 bg-gray-100 dark:bg-gray-800 rounded-full active:scale-90 transition-transform">
           <IconChevronLeft size={22} className="text-black dark:text-white" />
         </button>
@@ -378,7 +378,7 @@ export const AIChatView: React.FC<AIChatViewProps> = ({ user, dogs, language, on
         ))}
       </div>
 
-      <footer className="p-6 pb-10 bg-white dark:bg-gray-900 border-t-2 border-gray-100 dark:border-gray-800 flex-shrink-0 rounded-t-[2.5rem] shadow-[0_-5px_30px_rgba(0,0,0,0.03)]">
+      <footer className="p-6 pb-safe-bottom bg-white dark:bg-gray-900 border-t-2 border-gray-100 dark:border-gray-800 flex-shrink-0 rounded-t-[2.5rem] shadow-[0_-5px_30px_rgba(0,0,0,0.03)]">
         {selectedImage && (
           <div className="relative w-24 h-24 mb-4 animate-pop group mx-auto">
             <img src={`data:${selectedImage.mimeType};base64,${selectedImage.data}`} className="w-full h-full object-cover rounded-2xl border-4 border-pawgo-blue" alt="Preview" />
@@ -388,7 +388,7 @@ export const AIChatView: React.FC<AIChatViewProps> = ({ user, dogs, language, on
           </div>
         )}
         
-        <form onSubmit={handleSendMessage} className="flex gap-3 items-center">
+        <form onSubmit={handleSendMessage} className="flex gap-3 items-center mb-2">
           <input 
             type="file" accept="image/*" className="hidden" ref={fileInputRef}
             onChange={handleImageSelect}
@@ -400,10 +400,11 @@ export const AIChatView: React.FC<AIChatViewProps> = ({ user, dogs, language, on
           >
             <IconPlus size={24} />
           </button>
+          {/* Using text-base prevents iOS zooming on input focus */}
           <input 
             type="text" value={inputText} onChange={(e) => setInputText(e.target.value)}
             placeholder={t(language, 'askPlaceholder').replace('{name}', dogs[0]?.name || 'your pack')}
-            className="flex-1 bg-gray-100/50 dark:bg-gray-800/50 border-2 border-gray-100 dark:border-gray-700 rounded-[2rem] px-6 py-3.5 font-bold text-black dark:text-white focus:outline-none focus:border-pawgo-blue/50 focus:bg-white dark:focus:bg-gray-800 transition-all placeholder-gray-400"
+            className="flex-1 bg-gray-100/50 dark:bg-gray-800/50 border-2 border-gray-100 dark:border-gray-700 rounded-[2rem] px-6 py-3.5 font-bold text-base text-black dark:text-white focus:outline-none focus:border-pawgo-blue/50 focus:bg-white dark:focus:bg-gray-800 transition-all placeholder-gray-400"
           />
           <button 
             type="submit" disabled={(!inputText.trim() && !selectedImage) || isTyping}
@@ -416,7 +417,7 @@ export const AIChatView: React.FC<AIChatViewProps> = ({ user, dogs, language, on
 
       {/* Gemini Live Mode UI */}
       {isLiveMode && (
-        <div className="fixed inset-0 bg-pawgo-blueDark z-[150] flex flex-col items-center justify-between p-10 text-white animate-pop">
+        <div className="fixed inset-0 bg-pawgo-blueDark z-[150] flex flex-col items-center justify-between p-10 pt-safe-top pb-safe-bottom text-white animate-pop">
            <div className="w-full flex justify-end">
               <button onClick={stopLiveMode} className="p-3 bg-white/20 rounded-full hover:bg-white/30 transition-colors">
                  <IconX size={32} />

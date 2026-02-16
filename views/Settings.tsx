@@ -98,206 +98,208 @@ export const SettingsView: React.FC<SettingsProps> = ({
   ];
 
   return (
-    <div className="p-6 pt-12 pb-36 h-full overflow-y-auto relative no-scrollbar">
-      <h1 className="text-3xl font-display font-bold mb-6 text-black dark:text-white">{t(language, 'settings')}</h1>
+    <div className="p-6 pt-safe-top pb-36 h-full overflow-y-auto relative no-scrollbar">
+      <div className="pt-12">
+        <h1 className="text-3xl font-display font-bold mb-6 text-black dark:text-white">{t(language, 'settings')}</h1>
 
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-[2.2rem] border-b-4 border-gray-100 dark:border-gray-700 mb-8 flex items-center gap-4 shadow-sm">
-         <div className="relative">
-            <img src={user.avatar} className="w-16 h-16 rounded-full border-4 border-pawgo-cream dark:border-gray-600 object-cover bg-gray-50 dark:bg-gray-700" alt="Profile" />
-            <div className="absolute -bottom-1 -right-1 bg-pawgo-green text-white p-1 rounded-full border-2 border-white dark:border-gray-800">
-               <IconEdit size={12} />
-            </div>
-         </div>
-         <div className="flex-1">
-            <h2 className="font-bold text-xl truncate pr-2 text-black dark:text-white">{user.name}</h2>
-            <span className="text-[10px] bg-pawgo-blue text-white px-2 py-0.5 rounded-md font-black uppercase tracking-widest">Pack Leader</span>
-         </div>
-         <div className="ml-auto">
-            <Button size="sm" variant="outline" className="font-black h-10 px-4 border-2 border-gray-300 dark:border-gray-600 text-black dark:text-white" onClick={() => {
-                setProfileForm({ name: user.name, avatar: user.avatar });
-                setShowProfileModal(true);
-            }}>{t(language, 'editProfile')}</Button>
-         </div>
-      </div>
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-[2.2rem] border-b-4 border-gray-100 dark:border-gray-700 mb-8 flex items-center gap-4 shadow-sm">
+           <div className="relative">
+              <img src={user.avatar} className="w-16 h-16 rounded-full border-4 border-pawgo-cream dark:border-gray-600 object-cover bg-gray-50 dark:bg-gray-700" alt="Profile" />
+              <div className="absolute -bottom-1 -right-1 bg-pawgo-green text-white p-1 rounded-full border-2 border-white dark:border-gray-800">
+                 <IconEdit size={12} />
+              </div>
+           </div>
+           <div className="flex-1">
+              <h2 className="font-bold text-xl truncate pr-2 text-black dark:text-white">{user.name}</h2>
+              <span className="text-[10px] bg-pawgo-blue text-white px-2 py-0.5 rounded-md font-black uppercase tracking-widest">Pack Leader</span>
+           </div>
+           <div className="ml-auto">
+              <Button size="sm" variant="outline" className="font-black h-10 px-4 border-2 border-gray-300 dark:border-gray-600 text-black dark:text-white" onClick={() => {
+                  setProfileForm({ name: user.name, avatar: user.avatar });
+                  setShowProfileModal(true);
+              }}>{t(language, 'editProfile')}</Button>
+           </div>
+        </div>
 
-      <div className="space-y-6">
-         <section>
-            <h3 className="font-black text-black dark:text-gray-400 uppercase text-[10px] tracking-widest mb-3 px-2 opacity-80">{t(language, 'appearance')}</h3>
-            <div className="bg-white dark:bg-gray-800 rounded-[2.2rem] overflow-hidden border-2 border-gray-100 dark:border-gray-700 divide-y-2 divide-gray-50 dark:divide-gray-700">
-               
-               <div className="flex items-center justify-between p-5 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors" onClick={() => setDarkMode(!darkMode)}>
-                  <div className="flex items-center gap-4">
-                     <div className="p-2 text-black dark:text-gray-200">
-                        <IconTheme size={32} />
-                     </div>
-                     <span className="font-bold text-lg text-black dark:text-white">{t(language, 'darkMode')}</span>
-                  </div>
-                  <div className={`w-12 h-7 rounded-full p-1 transition-colors ${darkMode ? 'bg-pawgo-green' : 'bg-gray-300'}`}>
-                     <div className={`bg-white w-5 h-5 rounded-full shadow-md transform transition-transform ${darkMode ? 'translate-x-5' : 'translate-x-0'}`}></div>
-                  </div>
-               </div>
+        <div className="space-y-6">
+           <section>
+              <h3 className="font-black text-black dark:text-gray-400 uppercase text-[10px] tracking-widest mb-3 px-2 opacity-80">{t(language, 'appearance')}</h3>
+              <div className="bg-white dark:bg-gray-800 rounded-[2.2rem] overflow-hidden border-2 border-gray-100 dark:border-gray-700 divide-y-2 divide-gray-50 dark:divide-gray-700">
+                 
+                 <div className="flex items-center justify-between p-5 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors active:bg-gray-100 dark:active:bg-gray-600" onClick={() => setDarkMode(!darkMode)}>
+                    <div className="flex items-center gap-4">
+                       <div className="p-2 text-black dark:text-gray-200">
+                          <IconTheme size={32} />
+                       </div>
+                       <span className="font-bold text-lg text-black dark:text-white">{t(language, 'darkMode')}</span>
+                    </div>
+                    <div className={`w-12 h-7 rounded-full p-1 transition-colors ${darkMode ? 'bg-pawgo-green' : 'bg-gray-300'}`}>
+                       <div className={`bg-white w-5 h-5 rounded-full shadow-md transform transition-transform ${darkMode ? 'translate-x-5' : 'translate-x-0'}`}></div>
+                    </div>
+                 </div>
 
-               <div className="transition-all duration-300">
-                  <button 
-                    onClick={() => setIsAccentExpanded(!isAccentExpanded)}
-                    className="w-full flex items-center justify-between p-5 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-                  >
-                     <div className="flex items-center gap-4">
-                        <div className="p-2 text-black dark:text-gray-200">
-                           <IconPalette size={32} />
-                        </div>
-                        <span className="font-bold text-lg text-black dark:text-white">{t(language, 'accentColor')}</span>
-                     </div>
-                     <div className={`transition-transform duration-300 ${isAccentExpanded ? 'rotate-90' : ''}`}>
-                        <IconChevronRight size={20} className="text-black dark:text-gray-500" />
-                     </div>
-                  </button>
-                  
-                  <div className={`overflow-hidden transition-all duration-500 ease-in-out ${isAccentExpanded ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'}`}>
-                     <div className="p-5 pt-2">
-                        <div className="flex gap-4 justify-between px-2">
-                            {ACCENT_COLORS.map((c) => (
-                            <button
-                                key={c.id}
-                                onClick={() => setAccentColor(c.id)}
-                                className={`w-10 h-10 rounded-full ${c.display} flex items-center justify-center transition-transform active:scale-95 border-2 ${accentColor === c.id ? 'border-black dark:border-white scale-110 shadow-md' : 'border-transparent opacity-80 hover:opacity-100'}`}
-                                aria-label={c.name}
-                            >
-                                {accentColor === c.id && <IconCheck className="text-white" size={16} />}
-                            </button>
-                            ))}
-                        </div>
-                     </div>
-                  </div>
-               </div>
+                 <div className="transition-all duration-300">
+                    <button 
+                      onClick={() => setIsAccentExpanded(!isAccentExpanded)}
+                      className="w-full flex items-center justify-between p-5 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors active:bg-gray-100 dark:active:bg-gray-600"
+                    >
+                       <div className="flex items-center gap-4">
+                          <div className="p-2 text-black dark:text-gray-200">
+                             <IconPalette size={32} />
+                          </div>
+                          <span className="font-bold text-lg text-black dark:text-white">{t(language, 'accentColor')}</span>
+                       </div>
+                       <div className={`transition-transform duration-300 ${isAccentExpanded ? 'rotate-90' : ''}`}>
+                          <IconChevronRight size={20} className="text-black dark:text-gray-500" />
+                       </div>
+                    </button>
+                    
+                    <div className={`overflow-hidden transition-all duration-500 ease-in-out ${isAccentExpanded ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'}`}>
+                       <div className="p-5 pt-2">
+                          <div className="flex gap-4 justify-between px-2">
+                              {ACCENT_COLORS.map((c) => (
+                              <button
+                                  key={c.id}
+                                  onClick={() => setAccentColor(c.id)}
+                                  className={`w-12 h-12 rounded-full ${c.display} flex items-center justify-center transition-transform active:scale-95 border-2 ${accentColor === c.id ? 'border-black dark:border-white scale-110 shadow-md' : 'border-transparent opacity-80 hover:opacity-100'}`}
+                                  aria-label={c.name}
+                              >
+                                  {accentColor === c.id && <IconCheck className="text-white" size={16} />}
+                              </button>
+                              ))}
+                          </div>
+                       </div>
+                    </div>
+                 </div>
 
-               <div className="transition-all duration-300">
-                  <button 
-                    disabled={darkMode}
-                    onClick={() => setIsBackgroundExpanded(!isBackgroundExpanded)}
-                    className={`w-full flex items-center justify-between p-5 transition-colors ${darkMode ? 'opacity-40 cursor-not-allowed' : 'hover:bg-gray-50 dark:hover:bg-gray-700'}`}
-                  >
-                     <div className="flex items-center gap-4">
-                        <div className="p-2 text-black dark:text-gray-200">
-                           <IconBackground size={32} />
-                        </div>
-                        <div className="text-left">
-                           <span className="font-bold text-lg text-black dark:text-white block leading-tight">{t(language, 'backgroundTheme')}</span>
-                           {darkMode && <span className="text-[9px] font-black text-pawgo-red uppercase tracking-widest">{t(language, 'lockedDarkMode')}</span>}
-                        </div>
-                     </div>
-                     <div className={`transition-transform duration-300 ${isBackgroundExpanded ? 'rotate-90' : ''}`}>
-                        <IconChevronRight size={20} className="text-black dark:text-gray-500" />
-                     </div>
-                  </button>
-                  
-                  <div className={`overflow-hidden transition-all duration-500 ease-in-out ${isBackgroundExpanded && !darkMode ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'}`}>
-                     <div className="p-5 pt-2">
-                        <div className="grid grid-cols-3 gap-3 px-2">
-                            {BACKGROUND_THEMES.map((bg) => (
-                            <button
-                                key={bg.id}
-                                onClick={() => setBackgroundTheme(bg.id)}
-                                className={`h-12 rounded-2xl ${bg.preview} border-2 flex items-center justify-center transition-transform active:scale-95 ${backgroundTheme === bg.id ? 'border-black dark:border-white scale-105 shadow-md' : 'border-black/20 dark:border-white/20 opacity-70 hover:opacity-100'}`}
-                                aria-label={bg.name}
-                            >
-                                {backgroundTheme === bg.id && <IconCheck className="text-black dark:text-white" size={16} />}
-                            </button>
-                            ))}
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </section>
+                 <div className="transition-all duration-300">
+                    <button 
+                      disabled={darkMode}
+                      onClick={() => setIsBackgroundExpanded(!isBackgroundExpanded)}
+                      className={`w-full flex items-center justify-between p-5 transition-colors ${darkMode ? 'opacity-40 cursor-not-allowed' : 'hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600'}`}
+                    >
+                       <div className="flex items-center gap-4">
+                          <div className="p-2 text-black dark:text-gray-200">
+                             <IconBackground size={32} />
+                          </div>
+                          <div className="text-left">
+                             <span className="font-bold text-lg text-black dark:text-white block leading-tight">{t(language, 'backgroundTheme')}</span>
+                             {darkMode && <span className="text-[9px] font-black text-pawgo-red uppercase tracking-widest">{t(language, 'lockedDarkMode')}</span>}
+                          </div>
+                       </div>
+                       <div className={`transition-transform duration-300 ${isBackgroundExpanded ? 'rotate-90' : ''}`}>
+                          <IconChevronRight size={20} className="text-black dark:text-gray-500" />
+                       </div>
+                    </button>
+                    
+                    <div className={`overflow-hidden transition-all duration-500 ease-in-out ${isBackgroundExpanded && !darkMode ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'}`}>
+                       <div className="p-5 pt-2">
+                          <div className="grid grid-cols-3 gap-3 px-2">
+                              {BACKGROUND_THEMES.map((bg) => (
+                              <button
+                                  key={bg.id}
+                                  onClick={() => setBackgroundTheme(bg.id)}
+                                  className={`h-12 rounded-2xl ${bg.preview} border-2 flex items-center justify-center transition-transform active:scale-95 ${backgroundTheme === bg.id ? 'border-black dark:border-white scale-105 shadow-md' : 'border-black/20 dark:border-white/20 opacity-70 hover:opacity-100'}`}
+                                  aria-label={bg.name}
+                              >
+                                  {backgroundTheme === bg.id && <IconCheck className="text-black dark:text-white" size={16} />}
+                              </button>
+                              ))}
+                          </div>
+                       </div>
+                    </div>
+                 </div>
+              </div>
+           </section>
 
-         <section>
-            <h3 className="font-black text-black dark:text-gray-400 uppercase text-[10px] tracking-widest mb-3 px-2 opacity-80">{t(language, 'general')}</h3>
-            <div className="bg-white dark:bg-gray-800 rounded-[2.2rem] overflow-hidden border-2 border-gray-100 dark:border-gray-700 divide-y-2 divide-gray-50 dark:divide-gray-700">
-               <button 
-                  className="w-full flex items-center justify-between p-5 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-                  onClick={() => setShowLangModal(true)}
-               >
-                  <div className="flex items-center gap-4">
-                     <div className="p-2 text-black dark:text-gray-200"><IconLanguage size={32} /></div>
-                     <span className="font-bold text-lg text-black dark:text-white">{t(language, 'language')}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                     <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-700 px-3 py-1.5 rounded-xl border border-gray-100 dark:border-gray-600">
-                        <FlagIcon code={language} size={20} />
-                        <span className="text-sm text-black dark:text-gray-300 font-black">{currentLang.name}</span>
-                     </div>
-                     <IconChevronRight size={20} className="text-black dark:text-gray-500" />
-                  </div>
-               </button>
+           <section>
+              <h3 className="font-black text-black dark:text-gray-400 uppercase text-[10px] tracking-widest mb-3 px-2 opacity-80">{t(language, 'general')}</h3>
+              <div className="bg-white dark:bg-gray-800 rounded-[2.2rem] overflow-hidden border-2 border-gray-100 dark:border-gray-700 divide-y-2 divide-gray-50 dark:divide-gray-700">
+                 <button 
+                    className="w-full flex items-center justify-between p-5 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors active:bg-gray-100 dark:active:bg-gray-600"
+                    onClick={() => setShowLangModal(true)}
+                 >
+                    <div className="flex items-center gap-4">
+                       <div className="p-2 text-black dark:text-gray-200"><IconLanguage size={32} /></div>
+                       <span className="font-bold text-lg text-black dark:text-white">{t(language, 'language')}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                       <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-700 px-3 py-1.5 rounded-xl border border-gray-100 dark:border-gray-600">
+                          <FlagIcon code={language} size={20} />
+                          <span className="text-sm text-black dark:text-gray-300 font-black">{currentLang.name}</span>
+                       </div>
+                       <IconChevronRight size={20} className="text-black dark:text-gray-500" />
+                    </div>
+                 </button>
 
-               <button 
-                  onClick={() => setShowNotifModal(true)}
-                  className="w-full flex items-center justify-between p-5 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-               >
-                  <div className="flex items-center gap-4">
-                     <div className="p-2 text-black dark:text-gray-200"><IconNotification size={32} /></div>
-                     <span className="font-bold text-lg text-black dark:text-white">{t(language, 'notifications')}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className={`text-[10px] font-black uppercase tracking-widest ${notificationSettings.enabled ? 'text-pawgo-green' : 'text-black dark:text-white'}`}>
-                      {notificationSettings.enabled ? 'On' : 'Off'}
-                    </span>
+                 <button 
+                    onClick={() => setShowNotifModal(true)}
+                    className="w-full flex items-center justify-between p-5 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors active:bg-gray-100 dark:active:bg-gray-600"
+                 >
+                    <div className="flex items-center gap-4">
+                       <div className="p-2 text-black dark:text-gray-200"><IconNotification size={32} /></div>
+                       <span className="font-bold text-lg text-black dark:text-white">{t(language, 'notifications')}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className={`text-[10px] font-black uppercase tracking-widest ${notificationSettings.enabled ? 'text-pawgo-green' : 'text-black dark:text-white'}`}>
+                        {notificationSettings.enabled ? 'On' : 'Off'}
+                      </span>
+                      <IconChevronRight size={20} className="text-black dark:text-gray-500" />
+                    </div>
+                 </button>
+                 
+                 <button 
+                   onClick={() => setShowPrivacyModal(true)}
+                   className="w-full flex items-center justify-between p-5 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors active:bg-gray-100 dark:active:bg-gray-600"
+                 >
+                    <div className="flex items-center gap-4">
+                       <div className="p-2 text-black dark:text-gray-200"><IconPrivacy size={32} /></div>
+                       <span className="font-bold text-lg text-black dark:text-white">{t(language, 'privacy')}</span>
+                    </div>
                     <IconChevronRight size={20} className="text-black dark:text-gray-500" />
-                  </div>
-               </button>
-               
-               <button 
-                 onClick={() => setShowPrivacyModal(true)}
-                 className="w-full flex items-center justify-between p-5 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-               >
-                  <div className="flex items-center gap-4">
-                     <div className="p-2 text-black dark:text-gray-200"><IconPrivacy size={32} /></div>
-                     <span className="font-bold text-lg text-black dark:text-white">{t(language, 'privacy')}</span>
-                  </div>
-                  <IconChevronRight size={20} className="text-black dark:text-gray-500" />
-               </button>
-            </div>
-         </section>
+                 </button>
+              </div>
+           </section>
 
-         <section>
-            <h3 className="font-black text-black dark:text-gray-400 uppercase text-[10px] tracking-widest mb-3 px-2 opacity-80">{t(language, 'support')}</h3>
-            <div className="bg-white dark:bg-gray-800 rounded-[2.2rem] overflow-hidden border-2 border-gray-100 dark:border-gray-700 divide-y-2 divide-gray-50 dark:divide-gray-700">
-               <button 
-                  onClick={() => setShowLearningModal(true)}
-                  className="w-full flex items-center justify-between p-5 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-               >
-                  <div className="flex items-center gap-4">
-                     <div className="p-2 text-black dark:text-gray-200"><IconBookOpen size={32} /></div>
-                     <span className="font-bold text-lg text-black dark:text-white">{t(language, 'learning')}</span>
-                  </div>
-                  <IconChevronRight size={20} className="text-black dark:text-gray-500" />
-               </button>
+           <section>
+              <h3 className="font-black text-black dark:text-gray-400 uppercase text-[10px] tracking-widest mb-3 px-2 opacity-80">{t(language, 'support')}</h3>
+              <div className="bg-white dark:bg-gray-800 rounded-[2.2rem] overflow-hidden border-2 border-gray-100 dark:border-gray-700 divide-y-2 divide-gray-50 dark:divide-gray-700">
+                 <button 
+                    onClick={() => setShowLearningModal(true)}
+                    className="w-full flex items-center justify-between p-5 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors active:bg-gray-100 dark:active:bg-gray-600"
+                 >
+                    <div className="flex items-center gap-4">
+                       <div className="p-2 text-black dark:text-gray-200"><IconBookOpen size={32} /></div>
+                       <span className="font-bold text-lg text-black dark:text-white">{t(language, 'learning')}</span>
+                    </div>
+                    <IconChevronRight size={20} className="text-black dark:text-gray-500" />
+                 </button>
 
-               <button 
-                  onClick={() => setShowAboutModal(true)}
-                  className="w-full flex items-center justify-between p-5 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-               >
-                  <div className="flex items-center gap-4">
-                     <div className="p-2 text-black dark:text-gray-200"><IconInfo size={32} /></div>
-                     <span className="font-bold text-lg text-black dark:text-white">{t(language, 'about')}</span>
-                  </div>
-                  <IconChevronRight size={20} className="text-black dark:text-gray-500" />
-               </button>
-            </div>
-         </section>
+                 <button 
+                    onClick={() => setShowAboutModal(true)}
+                    className="w-full flex items-center justify-between p-5 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors active:bg-gray-100 dark:active:bg-gray-600"
+                 >
+                    <div className="flex items-center gap-4">
+                       <div className="p-2 text-black dark:text-gray-200"><IconInfo size={32} /></div>
+                       <span className="font-bold text-lg text-black dark:text-white">{t(language, 'about')}</span>
+                    </div>
+                    <IconChevronRight size={20} className="text-black dark:text-gray-500" />
+                 </button>
+              </div>
+           </section>
 
-         <div className="pt-6">
-            <Button 
-                onClick={onLogout}
-                variant="ghost" 
-                fullWidth 
-                className="text-red-600 hover:text-red-700 hover:bg-red-50 h-14 rounded-2xl font-black"
-            >
-               <IconLogOut size={22} className="mr-2" /> {t(language, 'logOut')}
-            </Button>
-            <p className="text-center text-[10px] text-black dark:text-gray-400 font-black tracking-widest uppercase mt-6 opacity-60">PawGo App 1.0</p>
-         </div>
+           <div className="pt-6 pb-safe-bottom">
+              <Button 
+                  onClick={onLogout}
+                  variant="ghost" 
+                  fullWidth 
+                  className="text-red-600 hover:text-red-700 hover:bg-red-50 h-14 rounded-2xl font-black"
+              >
+                 <IconLogOut size={22} className="mr-2" /> {t(language, 'logOut')}
+              </Button>
+              <p className="text-center text-[10px] text-black dark:text-gray-400 font-black tracking-widest uppercase mt-6 opacity-60">PawGo App 1.0</p>
+           </div>
+        </div>
       </div>
 
       {/* Profile Edit Modal */}
@@ -319,7 +321,7 @@ export const SettingsView: React.FC<SettingsProps> = ({
                     <input 
                       value={profileForm.name}
                       onChange={(e) => setProfileForm({...profileForm, name: e.target.value})}
-                      className="w-full bg-gray-50 dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 rounded-2xl p-4 font-bold text-black dark:text-white focus:border-pawgo-green focus:outline-none transition-all"
+                      className="w-full bg-gray-50 dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 rounded-2xl p-4 font-bold text-base text-black dark:text-white focus:border-pawgo-green focus:outline-none transition-all"
                     />
                  </div>
 

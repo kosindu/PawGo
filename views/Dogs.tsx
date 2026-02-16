@@ -78,73 +78,75 @@ export const DogsView: React.FC<DogsProps> = ({ dogs, currentUser, onUpdateDog, 
   };
 
   return (
-    <div className="p-6 pt-14 pb-40 h-full overflow-y-auto no-scrollbar text-black">
-      <header className="flex justify-between items-center mb-8">
-        <div>
-          <h1 className="text-3xl font-display font-bold text-black dark:text-white">{t(language, 'myDogs')}</h1>
-          <p className="text-black dark:text-gray-300 font-black text-[10px] uppercase tracking-widest mt-1 opacity-80">{t(language, 'managePack')}</p>
-        </div>
-        <button 
-          className="bg-pawgo-green text-white p-3.5 rounded-2xl shadow-lg shadow-pawgo-green/30 active:scale-95 transition-all border-b-4 border-pawgo-greenDark group" 
-          onClick={handleOpenAdd}
-        >
-           <IconPlus size={28} className="text-white group-hover:rotate-90 transition-transform" />
-        </button>
-      </header>
-
-      <div className="space-y-4">
-        {dogs.map(dog => (
-          <div key={dog.id} className="bg-white dark:bg-gray-800 rounded-[2.2rem] p-5 border-b-4 border-gray-100 dark:border-gray-700 relative overflow-hidden group shadow-sm hover:shadow-md transition-all duration-300">
-             <div className={`absolute top-0 right-0 w-32 h-32 ${dog.avatarColor} opacity-[0.03] rounded-bl-full pointer-events-none`} />
-
-             <div className="flex items-center gap-5 relative z-10">
-                {/* Avatar Section */}
-                <div className="flex-shrink-0">
-                   <div className={`w-24 h-24 rounded-3xl ${dog.avatarColor} flex items-center justify-center shadow-inner border-2 border-white/40 dark:border-gray-700/40 overflow-hidden p-2`}>
-                      <DogAvatar mascotId={dog.mascotId} />
-                   </div>
-                </div>
-                
-                {/* Content Section */}
-                <div className="flex-1 min-w-0">
-                    <div className="flex justify-between items-start mb-1">
-                      <h3 className="font-display font-bold text-2xl text-black dark:text-white truncate leading-tight">{dog.name}</h3>
-                      <div className="flex items-center gap-1 bg-orange-50 dark:bg-orange-950/30 px-2 py-0.5 rounded-lg border border-orange-100 dark:border-orange-900/30">
-                        <span className="text-xs font-bold text-orange-600">🔥 {dog.streak}</span>
-                      </div>
-                    </div>
-                    <p className="text-black dark:text-gray-300 text-[10px] font-black uppercase tracking-widest mb-3 truncate opacity-70">{dog.breed}</p>
-                    
-                    <div className="flex items-center gap-2">
-                        <div className="bg-gray-50 dark:bg-gray-700/50 px-2.5 py-1 rounded-xl border border-gray-100 dark:border-gray-700">
-                          <span className="text-[10px] font-black text-black dark:text-gray-300 uppercase tracking-widest">{dog.age} {t(language, 'years')}</span>
-                        </div>
-                        <div className="bg-gray-50 dark:bg-gray-700/50 px-2.5 py-1 rounded-xl border border-gray-100 dark:border-gray-700">
-                          <span className="text-[10px] font-black text-black dark:text-gray-300 uppercase tracking-widest">{dog.weight} {t(language, 'kg')}</span>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Vertical Button Stack Section */}
-                <div className="flex flex-col gap-2">
-                  <button 
-                    onClick={() => handleOpenEdit(dog)} 
-                    className="p-3 bg-gray-50 dark:bg-gray-700 text-black hover:text-pawgo-blue hover:border-pawgo-blue/30 dark:text-gray-300 dark:hover:text-pawgo-blue rounded-2xl transition-all active:scale-90 border-2 border-gray-100 dark:border-gray-600 shadow-sm"
-                    title={t(language, 'editDog')}
-                  >
-                     <IconEdit size={18} />
-                  </button>
-                  <button 
-                    onClick={() => handleOpenDelete(dog)} 
-                    className="p-3 bg-gray-50 dark:bg-gray-700 text-black hover:text-pawgo-red hover:border-pawgo-red/30 dark:text-gray-300 dark:hover:text-pawgo-red rounded-2xl transition-all active:scale-90 border-2 border-gray-100 dark:border-gray-600 shadow-sm"
-                    title={t(language, 'deleteDog')}
-                  >
-                     <IconTrash size={18} />
-                  </button>
-                </div>
-             </div>
+    <div className="p-6 pt-safe-top pb-36 h-full overflow-y-auto no-scrollbar text-black">
+      <div className="pt-14">
+        <header className="flex justify-between items-center mb-8">
+          <div>
+            <h1 className="text-3xl font-display font-bold text-black dark:text-white">{t(language, 'myDogs')}</h1>
+            <p className="text-black dark:text-gray-300 font-black text-[10px] uppercase tracking-widest mt-1 opacity-80">{t(language, 'managePack')}</p>
           </div>
-        ))}
+          <button 
+            className="bg-pawgo-green text-white p-3.5 rounded-2xl shadow-lg shadow-pawgo-green/30 active:scale-95 transition-all border-b-4 border-pawgo-greenDark group" 
+            onClick={handleOpenAdd}
+          >
+             <IconPlus size={28} className="text-white group-hover:rotate-90 transition-transform" />
+          </button>
+        </header>
+
+        <div className="space-y-4">
+          {dogs.map(dog => (
+            <div key={dog.id} className="bg-white dark:bg-gray-800 rounded-[2.2rem] p-5 border-b-4 border-gray-100 dark:border-gray-700 relative overflow-hidden group shadow-sm hover:shadow-md transition-all duration-300">
+               <div className={`absolute top-0 right-0 w-32 h-32 ${dog.avatarColor} opacity-[0.03] rounded-bl-full pointer-events-none`} />
+
+               <div className="flex items-center gap-5 relative z-10">
+                  {/* Avatar Section */}
+                  <div className="flex-shrink-0">
+                     <div className={`w-24 h-24 rounded-3xl ${dog.avatarColor} flex items-center justify-center shadow-inner border-2 border-white/40 dark:border-gray-700/40 overflow-hidden p-2`}>
+                        <DogAvatar mascotId={dog.mascotId} />
+                     </div>
+                  </div>
+                  
+                  {/* Content Section */}
+                  <div className="flex-1 min-w-0">
+                      <div className="flex justify-between items-start mb-1">
+                        <h3 className="font-display font-bold text-2xl text-black dark:text-white truncate leading-tight">{dog.name}</h3>
+                        <div className="flex items-center gap-1 bg-orange-50 dark:bg-orange-950/30 px-2 py-0.5 rounded-lg border border-orange-100 dark:border-orange-900/30">
+                          <span className="text-xs font-bold text-orange-600">🔥 {dog.streak}</span>
+                        </div>
+                      </div>
+                      <p className="text-black dark:text-gray-300 text-[10px] font-black uppercase tracking-widest mb-3 truncate opacity-70">{dog.breed}</p>
+                      
+                      <div className="flex items-center gap-2">
+                          <div className="bg-gray-50 dark:bg-gray-700/50 px-2.5 py-1 rounded-xl border border-gray-100 dark:border-gray-700">
+                            <span className="text-[10px] font-black text-black dark:text-gray-300 uppercase tracking-widest">{dog.age} {t(language, 'years')}</span>
+                          </div>
+                          <div className="bg-gray-50 dark:bg-gray-700/50 px-2.5 py-1 rounded-xl border border-gray-100 dark:border-gray-700">
+                            <span className="text-[10px] font-black text-black dark:text-gray-300 uppercase tracking-widest">{dog.weight} {t(language, 'kg')}</span>
+                          </div>
+                      </div>
+                  </div>
+
+                  {/* Vertical Button Stack Section */}
+                  <div className="flex flex-col gap-2">
+                    <button 
+                      onClick={() => handleOpenEdit(dog)} 
+                      className="p-3 bg-gray-50 dark:bg-gray-700 text-black hover:text-pawgo-blue hover:border-pawgo-blue/30 dark:text-gray-300 dark:hover:text-pawgo-blue rounded-2xl transition-all active:scale-90 border-2 border-gray-100 dark:border-gray-600 shadow-sm"
+                      title={t(language, 'editDog')}
+                    >
+                       <IconEdit size={18} />
+                    </button>
+                    <button 
+                      onClick={() => handleOpenDelete(dog)} 
+                      className="p-3 bg-gray-50 dark:bg-gray-700 text-black hover:text-pawgo-red hover:border-pawgo-red/30 dark:text-gray-300 dark:hover:text-pawgo-red rounded-2xl transition-all active:scale-90 border-2 border-gray-100 dark:border-gray-600 shadow-sm"
+                      title={t(language, 'deleteDog')}
+                    >
+                       <IconTrash size={18} />
+                    </button>
+                  </div>
+               </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Delete Confirmation Modal */}
@@ -196,12 +198,12 @@ export const DogsView: React.FC<DogsProps> = ({ dogs, currentUser, onUpdateDog, 
                     </div>
                  </div>
 
-                 {/* Inputs */}
+                 {/* Inputs - Using text-base to prevent iOS Zoom */}
                  <div className="space-y-5">
                    <div>
                      <label className="text-[10px] font-black text-black dark:text-gray-400 uppercase ml-2 block mb-2 tracking-widest">{t(language, 'name')}</label>
                      <input 
-                       className="w-full bg-gray-50 dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 rounded-2xl p-4 font-bold text-lg text-black dark:text-white focus:border-pawgo-blue focus:outline-none transition-all"
+                       className="w-full bg-gray-50 dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 rounded-2xl p-4 font-bold text-base md:text-lg text-black dark:text-white focus:border-pawgo-blue focus:outline-none transition-all"
                        value={formData.name || ''}
                        onChange={(e) => setFormData({...formData, name: e.target.value})}
                        placeholder="Buddy"
@@ -211,7 +213,7 @@ export const DogsView: React.FC<DogsProps> = ({ dogs, currentUser, onUpdateDog, 
                    <div>
                      <label className="text-[10px] font-black text-black dark:text-gray-400 uppercase ml-2 block mb-2 tracking-widest">{t(language, 'breed')}</label>
                      <input 
-                       className="w-full bg-gray-50 dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 rounded-2xl p-4 font-bold text-lg text-black dark:text-white focus:border-pawgo-blue focus:outline-none transition-all"
+                       className="w-full bg-gray-50 dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 rounded-2xl p-4 font-bold text-base md:text-lg text-black dark:text-white focus:border-pawgo-blue focus:outline-none transition-all"
                        value={formData.breed || ''}
                        onChange={(e) => setFormData({...formData, breed: e.target.value})}
                        placeholder="Labrador"
@@ -223,7 +225,7 @@ export const DogsView: React.FC<DogsProps> = ({ dogs, currentUser, onUpdateDog, 
                        <label className="text-[10px] font-black text-black dark:text-gray-400 uppercase ml-2 block mb-2 tracking-widest">{t(language, 'age')}</label>
                        <input 
                          type="number"
-                         className="w-full bg-gray-50 dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 rounded-2xl p-4 font-bold text-lg text-black dark:text-white focus:border-pawgo-blue focus:outline-none transition-all"
+                         className="w-full bg-gray-50 dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 rounded-2xl p-4 font-bold text-base md:text-lg text-black dark:text-white focus:border-pawgo-blue focus:outline-none transition-all"
                          value={formData.age || ''}
                          onChange={(e) => setFormData({...formData, age: parseInt(e.target.value) || 0})}
                        />
@@ -232,7 +234,7 @@ export const DogsView: React.FC<DogsProps> = ({ dogs, currentUser, onUpdateDog, 
                        <label className="text-[10px] font-black text-black dark:text-gray-400 uppercase ml-2 block mb-2 tracking-widest">{t(language, 'weight')} (kg)</label>
                        <input 
                          type="number"
-                         className="w-full bg-gray-50 dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 rounded-2xl p-4 font-bold text-lg text-black dark:text-white focus:border-pawgo-blue focus:outline-none transition-all"
+                         className="w-full bg-gray-50 dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 rounded-2xl p-4 font-bold text-base md:text-lg text-black dark:text-white focus:border-pawgo-blue focus:outline-none transition-all"
                          value={formData.weight || ''}
                          onChange={(e) => setFormData({...formData, weight: parseInt(e.target.value) || 0})}
                        />
