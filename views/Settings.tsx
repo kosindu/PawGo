@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { User, LanguageCode, AccentColor, BackgroundTheme } from '../types';
 import { LANGUAGES, ACCENT_COLORS, BACKGROUND_THEMES, USER_AVATARS } from '../constants';
 import { Button } from '../components/ui/Button';
@@ -8,7 +8,7 @@ import {
   IconTheme, IconPalette, IconBackground, IconLanguage, IconNotification, 
   IconPrivacy, IconLogOut, IconChevronRight, IconX, IconCheck, IconEdit, 
   FlagIcon, IconUserPlus, IconMap, IconTrendingUp,
-  IconInfo, IconBookOpen
+  IconInfo, IconBookOpen, IconKey
 } from '../components/Icons';
 import { Mascot } from '../components/Mascot';
 
@@ -52,6 +52,7 @@ export const SettingsView: React.FC<SettingsProps> = ({
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
   const [showAboutModal, setShowAboutModal] = useState(false);
   const [showLearningModal, setShowLearningModal] = useState(false);
+  const [hasApiKey, setHasApiKey] = useState(false);
   
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAccentExpanded, setIsAccentExpanded] = useState(false);
@@ -63,6 +64,28 @@ export const SettingsView: React.FC<SettingsProps> = ({
   });
 
   const currentLang = LANGUAGES.find(l => l.code === language) || LANGUAGES[0];
+
+  useEffect(() => {
+    // Check if an API key is already selected in the AI Studio environment
+    const checkKey = async () => {
+      if ((window as any).aistudio && (window as any).aistudio.hasSelectedApiKey) {
+        const hasKey = await (window as any).aistudio.hasSelectedApiKey();
+        setHasApiKey(hasKey);
+      }
+    };
+    checkKey();
+  }, []);
+
+  const handleConnectKey = async () => {
+    if ((window as any).aistudio && (window as any).aistudio.openSelectKey) {
+      await (window as any).aistudio.openSelectKey();
+      // Assume success after dialog closes or returns, check again
+      if ((window as any).aistudio.hasSelectedApiKey) {
+        const hasKey = await (window as any).aistudio.hasSelectedApiKey();
+        setHasApiKey(hasKey);
+      }
+    }
+  };
 
   const handleSaveProfile = () => {
     if (!profileForm.name.trim()) return;
@@ -105,9 +128,6 @@ export const SettingsView: React.FC<SettingsProps> = ({
         <div className="bg-white dark:bg-gray-800 p-6 rounded-[2.2rem] border-b-4 border-gray-100 dark:border-gray-700 mb-8 flex items-center gap-4 shadow-sm">
            <div className="relative">
               <img src={user.avatar} className="w-16 h-16 rounded-full border-4 border-pawgo-cream dark:border-gray-600 object-cover bg-gray-50 dark:bg-gray-700" alt="Profile" />
-              <div className="absolute -bottom-1 -right-1 bg-pawgo-green text-white p-1 rounded-full border-2 border-white dark:border-gray-800">
-                 <IconEdit size={12} />
-              </div>
            </div>
            <div className="flex-1">
               <h2 className="font-bold text-xl truncate pr-2 text-black dark:text-white">{user.name}</h2>
@@ -255,6 +275,28 @@ export const SettingsView: React.FC<SettingsProps> = ({
                     <div className="flex items-center gap-4">
                        <div className="p-2 text-black dark:text-gray-200"><IconPrivacy size={32} /></div>
                        <span className="font-bold text-lg text-black dark:text-white">{t(language, 'privacy')}</span>
+                    </div>
+                    <IconChevronRight size={20} className="text-black dark:text-gray-500" />
+                 </button>
+              </div>
+           </section>
+
+           {/* AI Configuration Section */}
+           <section>
+              <h3 className="font-black text-black dark:text-gray-400 uppercase text-[10px] tracking-widest mb-3 px-2 opacity-80">AI Configuration</h3>
+              <div className="bg-white dark:bg-gray-800 rounded-[2.2rem] overflow-hidden border-2 border-gray-100 dark:border-gray-700">
+                 <button 
+                    onClick={handleConnectKey}
+                    className="w-full flex items-center justify-between p-5 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors active:bg-gray-100 dark:active:bg-gray-600"
+                 >
+                    <div className="flex items-center gap-4">
+                       <div className="p-2 text-black dark:text-gray-200"><IconKey size={32} /></div>
+                       <div className="text-left">
+                          <span className="font-bold text-lg text-black dark:text-white block leading-tight">Google AI Access</span>
+                          <span className={`text-[10px] font-black uppercase tracking-widest ${hasApiKey ? 'text-pawgo-green' : 'text-orange-500'}`}>
+                             {hasApiKey ? 'Connected' : 'Not Connected'}
+                          </span>
+                       </div>
                     </div>
                     <IconChevronRight size={20} className="text-black dark:text-gray-500" />
                  </button>

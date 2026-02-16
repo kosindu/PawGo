@@ -65,11 +65,36 @@ function App() {
     initApp();
   }, []);
 
+  // Save settings whenever they change
+  useEffect(() => {
+    if (user) {
+      db.saveUserSettings(user.id, {
+        darkMode,
+        language,
+        accentColor,
+        backgroundTheme,
+        notifications,
+        privacy
+      });
+    }
+  }, [user, darkMode, language, accentColor, backgroundTheme, notifications, privacy]);
+
   const loadUserData = async (userId: string) => {
     const userDogs = await db.getDogs(userId);
     const userWalks = await db.getWalks(userId);
+    const userSettings = await db.getUserSettings(userId);
+
     setDogs(userDogs);
     setWalks(userWalks);
+
+    if (userSettings) {
+      if (userSettings.darkMode !== undefined) setDarkMode(userSettings.darkMode);
+      if (userSettings.language) setLanguage(userSettings.language);
+      if (userSettings.accentColor) setAccentColor(userSettings.accentColor);
+      if (userSettings.backgroundTheme) setBackgroundTheme(userSettings.backgroundTheme);
+      if (userSettings.notifications) setNotifications(userSettings.notifications);
+      if (userSettings.privacy) setPrivacy(userSettings.privacy);
+    }
   };
 
   // Theme Toggle Effect
@@ -148,7 +173,9 @@ function App() {
     
     setDogs(updatedDogs);
     // Sync updates to DB
-    updatedDogs.forEach(d => db.updateDog(d));
+    for (const d of updatedDogs) {
+      await db.updateDog(d);
+    }
   };
 
   const handleUpdateWalk = async (updatedLog: WalkLog) => {
@@ -237,7 +264,7 @@ function App() {
           setUser={handleUpdateUser}
           language={language} 
           setLanguage={setLanguage}
-          accentColor={accentColor}
+          accentColor={accentColor} 
           setAccentColor={setAccentColor}
           backgroundTheme={backgroundTheme}
           setBackgroundTheme={setBackgroundTheme}

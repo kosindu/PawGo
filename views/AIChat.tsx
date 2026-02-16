@@ -79,10 +79,6 @@ export const AIChatView: React.FC<AIChatViewProps> = ({ user, dogs, language, on
   const scrollRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
-  // Gemini Refs
-  const aiRef = useRef<any>(null);
-  const chatRef = useRef<any>(null);
-  
   // Live Session Refs
   const liveSessionPromise = useRef<Promise<any> | null>(null);
   const audioContexts = useRef<{input: AudioContext, output: AudioContext} | null>(null);
@@ -120,14 +116,8 @@ export const AIChatView: React.FC<AIChatViewProps> = ({ user, dogs, language, on
     9. Use emojis sparingly but effectively to keep the tone light 🐾.
   `;
 
-  // Update AI context and reset welcome message if language changes
+  // Initial setup effect - primarily for welcome message state consistency
   useEffect(() => {
-    aiRef.current = new GoogleGenAI({ apiKey: process.env.API_KEY });
-    chatRef.current = aiRef.current.chats.create({
-      model: 'gemini-3-flash-preview',
-      config: { systemInstruction: fullSystemPrompt },
-    });
-
     // Update the greeting if it's the only message (not chatting yet)
     setMessages(prev => {
       if (prev.length === 1 && prev[0].role === 'model') {
@@ -135,7 +125,7 @@ export const AIChatView: React.FC<AIChatViewProps> = ({ user, dogs, language, on
       }
       return prev;
     });
-  }, [user.name, dogs, language, fullSystemPrompt]);
+  }, [user.name, dogs, language]);
 
   // Cleanup effect to ensure Live Mode resources are released when component unmounts
   useEffect(() => {
@@ -176,7 +166,9 @@ export const AIChatView: React.FC<AIChatViewProps> = ({ user, dogs, language, on
     setIsTyping(true);
 
     try {
+      // Create new instance here to pick up potentially updated API keys
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+      
       const contents: any = { parts: [] };
       if (userMsgText) contents.parts.push({ text: userMsgText });
       if (userMsgImg) contents.parts.push({ inlineData: { data: userMsgImg.data, mimeType: userMsgImg.mimeType } });
@@ -224,6 +216,8 @@ export const AIChatView: React.FC<AIChatViewProps> = ({ user, dogs, language, on
       audioContexts.current = { input: inputCtx, output: outputCtx };
       
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      
+      // Create new instance here to pick up potentially updated API keys
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
       liveSessionPromise.current = ai.live.connect({
