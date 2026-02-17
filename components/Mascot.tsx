@@ -4,7 +4,7 @@ import lottie from 'lottie-web';
 import { DOG_ANIMATION_DATA } from '../dog_animation';
 
 interface MascotProps {
-  mood?: 'happy' | 'walking' | 'sleeping';
+  mood?: 'happy' | 'walking';
   variant?: 'hero' | 'icon';
 }
 
@@ -44,9 +44,6 @@ export const Mascot: React.FC<MascotProps> = ({ mood = 'happy', variant = 'hero'
         lottieInstance.current.setSpeed(0.6); // Slightly faster for walking icon
         lottieInstance.current.play();
         break;
-      case 'sleeping':
-        lottieInstance.current.goToAndStop(0, true);
-        break;
       default:
         lottieInstance.current.setSpeed(0.3);
         lottieInstance.current.play();
@@ -63,7 +60,7 @@ export const Mascot: React.FC<MascotProps> = ({ mood = 'happy', variant = 'hero'
        )}
 
        {/* Interactive Dynamic Shadow - Hero Only */}
-       {isHero && mood !== 'sleeping' && (
+       {isHero && (
          <div 
             className="absolute bottom-6 w-40 h-8 bg-black/20 rounded-[100%] blur-md animate-pulse transform scale-x-110"
             style={{ animationDuration: '2.5s' }}
@@ -76,17 +73,8 @@ export const Mascot: React.FC<MascotProps> = ({ mood = 'happy', variant = 'hero'
          className={`
             relative z-10 w-full h-full transition-all duration-700
             ${isHero ? 'transform scale-[1.85] translate-y-4 drop-shadow-2xl' : 'transform scale-[2.2] translate-y-1'}
-            ${mood === 'sleeping' ? 'grayscale-[0.3] opacity-80' : ''}
          `}
        />
-
-       {/* Sleeping Zzz Effect - Hero Only */}
-       {isHero && mood === 'sleeping' && (
-         <div className="absolute -top-4 -right-2 flex flex-col items-center">
-            <span className="text-4xl font-display font-bold text-pawgo-blue animate-bounce" style={{ animationDuration: '2s' }}>Z</span>
-            <span className="text-2xl font-display font-bold text-pawgo-blue/70 animate-bounce" style={{ animationDuration: '2.5s', animationDelay: '0.5s' }}>z</span>
-         </div>
-       )}
     </div>
   );
 };

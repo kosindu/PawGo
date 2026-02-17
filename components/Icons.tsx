@@ -9,6 +9,128 @@ type IconProps = {
   color?: string;
 };
 
+// --- ANIMATED 3D ICONS (Lottie-Style) ---
+
+export const IconTrophy3D: React.FC<IconProps> = ({ size = 64, className }) => (
+  <svg width={size} height={size} viewBox="0 0 120 120" fill="none" className={className} style={{ overflow: 'visible' }}>
+    <defs>
+      <linearGradient id="trophyBody" x1="20" y1="20" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#FDE68A" />
+        <stop offset="0.5" stopColor="#F59E0B" />
+        <stop offset="1" stopColor="#B45309" />
+      </linearGradient>
+      <linearGradient id="trophySheen" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stopColor="white" stopOpacity="0.6"/>
+        <stop offset="1" stopColor="white" stopOpacity="0"/>
+      </linearGradient>
+      <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+        <feGaussianBlur stdDeviation="3" result="blur" />
+        <feComposite in="SourceGraphic" in2="blur" operator="over" />
+      </filter>
+    </defs>
+    
+    {/* Floating Stars/Particles - Animated */}
+    <g className="animate-pulse" style={{ animationDuration: '2s' }}>
+       <path d="M100 20L102 26L108 28L102 30L100 36L98 30L92 28L98 26Z" fill="#FDE68A" filter="url(#glow)" />
+       <path d="M15 40L17 46L23 48L17 50L15 56L13 50L7 48L13 46Z" fill="#FDE68A" style={{ animationDelay: '0.5s' }} filter="url(#glow)" />
+       <circle cx="80" cy="15" r="2" fill="white" className="animate-ping" style={{ animationDuration: '3s' }} />
+    </g>
+
+    <g className="animate-bounce-slight" style={{ transformOrigin: 'bottom center' }}>
+      {/* Base Shadow */}
+      <ellipse cx="60" cy="108" rx="30" ry="8" fill="#78350F" opacity="0.3" className="animate-pulse" />
+      
+      {/* Trophy Base */}
+      <path d="M40 90H80L86 105H34L40 90Z" fill="#B45309" />
+      <rect x="52" y="70" width="16" height="25" fill="#D97706" />
+      
+      {/* Cup Handles */}
+      <path d="M30 40C20 40 12 50 20 62C25 72 35 62 35 62" stroke="#F59E0B" strokeWidth="6" strokeLinecap="round" />
+      <path d="M90 40C100 40 108 50 100 62C95 72 85 62 85 62" stroke="#F59E0B" strokeWidth="6" strokeLinecap="round" />
+
+      {/* Cup Bowl */}
+      <path d="M30 30H90L85 65C85 85 60 85 60 85C60 85 35 85 35 65L30 30Z" fill="url(#trophyBody)" stroke="#B45309" strokeWidth="1" />
+      
+      {/* Shine reflection */}
+      <path d="M42 35L52 35L47 80L40 65Z" fill="url(#trophySheen)" opacity="0.6" />
+      
+      {/* Rim Highlight */}
+      <ellipse cx="60" cy="30" rx="30" ry="4" fill="#FDE68A" opacity="0.5" />
+    </g>
+  </svg>
+);
+
+export const IconFire3D: React.FC<IconProps> = ({ size = 64, className }) => (
+  <svg width={size} height={size} viewBox="0 0 120 120" fill="none" className={className} style={{ overflow: 'visible' }}>
+    <defs>
+      <linearGradient id="fireGrad" x1="0.5" y1="0" x2="0.5" y2="1">
+        <stop offset="0" stopColor="#FCA5A5" />
+        <stop offset="0.5" stopColor="#EF4444" />
+        <stop offset="1" stopColor="#991B1B" />
+      </linearGradient>
+      <radialGradient id="fireCore" cx="0.5" cy="0.8" r="0.5">
+        <stop offset="0" stopColor="#FEF3C7" />
+        <stop offset="0.4" stopColor="#F59E0B" />
+        <stop offset="1" stopColor="#F59E0B" stopOpacity="0" />
+      </radialGradient>
+    </defs>
+
+    {/* Flying Sparks */}
+    <g>
+      <circle cx="30" cy="40" r="2" fill="#FCD34D" className="animate-ping" style={{ animationDuration: '1.5s' }} />
+      <circle cx="90" cy="50" r="3" fill="#FCD34D" className="animate-ping" style={{ animationDuration: '2.5s', animationDelay: '0.5s' }} />
+      <circle cx="60" cy="20" r="1.5" fill="#FCD34D" className="animate-ping" style={{ animationDuration: '2s', animationDelay: '1s' }} />
+    </g>
+
+    {/* Flame layers with complex movement */}
+    <g className="origin-bottom animate-wiggle" style={{ animationDuration: '3s' }}>
+       {/* Outer Red Flame */}
+       <path 
+         d="M60 10 C60 10 15 50 15 85 C15 105 35 115 60 115 C85 115 105 105 105 85 C105 50 60 10 60 10Z" 
+         fill="url(#fireGrad)" 
+         className="animate-pulse" 
+         style={{ animationDuration: '2s' }} 
+         stroke="#7F1D1D" strokeWidth="2"
+       />
+       
+       {/* Middle Orange Flame */}
+       <path 
+         d="M60 35 C60 35 35 60 35 85 C35 100 45 110 60 110 C75 110 85 100 85 85 C85 60 60 35 60 35Z" 
+         fill="#F97316" 
+         className="animate-pulse" 
+         style={{ animationDuration: '1.5s', animationDelay: '0.2s', transformOrigin: 'center bottom' }} 
+       />
+       
+       {/* Inner Yellow Core */}
+       <path 
+         d="M60 60 C60 60 48 75 48 88 C48 95 53 100 60 100 C67 100 72 95 72 88 C72 75 60 60 60 60Z" 
+         fill="#FDE68A" 
+         className="animate-pulse" 
+         style={{ animationDuration: '0.8s' }} 
+       />
+    </g>
+  </svg>
+);
+
+// --- CHARTS ICONS ---
+
+export const IconChartLine: React.FC<IconProps> = ({ size = 24, className }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M3 3v18h18" />
+    <path d="M18.5 8.5l-6 7-4-3L3 18" />
+  </svg>
+);
+
+export const IconChartBar: React.FC<IconProps> = ({ size = 24, className }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M3 20v-8" />
+    <path d="M9 20v-12" />
+    <path d="M15 20v-16" />
+    <path d="M21 20v-12" />
+    <path d="M3 20h18" />
+  </svg>
+);
+
 // --- GENERAL ICONS ---
 
 // The primary icon for sending messages in AI Chat
@@ -16,14 +138,6 @@ export const IconSend: React.FC<IconProps> = ({ size = 24, className }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
     <path d="M22 2L11 13" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
     <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-  </svg>
-);
-
-// Generic user profile icon
-export const IconUser: React.FC<IconProps> = ({ size = 24, className }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
-    <circle cx="12" cy="7" r="4" />
   </svg>
 );
 
@@ -188,7 +302,7 @@ export const IconCalendar: React.FC<IconProps> = ({ size = 24, className }) => (
   </svg>
 );
 
-// Streak/Flame icon for activity status
+// Streak/Flame icon for activity status (Simple)
 export const IconFlame: React.FC<IconProps> = ({ size = 24, className }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
     <path d="M8.5 14.5A2.5 2.5 0 0011 12c0-1.38-.5-2-1-3 2.5.5 4.5 2.5 4.5 5.5a3.5 3.5 0 11-7 0c0-1.1.447-2.1 1.172-2.828" />
@@ -203,14 +317,7 @@ export const IconPlay: React.FC<IconProps> = ({ size = 24, className }) => (
   </svg>
 );
 
-// Pause button icon
-export const IconPause: React.FC<IconProps> = ({ size = 24, className }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <path d="M6 4h4v16H6V4zM14 4h4v16h-4V4z" />
-  </svg>
-);
-
-// Achievement trophy icon
+// Achievement trophy icon (Simple)
 export const IconTrophy: React.FC<IconProps> = ({ size = 24, className }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
     <path d="M6 9H4.5a2.5 2.5 0 010-5H6M18 9h1.5a2.5 2.5 0 000-5H18M4 22h16M10 14.66V17M14 14.66V17M18 2H6v7a6 6 0 0012 0V2z" />

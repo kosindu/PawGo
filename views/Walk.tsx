@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Dog, ViewState, WalkLog, LanguageCode } from '../types';
 import { Button } from '../components/ui/Button';
@@ -324,7 +325,7 @@ export const WalkView: React.FC<WalkProps> = ({ viewState, setViewState, dogs, o
                 <h3 className="text-2xl font-display font-bold text-black dark:text-white mb-2 leading-none">{t(language, 'whosComing')}</h3>
                 <p className="text-sm font-bold text-gray-500 dark:text-gray-400 mb-8 leading-relaxed">{t(language, 'selectPawError')}</p>
                 <Button fullWidth onClick={() => setShowNoSelectionModal(false)} className="rounded-2xl h-12 font-black">
-                   Got it
+                   {t(language, 'gotIt')}
                 </Button>
              </div>
           </div>
@@ -351,7 +352,7 @@ export const WalkView: React.FC<WalkProps> = ({ viewState, setViewState, dogs, o
            </div>
            
            <button 
-             onClick={() => { if(confirm('Cancel walk?')) setViewState('HOME'); }} 
+             onClick={() => { if(confirm(t(language, 'cancelWalkConfirm'))) setViewState('HOME'); }} 
              className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-md p-4 rounded-2xl shadow-xl border-2 border-white/50 dark:border-gray-700/50 active:scale-90 transition-all text-black dark:text-white pointer-events-auto"
            >
              <IconX size={24} />

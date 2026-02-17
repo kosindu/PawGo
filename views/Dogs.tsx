@@ -42,12 +42,17 @@ export const DogsView: React.FC<DogsProps> = ({ dogs, currentUser, onUpdateDog, 
       streak: 0,
       totalDistanceKm: 0,
       totalWalks: 0,
+      goal: { frequency: 'daily', metric: 'distance', target: 3 }
     });
     setShowDogModal(true);
   };
 
   const handleOpenEdit = (dog: Dog) => {
-    setFormData({ ...dog });
+    setFormData({ 
+      ...dog,
+      // Ensure goal object exists for editing even if it was missing in legacy data
+      goal: dog.goal || { frequency: 'daily', metric: 'distance', target: 3 }
+    });
     setShowDogModal(true);
   };
 
@@ -122,6 +127,11 @@ export const DogsView: React.FC<DogsProps> = ({ dogs, currentUser, onUpdateDog, 
                           <div className="bg-gray-50 dark:bg-gray-700/50 px-2.5 py-1 rounded-xl border border-gray-100 dark:border-gray-700">
                             <span className="text-[10px] font-black text-black dark:text-gray-300 uppercase tracking-widest">{dog.weight} {t(language, 'kg')}</span>
                           </div>
+                          {dog.goal && (
+                            <div className="bg-pawgo-green/10 dark:bg-pawgo-green/20 px-2.5 py-1 rounded-xl border border-pawgo-green/20">
+                              <span className="text-[9px] font-black text-pawgo-green uppercase tracking-widest">{dog.goal.target} {dog.goal.metric === 'distance' ? 'km' : 'min'}</span>
+                            </div>
+                          )}
                       </div>
                   </div>
 
@@ -259,7 +269,7 @@ export const DogsView: React.FC<DogsProps> = ({ dogs, currentUser, onUpdateDog, 
                    {/* Mascot Picker */}
                    <div>
                       <label className="text-[10px] font-black text-black dark:text-gray-400 uppercase ml-2 block mb-3 tracking-widest">{t(language, 'pickMascot')}</label>
-                      <div className="grid grid-cols-4 gap-4 px-2 pb-6">
+                      <div className="grid grid-cols-4 gap-4 px-2 pb-2">
                          {MASCOT_IDS.slice(0, 8).map(id => (
                             <button 
                               key={id} 
@@ -273,6 +283,54 @@ export const DogsView: React.FC<DogsProps> = ({ dogs, currentUser, onUpdateDog, 
                                <DogAvatar mascotId={id} />
                             </button>
                          ))}
+                      </div>
+                   </div>
+
+                   {/* Goal Section */}
+                   <div>
+                      <label className="text-[10px] font-black text-black dark:text-gray-400 uppercase ml-2 block mb-3 tracking-widest">{t(language, 'activityGoal')}</label>
+                      <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-4 border-2 border-gray-100 dark:border-gray-700 space-y-4">
+                        {/* Frequency Toggle */}
+                        <div className="flex bg-white dark:bg-gray-700 rounded-xl p-1 border border-gray-200 dark:border-gray-600">
+                           <button 
+                             className={`flex-1 py-2 rounded-lg text-xs font-black uppercase tracking-wider transition-all ${formData.goal?.frequency === 'daily' ? 'bg-pawgo-blue text-white shadow-sm' : 'text-gray-400'}`}
+                             onClick={() => setFormData({...formData, goal: {...formData.goal!, frequency: 'daily'}})}
+                           >
+                             {t(language, 'goalDaily')}
+                           </button>
+                           <button 
+                             className={`flex-1 py-2 rounded-lg text-xs font-black uppercase tracking-wider transition-all ${formData.goal?.frequency === 'weekly' ? 'bg-pawgo-blue text-white shadow-sm' : 'text-gray-400'}`}
+                             onClick={() => setFormData({...formData, goal: {...formData.goal!, frequency: 'weekly'}})}
+                           >
+                             {t(language, 'goalWeekly')}
+                           </button>
+                        </div>
+
+                        {/* Metric Toggle & Input */}
+                        <div className="flex gap-3 h-12">
+                           <div className="flex-1 flex bg-white dark:bg-gray-700 rounded-xl p-1 border border-gray-200 dark:border-gray-600">
+                              <button 
+                                 className={`flex-1 py-1 rounded-lg text-xs font-bold transition-all ${formData.goal?.metric === 'distance' ? 'bg-pawgo-green text-white shadow-sm' : 'text-gray-400'}`}
+                                 onClick={() => setFormData({...formData, goal: {...formData.goal!, metric: 'distance'}})}
+                               >
+                                 {t(language, 'goalDist')}
+                               </button>
+                               <button 
+                                 className={`flex-1 py-1 rounded-lg text-xs font-bold transition-all ${formData.goal?.metric === 'minutes' ? 'bg-pawgo-green text-white shadow-sm' : 'text-gray-400'}`}
+                                 onClick={() => setFormData({...formData, goal: {...formData.goal!, metric: 'minutes'}})}
+                               >
+                                 {t(language, 'goalMin')}
+                               </button>
+                           </div>
+                           <div className="flex-1 relative">
+                              <input 
+                                type="number"
+                                className="w-full h-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl px-4 font-bold text-center text-black dark:text-white focus:outline-none focus:border-pawgo-blue"
+                                value={formData.goal?.target || ''}
+                                onChange={(e) => setFormData({...formData, goal: {...formData.goal!, target: parseFloat(e.target.value) || 0}})}
+                              />
+                           </div>
+                        </div>
                       </div>
                    </div>
                  </div>

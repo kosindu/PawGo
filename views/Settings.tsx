@@ -6,11 +6,12 @@ import { Button } from '../components/ui/Button';
 import { t } from '../utils/translations';
 import { 
   IconTheme, IconPalette, IconBackground, IconLanguage, IconNotification, 
-  IconPrivacy, IconLogOut, IconChevronRight, IconX, IconCheck, IconEdit, 
-  FlagIcon, IconUserPlus, IconMap, IconTrendingUp,
-  IconInfo, IconBookOpen, IconKey
+  IconPrivacy, IconLogOut, IconChevronRight, IconX, IconCheck, 
+  FlagIcon, IconUserPlus,
+  IconInfo, IconBookOpen, IconKey, IconWalkingDog, IconClock, IconSparkles, IconCloud
 } from '../components/Icons';
 import { Mascot } from '../components/Mascot';
+import { MasterWalkIllustration } from '../components/Illustrations';
 
 interface SettingsProps {
   darkMode: boolean;
@@ -55,6 +56,7 @@ export const SettingsView: React.FC<SettingsProps> = ({
   const [hasApiKey, setHasApiKey] = useState(false);
   
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentLearningSlide, setCurrentLearningSlide] = useState(0);
   const [isAccentExpanded, setIsAccentExpanded] = useState(false);
   const [isBackgroundExpanded, setIsBackgroundExpanded] = useState(false);
   
@@ -97,28 +99,53 @@ export const SettingsView: React.FC<SettingsProps> = ({
     setShowProfileModal(false);
   };
 
-  const learningSlides = [
+  const tipsContent = [
     {
-      title: t(language, 'guide_welcome_title'),
-      desc: t(language, 'guide_welcome_desc'),
-      mascot: <Mascot mood="happy" />
+      title: t(language, 'tip_walk_title'),
+      desc: t(language, 'tip_walk_desc'),
+      icon: <MasterWalkIllustration className="w-32 h-32 object-contain drop-shadow-md" />,
+      color: 'bg-blue-100 dark:bg-blue-900/30'
     },
     {
-      title: t(language, 'guide_pack_title'),
-      desc: t(language, 'guide_pack_desc'),
-      mascot: <div className="w-48 h-48 bg-pawgo-yellow/20 rounded-full flex items-center justify-center animate-bounce-slight"><IconUserPlus size={100} className="text-pawgo-yellowDark" /></div>
+      title: t(language, 'tip_time_title'),
+      desc: t(language, 'tip_time_desc'),
+      icon: <IconClock size={80} className="text-pawgo-orange animate-spin-slow drop-shadow-md" />,
+      color: 'bg-orange-100 dark:bg-orange-900/30'
     },
     {
-      title: t(language, 'guide_tracking_title'),
-      desc: t(language, 'guide_tracking_desc'),
-      mascot: <div className="w-48 h-48 bg-pawgo-blue/20 rounded-full flex items-center justify-center animate-wiggle"><IconMap size={100} className="text-pawgo-blueDark" /></div>
+      title: t(language, 'tip_hydration_title'),
+      desc: t(language, 'tip_hydration_desc'),
+      icon: <div className="text-blue-500 animate-bounce drop-shadow-md"><IconCloud size={80} /></div>, // Simulating water with cloud/blue
+      color: 'bg-sky-100 dark:bg-sky-900/30'
     },
     {
-      title: t(language, 'guide_stats_title'),
-      desc: t(language, 'guide_stats_desc'),
-      mascot: <div className="w-48 h-48 bg-pawgo-green/20 rounded-full flex items-center justify-center animate-pulse"><IconTrendingUp size={100} className="text-pawgo-greenDark" /></div>
+      title: t(language, 'tip_check_title'),
+      desc: t(language, 'tip_check_desc'),
+      icon: <IconSparkles size={80} className="text-pawgo-green animate-pulse drop-shadow-md" />,
+      color: 'bg-green-100 dark:bg-green-900/30'
+    },
+    {
+        title: t(language, 'tip_social_title'),
+        desc: t(language, 'tip_social_desc'),
+        icon: <IconUserPlus size={80} className="text-purple-500 animate-wiggle drop-shadow-md" />,
+        color: 'bg-purple-100 dark:bg-purple-900/30'
     }
   ];
+
+  const nextTip = () => {
+    if (currentLearningSlide < tipsContent.length - 1) {
+        setCurrentLearningSlide(c => c + 1);
+    } else {
+        setShowLearningModal(false);
+        setCurrentLearningSlide(0);
+    }
+  };
+
+  const prevTip = () => {
+    if (currentLearningSlide > 0) {
+        setCurrentLearningSlide(c => c - 1);
+    }
+  };
 
   return (
     <div className="p-6 pt-safe-top pb-36 h-full overflow-y-auto relative no-scrollbar">
@@ -131,7 +158,7 @@ export const SettingsView: React.FC<SettingsProps> = ({
            </div>
            <div className="flex-1">
               <h2 className="font-bold text-xl truncate pr-2 text-black dark:text-white">{user.name}</h2>
-              <span className="text-[10px] bg-pawgo-blue text-white px-2 py-0.5 rounded-md font-black uppercase tracking-widest">Pack Leader</span>
+              <span className="text-[10px] bg-pawgo-blue text-white px-2 py-0.5 rounded-md font-black uppercase tracking-widest">{t(language, 'packLeader')}</span>
            </div>
            <div className="ml-auto">
               <Button size="sm" variant="outline" className="font-black h-10 px-4 border-2 border-gray-300 dark:border-gray-600 text-black dark:text-white" onClick={() => {
@@ -520,6 +547,65 @@ export const SettingsView: React.FC<SettingsProps> = ({
                </Button>
             </div>
          </div>
+      )}
+
+      {/* Learning / Paw Care Tips Modal */}
+      {showLearningModal && (
+        <div className="fixed inset-0 bg-black/70 z-[100] flex items-center justify-center p-6 backdrop-blur-md animate-pop">
+           <div className="bg-white dark:bg-gray-900 w-full max-w-md rounded-[3rem] p-8 shadow-2xl relative flex flex-col border-2 border-white/20 max-h-[85vh]">
+              
+              <div className="flex justify-between items-center mb-6">
+                 <div>
+                    <h2 className="text-2xl font-display font-bold text-black dark:text-white">{t(language, 'learning')}</h2>
+                    <p className="text-[10px] font-black uppercase text-gray-400 tracking-widest">Tip {currentLearningSlide + 1} of {tipsContent.length}</p>
+                 </div>
+                 <button onClick={() => setShowLearningModal(false)} className="p-2 bg-gray-100 dark:bg-gray-800 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                   <IconX size={20} className="text-black dark:text-white" />
+                 </button>
+              </div>
+
+              <div className="flex-1 flex flex-col items-center justify-center text-center p-4">
+                 <div className={`w-40 h-40 ${tipsContent[currentLearningSlide].color} rounded-full flex items-center justify-center mb-8 relative group`}>
+                    <div className="absolute inset-0 rounded-full bg-white/20 animate-ping opacity-20" style={{ animationDuration: '3s' }}></div>
+                    {tipsContent[currentLearningSlide].icon}
+                 </div>
+                 
+                 <h3 className="text-2xl font-bold text-black dark:text-white mb-4 leading-tight">
+                    {tipsContent[currentLearningSlide].title}
+                 </h3>
+                 
+                 <p className="text-gray-600 dark:text-gray-300 font-medium leading-relaxed">
+                    {tipsContent[currentLearningSlide].desc}
+                 </p>
+              </div>
+
+              <div className="flex items-center justify-between mt-8 pt-4 border-t border-gray-100 dark:border-gray-800">
+                 <button 
+                    onClick={prevTip} 
+                    disabled={currentLearningSlide === 0}
+                    className={`p-3 rounded-xl transition-colors ${currentLearningSlide === 0 ? 'text-gray-300 dark:text-gray-700 cursor-not-allowed' : 'text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'}`}
+                 >
+                    <IconChevronRight size={24} className="rotate-180" />
+                 </button>
+
+                 <div className="flex gap-2">
+                    {tipsContent.map((_, idx) => (
+                       <div 
+                         key={idx} 
+                         className={`w-2 h-2 rounded-full transition-all duration-300 ${idx === currentLearningSlide ? 'w-6 bg-pawgo-blue' : 'bg-gray-200 dark:bg-gray-700'}`}
+                       />
+                    ))}
+                 </div>
+
+                 <button 
+                    onClick={nextTip}
+                    className="p-3 bg-pawgo-blue text-white rounded-xl shadow-lg shadow-pawgo-blue/30 active:scale-95 transition-all"
+                 >
+                    {currentLearningSlide === tipsContent.length - 1 ? <IconCheck size={24} /> : <IconChevronRight size={24} />}
+                 </button>
+              </div>
+           </div>
+        </div>
       )}
     </div>
   );

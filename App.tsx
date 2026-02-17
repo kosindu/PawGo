@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Dog, WalkLog, ViewState, User, LanguageCode, AccentColor, BackgroundTheme } from './types';
-import { ACCENT_COLORS, BACKGROUND_THEMES } from './constants';
+import { ACCENT_COLORS, BACKGROUND_THEMES, LANGUAGES } from './constants';
 import { BottomNav } from './components/BottomNav';
 import { HomeView } from './views/Home';
 import { DogsView } from './views/Dogs';
@@ -89,7 +89,12 @@ function App() {
 
     if (userSettings) {
       if (userSettings.darkMode !== undefined) setDarkMode(userSettings.darkMode);
-      if (userSettings.language) setLanguage(userSettings.language);
+      
+      // Validate language before setting to prevent invalid states
+      if (userSettings.language && LANGUAGES.some(l => l.code === userSettings.language)) {
+        setLanguage(userSettings.language);
+      }
+      
       if (userSettings.accentColor) setAccentColor(userSettings.accentColor);
       if (userSettings.backgroundTheme) setBackgroundTheme(userSettings.backgroundTheme);
       if (userSettings.notifications) setNotifications(userSettings.notifications);
@@ -318,7 +323,7 @@ function App() {
                 
                 <h2 className="text-2xl font-display font-bold text-black dark:text-white mb-3">{t(language, 'noPaws')}</h2>
                 <p className="text-gray-500 dark:text-gray-400 font-bold text-sm mb-8 leading-relaxed px-2">
-                   You need to add the PAWS first to use this feature!
+                   {t(language, 'noPawsDesc')}
                 </p>
                 
                 <Button 

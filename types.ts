@@ -2,14 +2,20 @@
 export interface User {
   id: string;
   name: string;
-  email: string; // Added for auth
+  email: string;
   avatar: string;
   isOwner: boolean;
 }
 
+export interface DogGoal {
+  frequency: 'daily' | 'weekly';
+  metric: 'distance' | 'minutes';
+  target: number;
+}
+
 export interface Dog {
   id: string;
-  ownerId: string; // Added to link to user
+  ownerId: string;
   name: string;
   breed: string;
   age: number;
@@ -19,23 +25,16 @@ export interface Dog {
   streak: number;
   totalDistanceKm: number;
   totalWalks: number;
+  goal?: DogGoal;
 }
 
 export interface WalkLog {
   id: string;
   dogIds: string[];
-  date: string; // ISO string
+  date: string;
   durationSeconds: number;
   distanceKm: number;
-  walkerId: string; // Who walked the dog
-}
-
-export interface Achievement {
-  id: string;
-  title: string;
-  description: string;
-  icon: string;
-  unlocked: boolean;
+  walkerId: string;
 }
 
 export type ViewState = 'HOME' | 'DOGS' | 'WALK_PREP' | 'WALK_ACTIVE' | 'WALK_SUMMARY' | 'STATS' | 'SETTINGS' | 'AI_CHAT';
@@ -49,15 +48,3 @@ export type LanguageCode =
 export type AccentColor = 'green' | 'purple' | 'pink' | 'orange' | 'teal';
 
 export type BackgroundTheme = 'sunrise' | 'lavender' | 'mint' | 'sky' | 'paper' | 'white';
-
-export interface AppState {
-  user: User;
-  dogs: Dog[];
-  walks: WalkLog[];
-  achievements: Achievement[];
-  currentView: ViewState;
-  theme: 'light' | 'dark';
-  language: LanguageCode;
-  accentColor: AccentColor;
-  backgroundTheme: BackgroundTheme;
-}

@@ -8,30 +8,27 @@ type TranslationKey =
   | 'myDogs' | 'activity' | 'settings' | 'appearance' | 'darkMode' | 'general' | 'language' | 'notifications' | 'privacy' | 'logOut'
   | 'whosWalking' | 'selectPups' | 'cancel'
   | 'name' | 'breed' | 'age' | 'weight' | 'save' | 'editDog' | 'newDog' | 'deleteDog' | 'pickColor' | 'pickMascot' | 'deleteConfirm' | 'years' | 'kg' | 'days'
-  | 'weather_sunny' | 'weather_cloudy' | 'weather_rain' | 'weather_snow' | 'weather_storm'
-  | 'tip_sunny' | 'tip_cloudy' | 'tip_rain' | 'tip_snow' | 'tip_storm' | 'location_mock'
-  | 'analytics' | 'time' | 'dogwise' | 'avg_pace'
-  | 'about' | 'learning' | 'howToUse' | 'version' | 'developer' | 'credits' | 'next' | 'back' | 'finish'
-  | 'guide_welcome_title' | 'guide_welcome_desc'
-  | 'guide_pack_title' | 'guide_pack_desc'
-  | 'guide_tracking_title' | 'guide_tracking_desc'
-  | 'guide_stats_title' | 'guide_stats_desc'
+  | 'analytics' | 'time'
+  | 'about' | 'learning' | 'version' | 'developer' | 'credits' | 'next' | 'back' | 'finish'
   | 'ai_welcome'
-  // New keys
   | 'accentColor' | 'backgroundTheme' | 'lockedDarkMode' | 'support' | 'editProfile'
   | 'yourName' | 'chooseAvatar' | 'designedBy' | 'craftedWithLove' | 'close'
   | 'enableNotif' | 'masterSwitch' | 'walkReminders' | 'achievements'
   | 'shareLoc' | 'shareLocDesc' | 'analyticsData' | 'analyticsDataDesc'
-  | 'whistle' | 'clicker' | 'whistleDesc' | 'clickerDesc' | 'noPaws' | 'addFirstPaw'
+  | 'whistle' | 'clicker' | 'whistleDesc' | 'clickerDesc' | 'noPaws' | 'addFirstPaw' | 'noPawsDesc' | 'packLeader' | 'gotIt' | 'cancelWalkConfirm'
   | 'deletePawConfirm' | 'selectPawError' | 'whosComing' | 'tracking' | 'calories' | 'distance'
   | 'missionComplete' | 'highPaws' | 'thePack' | 'backHome'
   | 'thisWeek' | 'history' | 'topPerformance' | 'onFire' | 'topPack' | 'allPaws'
   | 'streak' | 'goal' | 'trends' | 'layout' | 'done' | 'dayLog' | 'noActivity'
   | 'addActivity' | 'editActivity' | 'logActivity' | 'addPastWalk' | 'participation'
-  | 'distLabel' | 'timeLabel' | 'saveRecord' | 'deleteRecord' | 'voiceAssist' | 'listening' | 'askPlaceholder' | 'managePack';
+  | 'distLabel' | 'timeLabel' | 'saveRecord' | 'deleteRecord' | 'voiceAssist' | 'listening' | 'askPlaceholder' | 'managePack'
+  | 'filter_daily' | 'filter_weekly' | 'filter_monthly' | 'today' | 'thisMonth'
+  | 'activityGoal' | 'goalDaily' | 'goalWeekly' | 'goalDist' | 'goalMin'
+  | 'goalReached' | 'keepGoing' | 'goalsMet' | 'goalsMetDesc' | 'allGoalsMet' | 'allGoalsMetDesc' | 'pawsOnTrack'
+  | 'awayFromGoal' | 'toReachGoal'
+  | 'tip_walk_title' | 'tip_walk_desc' | 'tip_time_title' | 'tip_time_desc' | 'tip_hydration_title' | 'tip_hydration_desc' | 'tip_check_title' | 'tip_check_desc' | 'tip_social_title' | 'tip_social_desc';
 
-const dictionary: Record<LanguageCode, Record<TranslationKey, string>> = {
-  en: { 
+const en: Record<TranslationKey, string> = {
     nav_home: 'Home', nav_dogs: 'My Pack', nav_walk: 'Go Walk', nav_stats: 'Activity', nav_settings: 'Settings', 
     hi: 'Hello', ready: 'Time for an adventure?', 
     beautifulDay: "It's a paw-fect day!", greeting_adventure: "Adventure awaits!", greeting_great: "Let's get moving!", greeting_sniff: "Time to sniff the world!",
@@ -39,394 +36,428 @@ const dictionary: Record<LanguageCode, Record<TranslationKey, string>> = {
     myDogs: 'My Pack', activity: 'Activity Log', settings: 'Settings', appearance: 'Theme', darkMode: 'Night Mode', general: 'General', language: 'Language', notifications: 'Notifications', privacy: 'Privacy', logOut: 'Sign Out', 
     whosWalking: "Who's joining?", selectPups: "Tap the paws coming along.", cancel: "Cancel",
     name: "Name", breed: "Breed", age: "Age", weight: "Weight", save: "Save Profile", editDog: "Edit Paw", newDog: "New Paw", deleteDog: "Remove Paw", pickColor: "Theme Color", pickMascot: "Choose Avatar", deleteConfirm: "Are you sure you want to remove this furry friend?", years: "yrs", kg: "kg", days: "days",
-    weather_sunny: "Sunny", weather_cloudy: "Cloudy", weather_rain: "Rainy", weather_snow: "Snowy", weather_storm: "Stormy",
-    tip_sunny: "Don't forget water! ☀️", tip_cloudy: "Perfect walking weather. ☁️", tip_rain: "Bring a towel! ☔", tip_snow: "Watch those paws! ❄️", tip_storm: "Maybe play inside? ⚡",
-    location_mock: "Stockholm, SE",
-    analytics: "Insights", time: "Duration", dogwise: "Per Paw", avg_pace: "Avg Pace",
-    about: "About PawGo", learning: "Paw Care Tips", howToUse: "Guide", version: "Version", developer: "Developer", credits: "Credits", next: "Next", back: "Back", finish: "Let's Go",
-    guide_welcome_title: "Welcome to PawGo", guide_welcome_desc: "The ultimate companion for you and your best friends.",
-    guide_pack_title: "Build Your Pack", guide_pack_desc: "Create profiles for your paws with fun 3D avatars.",
-    guide_tracking_title: "Track Every Step", guide_tracking_desc: "Map your walks, track distance, and monitor health.",
-    guide_stats_title: "See Your Progress", guide_stats_desc: "Celebrate milestones and keep your streak alive!",
+    analytics: "Insights", time: "Duration",
+    about: "About PawGo", learning: "Paw Care Tips", version: "Version", developer: "Developer", credits: "Credits", next: "Next", back: "Back", finish: "Let's Go",
     ai_welcome: "Woof {name}! I'm PawGo AI. I know all about {dogs}. How can I help your pack today? 🐾",
-    
-    // New Keys
     accentColor: 'Accent Color', backgroundTheme: 'Background Theme', lockedDarkMode: 'Locked in dark mode', support: 'Support', editProfile: 'Edit Profile',
     yourName: 'Your Name', chooseAvatar: 'Choose Avatar', designedBy: 'Designed by', craftedWithLove: 'Crafted with love for paws and their humans.', close: 'Close',
     enableNotif: 'Enable Notifications', masterSwitch: 'Master switch', walkReminders: 'Walk Reminders', achievements: 'Achievements',
     shareLoc: 'Share Location', shareLocDesc: 'For walk tracking', analyticsData: 'Analytics', analyticsDataDesc: 'Anonymous usage data',
     whistle: 'Whistle', clicker: 'Clicker', whistleDesc: 'Call your pack with a signal.', clickerDesc: 'Mark positive behaviors.',
-    noPaws: 'No paws yet!', addFirstPaw: 'Add your first Paw', deletePawConfirm: 'Are you sure you want to remove this paw?',
+    noPaws: 'No paws yet!', addFirstPaw: 'Add your first Paw', deletePawConfirm: 'Are you sure you want to remove this paw?', noPawsDesc: "You need to add the PAWS first to use this feature!", packLeader: "Pack Leader", gotIt: "Got it", cancelWalkConfirm: "Cancel walk?",
     selectPawError: 'You need to select a Paw to Proceed.', whosComing: "Who's coming?", tracking: 'Tracking Adventure...', calories: 'Calories', distance: 'Distance',
     missionComplete: 'Mission Complete!', highPaws: 'High paws all around!', thePack: 'The Pack', backHome: 'Back to Home',
     thisWeek: 'This Week', history: 'History', topPerformance: 'Top Goal Performance', onFire: "You're on fire!", topPack: 'Top 5% Active Pack', allPaws: 'All Paws',
     streak: 'Streak', goal: 'Goal', trends: 'Your Activity Trends', layout: 'Layout', done: 'Done', dayLog: 'Day Log', noActivity: 'No activity recorded',
     addActivity: 'Add Activity', editActivity: 'Edit Activity', logActivity: 'Log Activity', addPastWalk: 'Add Past Walk', participation: 'Participation',
     distLabel: 'Dist (km)', timeLabel: 'Time (min)', saveRecord: 'Save Record', deleteRecord: 'Delete Record',
-    voiceAssist: 'Voice Assist', listening: 'Listening...', askPlaceholder: 'Ask about {name}...', managePack: 'Manage Your Pack'
-  },
-  // Other languages fallback to English for new keys via function logic, but we cast to 'any' to satisfy typechecker for now as filling 20 languages is out of scope for a quick fix
-  de: { 
-    nav_home: 'Start', nav_dogs: 'Rudel', nav_walk: 'Laufen', nav_stats: 'Statistik', nav_settings: 'Einstellungen', 
-    hi: 'Hallo', ready: 'Bereit?', 
-    beautifulDay: 'Ein schöner Tag!', greeting_adventure: "Bereit für ein Abenteuer?", greeting_great: "Toller Tag zum Laufen!", greeting_sniff: "Zeit zum Schnüffeln!",
-    totalDist: 'Gesamt', totalWalks: 'Gänge', pack: 'Dein Rudel', start: 'Loslaufen', addDog: 'Pfote +', 
-    myDogs: 'Mein Rudel', activity: 'Aktivität', settings: 'Einstellungen', appearance: 'Aussehen', darkMode: 'Dunkelmodus', general: 'Allgemein', language: 'Sprache', notifications: 'Mitteilungen', privacy: 'Datenschutz', logOut: 'Abmelden', 
-    whosWalking: "Wer läuft mit?", selectPups: "Wähle die Pfoten.", cancel: "Abbrechen",
-    name: "Name", breed: "Rasse", age: "Alter", weight: "Gewicht", save: "Speichern", editDog: "Bearbeiten", newDog: "Neue Pfote", deleteDog: "Löschen", pickColor: "Farbe", pickMascot: "Maskottchen", deleteConfirm: "Möchtest du diesen Freund wirklich entfernen?", years: "Jahre", kg: "kg", days: "Tage",
-    weather_sunny: "Sonnig", weather_cloudy: "Bewölkt", weather_rain: "Regnerisch", weather_snow: "Schnee", weather_storm: "Stürmisch",
-    tip_sunny: "Perfektes Wetter! ☀️", tip_cloudy: "Schön kühl. ☁️", tip_rain: "Handtuch nicht vergessen! ☔", tip_snow: "Vorsicht, glatt! ❄️", tip_storm: "Besser drinnen bleiben? ⚡",
-    location_mock: "Berlin, DE",
-    analytics: "Analyse", time: "Zeit", dogwise: "Leistung", avg_pace: "Ø Tempo",
-    about: "Über PawGo", learning: "Lernzentrum", howToUse: "Anleitung", version: "Version", developer: "Entwickler", credits: "Credits", next: "Weiter", back: "Zurück", finish: "Fertig",
-    guide_welcome_title: "Willkommen bei PawGo!", guide_welcome_desc: "Der ultimative skandinavische Begleiter für Sie und Ihre pelzigen Freunde.",
-    guide_pack_title: "Verwalte dein Rudel", guide_pack_desc: "Füge deine Pfoten hinzu, verfolge ihre Rassen und Gewichte und sieh dir ihre Avatare an.",
-    guide_tracking_title: "Echtzeit-Tracking", guide_tracking_desc: "Starte einen Spaziergang und verfolge deine Route in Echtzeit.",
-    guide_stats_title: "Intelligente Analyse", guide_stats_desc: "Visualisiere deinen Fortschritt mit detaillierten Aktivitätsdiagrammen.",
-    ai_welcome: "Hallo {name}! Ich bin PawGo. Ich habe alle Infos über {dogs}. Wie kann ich deinem Rudel heute helfen? 🐾"
-  } as any,
-  fr: { 
-    nav_home: 'Accueil', nav_dogs: 'Meute', nav_walk: 'Marche', nav_stats: 'Stats', nav_settings: 'Réglages', 
-    hi: 'Salut', ready: 'On y va ?', 
-    beautifulDay: 'Quelle belle journée !', greeting_adventure: "Prêt pour l'aventure ?", greeting_great: "Belle journée pour marcher !", greeting_sniff: "Temps de renifler !",
-    totalDist: 'Distance', totalWalks: 'Marches', pack: 'Ta Meute', start: 'Commencer', addDog: 'Ajouter', 
-    myDogs: 'Ma Meute', activity: 'Activité', settings: 'Réglages', appearance: 'Apparence', darkMode: 'Mode Sombre', general: 'Général', language: 'Langue', notifications: 'Notifications', privacy: 'Confidentialité', logOut: 'Déconnexion', 
-    whosWalking: "Qui se promène ?", selectPups: "Choisis les pattes.", cancel: "Annuler",
-    name: "Nom", breed: "Race", age: "Âge", weight: "Poids", save: "Sauvegarder", editDog: "Modifier", newDog: "Nouvelle Patte", deleteDog: "Supprimer", pickColor: "Couleur", pickMascot: "Mascotte", deleteConfirm: "Voulez-vous vraiment supprimer cet ami ?", years: "ans", kg: "kg", days: "jours",
-    weather_sunny: "Ensoleillé", weather_cloudy: "Nuageux", weather_rain: "Pluvieux", weather_snow: "Neige", weather_storm: "Orageux",
-    tip_sunny: "Temps parfait ! ☀️", tip_cloudy: "Frais et agréable. ☁️", tip_rain: "N'oublie pas la serviette ! ☔", tip_snow: "Attention au verglas ! ❄️", tip_storm: "Reste à l'intérieur ? ⚡",
-    location_mock: "Paris, FR",
-    analytics: "Analytique", time: "Temps", dogwise: "Performance", avg_pace: "Rythme Moy.",
-    about: "À propos de PawGo", learning: "Conseils", howToUse: "Mode d'emploi", version: "Version", developer: "Développeur", credits: "Crédits", next: "Suivant", back: "Retour", finish: "Terminer",
-    guide_welcome_title: "Bienvenue sur PawGo !", guide_welcome_desc: "Le compagnon ultime au design scandinave pour vous et vos amis à quatre pattes.",
-    guide_pack_title: "Gérez votre meute", guide_pack_desc: "Ajoutez vos pattes, suivez leurs races, poids et voyez leurs avatars 3D.",
-    guide_tracking_title: "Suivi en temps réel", guide_tracking_desc: "Démarrez une marche et suivez votre itinéraire en temps réel.",
-    guide_stats_title: "Analyses intelligentes", guide_stats_desc: "Visualisez vos progrès avec des graphiques d'activité détaillés.",
-    ai_welcome: "Salut {name} ! Je suis PawGo. J'ai toutes les infos sur {dogs}. Comment puis-je aider ta meute aujourd'hui ? 🐾"
-  } as any,
-  es: { 
-    nav_home: 'Inicio', nav_dogs: 'Manada', nav_walk: 'Paseo', nav_stats: 'Estad.', nav_settings: 'Ajustes', 
-    hi: 'Hola', ready: '¿Listo?', 
-    beautifulDay: '¡Qué buen día!', greeting_adventure: "¿Listo para la aventura?", greeting_great: "¡Gran día para pasear!", greeting_sniff: "¡Hora de olfatear!",
-    totalDist: 'Distancia', totalWalks: 'Paseos', pack: 'Tu Manada', start: 'Empezar', addDog: 'Añadir', 
-    myDogs: 'Mi Manada', activity: 'Actividad', settings: 'Ajustes', appearance: 'Apariencia', darkMode: 'Modo Oscuro', general: 'General', language: 'Idioma', notifications: 'Notificaciones', privacy: 'Privacidad', logOut: 'Cerrar Sesión', 
-    whosWalking: "¿Quién pasea?", selectPups: "Selecciona.", cancel: "Cancelar",
-    name: "Nombre", breed: "Raza", age: "Edad", weight: "Peso", save: "Guardar", editDog: "Editar", newDog: "Nueva Pata", deleteDog: "Eliminar", pickColor: "Color", pickMascot: "Mascota", deleteConfirm: "¿Seguro que quieres eliminar este amigo?", years: "años", kg: "kg", days: "dias",
-    weather_sunny: "Soleado", weather_cloudy: "Nublado", weather_rain: "Lluvioso", weather_snow: "Nieve", weather_storm: "Tormenta",
-    tip_sunny: "¡Tiempo perfecto! ☀️", tip_cloudy: "Fresco y agradable. ☁️", tip_rain: "¡No olvides la toalla! ☔", tip_snow: "¡Cuidado con el hielo! ❄️", tip_storm: "¿Mejor quedarse en casa? ⚡",
-    location_mock: "Madrid, ES",
-    analytics: "Analítica", time: "Tiempo", dogwise: "Rendimiento", avg_pace: "Ritmo Med.",
-    about: "Sobre PawGo", learning: "Consejos", howToUse: "Cómo usar", version: "Versión", developer: "Desarrollador", credits: "Créditos", next: "Siguiente", back: "Atrás", finish: "Finalizar",
-    guide_welcome_title: "¡Bienvenido a PawGo!", guide_welcome_desc: "El compañero definitivo con diseño escandinavo para ti y tus amigos peludos.",
-    guide_pack_title: "Gestiona tu manada", guide_pack_desc: "Añade a tus amigos, sigue sus razas y pesos y mira sus avatares 3D.",
-    guide_tracking_title: "Seguimiento en tiempo real", guide_tracking_desc: "Inicia un paseo y sigue tu ruta en tiempo real.",
-    guide_stats_title: "Analítica inteligente", guide_stats_desc: "Visualiza tu progreso con gráficos de actividad detallados.",
-    ai_welcome: "¡Hola {name}! Soy PawGo. Tengo toda la información sobre {dogs}. ¿Cómo puedo ayudar a tu manada hoy? 🐾"
-  } as any,
-  it: { 
-    nav_home: 'Home', nav_dogs: 'Branco', nav_walk: 'Passeggiata', nav_stats: 'Stat.', nav_settings: 'Impostazioni', 
-    hi: 'Ciao', ready: 'Pronto?', 
-    beautifulDay: 'Che bella giornata!', greeting_adventure: "Pronto per un'avventura?", greeting_great: "Ottima giornata per camminare!", greeting_sniff: "Tempo di annusare!",
-    totalDist: 'Distanza', totalWalks: 'Uscite', pack: 'Il Branco', start: 'Inizia', addDog: 'Aggiungi', 
-    myDogs: 'Il Mio Branco', activity: 'Attività', settings: 'Impostazioni', appearance: 'Aspetto', darkMode: 'Modo Scuro', general: 'Generale', language: 'Lingua', notifications: 'Notifiche', privacy: 'Privacy', logOut: 'Esci', 
-    whosWalking: "Chi viene?", selectPups: "Scegli.", cancel: "Annulla",
-    name: "Nome", breed: "Razza", age: "Età", weight: "Peso", save: "Salva", editDog: "Modifica", newDog: "Nuovo Amico", deleteDog: "Elimina", pickColor: "Colore", pickMascot: "Mascotte", deleteConfirm: "Sei sicuro di voler rimuovere questo amico?", years: "anni", kg: "kg", days: "giorni",
-    weather_sunny: "Soleggiato", weather_cloudy: "Nuvoloso", weather_rain: "Piovoso", weather_snow: "Neve", weather_storm: "Tempesta",
-    tip_sunny: "Tempo perfetto! ☀️", tip_cloudy: "Fresco e piacevole. ☁️", tip_rain: "Non dimenticare l'asciugamano! ☔", tip_snow: "Attenzione al ghiaccio! ❄️", tip_storm: "Meglio stare dentro? ⚡",
-    location_mock: "Roma, IT",
-    analytics: "Analisi", time: "Tempo", dogwise: "Per Amico", avg_pace: "Passo Medio",
-    about: "Informazioni su PawGo", learning: "Consigli", howToUse: "Come usare", version: "Versione", developer: "Sviluppatore", credits: "Crediti", next: "Avanti", back: "Indietro", finish: "Fine",
-    guide_welcome_title: "Benvenuto su PawGo!", guide_welcome_desc: "L'ultimo compagno dal design scandinavo per te e i tuoi amici a quattro zampe.",
-    guide_pack_title: "Gestisci il tuo branco", guide_pack_desc: "Aggiungi i tuoi amici, segui le loro razze e pesi e guarda i loro avatar 3D.",
-    guide_tracking_title: "Tracciamento in tempo reale", guide_tracking_desc: "Inizia una passeggiata e segui il tuo percorso in tempo reale.",
-    guide_stats_title: "Analitica intelligente", guide_stats_desc: "Visualizza i tuoi progressi con grafici di attività dettagliati.",
-    ai_welcome: "Ciao {name}! Sono PawGo. Ho tutte le info su {dogs}. Come posso aiutare il tuo branco oggi? 🐾"
-  } as any,
-  nl: { 
-    nav_home: 'Home', nav_dogs: 'Roedel', nav_walk: 'Wandel', nav_stats: 'Stats', nav_settings: 'Instellingen', 
-    hi: 'Hoi', ready: 'Klaar?', 
-    beautifulDay: 'Mooie dag!', greeting_adventure: "Klaar voor avontuur?", greeting_great: "Topdag for een wandeling!", greeting_sniff: "Tijd om te snuffelen!",
-    totalDist: 'Afstand', totalWalks: 'Wandelingen', pack: 'Je Roedel', start: 'Start', addDog: 'Toevoegen', 
-    myDogs: 'Mijn Roedel', activity: 'Activiteit', settings: 'Instellingen', appearance: 'Uiterlijk', darkMode: 'Donkere Modus', general: 'Algemeen', language: 'Taal', notifications: 'Meldingen', privacy: 'Privacy', logOut: 'Uitloggen', 
-    whosWalking: "Wie gaat mee?", selectPups: "Kies.", cancel: "Annuleren",
-    name: "Naam", breed: "Ras", age: "Leeftijd", weight: "Gewicht", save: "Opslaan", editDog: "Bewerken", newDog: "Nieuwe Vriend", deleteDog: "Verwijderen", pickColor: "Kleur", pickMascot: "Mascotte", deleteConfirm: "Weet je zeker dat je deze vriend wilt verwijderen?", years: "jaar", kg: "kg", days: "dagen",
-    weather_sunny: "Zonnig", weather_cloudy: "Bewölkt", weather_rain: "Regenachtig", weather_snow: "Sneeuw", weather_storm: "Stormachtig",
-    tip_sunny: "Perfect wandelweer! ☀️", tip_cloudy: "Lekker fris. ☁️", tip_rain: "Vergeet je handdoek niet! ☔", tip_snow: "Pas op voor gladheid! ❄️", tip_storm: "Beter binnen blijven? ⚡",
-    location_mock: "Amsterdam, NL",
-    analytics: "Analytics", time: "Tijd", dogwise: "Prestaties", avg_pace: "Gem. Tempo",
-    about: "Over PawGo", learning: "Tips", howToUse: "Hoe te gebruiken", version: "Versie", developer: "Ontwikkelaar", credits: "Credits", next: "Volgende", back: "Terug", finish: "Klaar",
-    guide_welcome_title: "Welkom bij PawGo!", guide_welcome_desc: "De ultieme Scandinavisch ontworpen metgezel voor jou en je harige vrienden.",
-    guide_pack_title: "Beheer je roedel", guide_pack_desc: "Voeg je vrienden toe, volg hun rassen en gewichten en bekijk hun 3D-avatars.",
-    guide_tracking_title: "Realtime volgen", guide_tracking_desc: "Start een wandeling en volg je route in realtime.",
-    guide_stats_title: "Slimme analyse", guide_stats_desc: "Visualiseer je voortgang met gedetailleerde activiteitsgrafieken.",
-    ai_welcome: "Hoi {name}! Ik ben PawGo. Ik weet alles over {dogs}. Hoe kan ik je roedel vandaag helpen? 🐾"
-  } as any,
-  sv: { 
-    nav_home: 'Hem', nav_dogs: 'Flock', nav_walk: 'Promenad', nav_stats: 'Statistik', nav_settings: 'Inställningar', 
-    hi: 'Hej', ready: 'Redo?', 
-    beautifulDay: 'Vacker dag!', greeting_adventure: "Redo för äventyr?", greeting_great: "Härlig dag för promenad!", greeting_sniff: "Dags att nosa runt!",
-    totalDist: 'Sträcka', totalWalks: 'Turer', pack: 'Din Flock', start: 'Börja Gå', addDog: 'Lägg till', 
-    myDogs: 'Min Flock', activity: 'Aktivitet', settings: 'Inställningar', appearance: 'Utseende', darkMode: 'Mörkt Läge', general: 'Allmänt', language: 'Språk', notifications: 'Aviseringar', privacy: 'Integritet', logOut: 'Logga ut', 
-    whosWalking: "Vem går?", selectPups: "Välj.", cancel: "Avbryt",
-    name: "Namn", breed: "Ras", age: "Ålder", weight: "Vikt", save: "Spara", editDog: "Redigera", newDog: "Ny Vän", deleteDog: "Ta bort", pickColor: "Färg", pickMascot: "Maskot", deleteConfirm: "Är du säker på att du vill ta bort den här vännen?", years: "år", kg: "kg", days: "dagar",
-    weather_sunny: "Soligt", weather_cloudy: "Molnigt", weather_rain: "Regnigt", weather_snow: "Snöigt", weather_storm: "Stormigt",
-    tip_sunny: "Perfekt promenadväder! ☀️", tip_cloudy: "Skönt och svalt. ☁️", tip_rain: "Glöm inte handduken! ☔", tip_snow: "Se upp för halka! ❄️", tip_storm: "Kanske stanna inne? ⚡",
-    location_mock: "Stockholm, SE",
-    analytics: "Analys", time: "Tid", dogwise: "Prestation", avg_pace: "Snittfart",
-    about: "Om PawGo", learning: "Tips", howToUse: "Användarmanual", version: "Version", developer: "Utvecklare", credits: "Credits", next: "Nästa", back: "Bakåt", finish: "Klar",
-    guide_welcome_title: "Välkommen till PawGo!", guide_welcome_desc: "Den ultimata skandinaviska följeslagaren för dig och dina fyrbenta vänner.",
-    guide_pack_title: "Hantera din flock", guide_pack_desc: "Lägg till dina vänner, spåra deras raser och vikter och se deras 3D-avatarer.",
-    guide_tracking_title: "Spårning i realtid", guide_tracking_desc: "Starta en promenad och följ din rutt i realtid.",
-    guide_stats_title: "Smart analys", guide_stats_desc: "Visualisera dina framsteg med detaljerade aktivitetsdiagrammer.",
-    ai_welcome: "Hej {name}! Jag är PawGo. Jag har all info om {dogs}. Hur kan jag hjälpa din flock idag? 🐾"
-  } as any,
-  pl: { 
-    nav_home: 'Start', nav_dogs: 'Stado', nav_walk: 'Spacer', nav_stats: 'Stat.', nav_settings: 'Ustawienia', 
-    hi: 'Cześć', ready: 'Gotowy?', 
-    beautifulDay: 'Piękny dzień!', greeting_adventure: "Gotowy na przygodę?", greeting_great: "Świetny dzień na spacer!", greeting_sniff: "Czas powęszyć!",
-    totalDist: 'Dystans', totalWalks: 'Spacery', pack: 'Stado', start: 'Start', addDog: 'Dodaj', 
-    myDogs: 'Moje Stado', activity: 'Aktywność', settings: 'Ustawienia', appearance: 'Wygląd', darkMode: 'Tryb Ciemny', general: 'Ogólne', language: 'Język', notifications: 'Powiadomienia', privacy: 'Prywatność', logOut: 'Wyloguj', 
+    voiceAssist: 'Voice Assist', listening: 'Listening...', askPlaceholder: 'Ask about {name}...', managePack: 'Manage Your Pack',
+    filter_daily: 'Daily', filter_weekly: 'Weekly', filter_monthly: 'Monthly', today: 'Today', thisMonth: 'This Month',
+    activityGoal: 'Activity Goal', goalDaily: 'Daily', goalWeekly: 'Weekly', goalDist: 'Km', goalMin: 'Min',
+    goalReached: 'Done! 🎉', keepGoing: 'Keep Going', goalsMet: 'Goals Met', goalsMetDesc: 'Keep pushing the pack!', allGoalsMet: 'All Goals Met!', allGoalsMetDesc: 'Fantastic work!', pawsOnTrack: 'Paws on track',
+    awayFromGoal: 'away', toReachGoal: "from {name}'s {period} goal",
+    tip_walk_title: "Master the Walk",
+    tip_walk_desc: "Keep the leash loose and let them sniff! Sniffing is like checking social media for dogs.",
+    tip_time_title: "Timing is Key",
+    tip_time_desc: "Avoid hot pavement! Walk early mornings or late evenings during summer. Test the ground with your palm.",
+    tip_hydration_title: "Hydration Hero",
+    tip_hydration_desc: "Always bring water for walks longer than 30 mins. Panting is their only way to cool down!",
+    tip_check_title: "Paw Inspection",
+    tip_check_desc: "Check paws after walks for burrs, ticks, or ice balls. Healthy paws mean happy walks!",
+    tip_social_title: "Social Etiquette",
+    tip_social_desc: "Always ask before letting your dog approach another. Not every dog wants to say hello."
+};
+
+// --- TRANSLATIONS HELPER FUNCTION TO CLONE ENGLISH AS BASE ---
+const createLang = (overrides: Partial<Record<TranslationKey, string>>): Record<TranslationKey, string> => {
+  return { ...en, ...overrides };
+};
+
+const es = createLang({
+    nav_home: 'Inicio', nav_dogs: 'Mi Manada', nav_walk: 'Pasear', nav_stats: 'Actividad', nav_settings: 'Ajustes',
+    hi: 'Hola', ready: '¿Listo para una aventura?',
+    beautifulDay: "¡Es un día perfecto!", greeting_adventure: "¡La aventura aguarda!", greeting_great: "¡A moverse!", greeting_sniff: "¡Hora de olfatear!",
+    totalDist: 'Km Total', totalWalks: 'Paseos', pack: 'Tu Manada', start: 'Empezar', addDog: 'Añadir',
+    myDogs: 'Mi Manada', activity: 'Historial', settings: 'Ajustes', appearance: 'Tema', darkMode: 'Modo Oscuro', general: 'General', language: 'Idioma', notifications: 'Notificaciones', privacy: 'Privacidad', logOut: 'Cerrar Sesión',
+    whosWalking: "¿Quién viene?", selectPups: "Toca las patas que vienen.", cancel: "Cancelar",
+    name: "Nombre", breed: "Raza", age: "Edad", weight: "Peso", save: "Guardar", editDog: "Editar", newDog: "Nuevo Perro", deleteDog: "Eliminar", pickColor: "Color", pickMascot: "Avatar", deleteConfirm: "¿Estás seguro?", years: "años", kg: "kg", days: "días",
+    analytics: "Estadísticas", time: "Tiempo",
+    about: "Sobre PawGo", learning: "Consejos", version: "Versión", developer: "Desarrollador", credits: "Créditos", next: "Sig", back: "Atrás", finish: "Vamos",
+    ai_welcome: "¡Guau {name}! Soy PawGo AI. Conozco todo sobre {dogs}. ¿Cómo puedo ayudar a tu manada hoy? 🐾",
+    accentColor: 'Color de Acento', backgroundTheme: 'Fondo', lockedDarkMode: 'Bloqueado en modo oscuro', support: 'Soporte', editProfile: 'Editar Perfil',
+    yourName: 'Tu Nombre', chooseAvatar: 'Elegir Avatar', designedBy: 'Diseñado por', craftedWithLove: 'Hecho con amor.', close: 'Cerrar',
+    enableNotif: 'Activar Notificaciones', masterSwitch: 'Interruptor maestro', walkReminders: 'Recordatorios', achievements: 'Logros',
+    shareLoc: 'Compartir Ubicación', shareLocDesc: 'Para rastreo', analyticsData: 'Analíticas', analyticsDataDesc: 'Datos anónimos',
+    whistle: 'Silbato', clicker: 'Clicker', whistleDesc: 'Llama a tu manada.', clickerDesc: 'Marca comportamientos.',
+    noPaws: '¡No hay patas!', addFirstPaw: 'Añade tu primera pata', deletePawConfirm: '¿Seguro que quieres eliminar esta pata?', noPawsDesc: "¡Necesitas añadir una pata primero!", packLeader: "Líder de Manada", gotIt: "Entendido", cancelWalkConfirm: "¿Cancelar paseo?",
+    selectPawError: 'Necesitas seleccionar una pata.', whosComing: "¿Quién viene?", tracking: 'Rastreando...', calories: 'Calorías', distance: 'Distancia',
+    missionComplete: '¡Misión Cumplida!', highPaws: '¡Choca esas patas!', thePack: 'La Manada', backHome: 'Volver',
+    thisWeek: 'Esta Semana', history: 'Historial', topPerformance: 'Mejor Rendimiento', onFire: "¡Estás en racha!", topPack: 'Top 5% Manada', allPaws: 'Todas',
+    streak: 'Racha', goal: 'Meta', trends: 'Tendencias', layout: 'Diseño', done: 'Hecho', dayLog: 'Registro', noActivity: 'Sin actividad',
+    addActivity: 'Añadir', editActivity: 'Editar', logActivity: 'Registrar', addPastWalk: 'Añadir Paseo Pasado', participation: 'Participación',
+    distLabel: 'Dist (km)', timeLabel: 'Tiempo (min)', saveRecord: 'Guardar', deleteRecord: 'Eliminar',
+    voiceAssist: 'Asistente de Voz', listening: 'Escuchando...', askPlaceholder: 'Pregunta sobre {name}...', managePack: 'Gestionar Manada',
+    filter_daily: 'Diario', filter_weekly: 'Semanal', filter_monthly: 'Mensual', today: 'Hoy', thisMonth: 'Este Mes',
+    activityGoal: 'Meta', goalDaily: 'Diaria', goalWeekly: 'Semanal', goalDist: 'Km', goalMin: 'Min',
+    goalReached: '¡Hecho! 🎉', keepGoing: 'Sigue así', goalsMet: 'Metas Cumplidas', goalsMetDesc: '¡Sigue empujando!', allGoalsMet: '¡Todas las Metas!', allGoalsMetDesc: '¡Fantástico trabajo!', pawsOnTrack: 'Patas en camino',
+    awayFromGoal: 'falta', toReachGoal: "para la meta {period} de {name}",
+    tip_walk_title: "Maestro del Paseo", tip_walk_desc: "¡Mantén la correa floja y déjalos olfatear! Es como leer las noticias para ellos.",
+    tip_time_title: "El Tiempo es Clave", tip_time_desc: "¡Evita el asfalto caliente! Pasea temprano o tarde en verano.",
+    tip_hydration_title: "Héroe de Hidratación", tip_hydration_desc: "Lleva agua para paseos de más de 30 min.",
+    tip_check_title: "Inspección de Patas", tip_check_desc: "Revisa las patas después de pasear.",
+    tip_social_title: "Etiqueta Social", tip_social_desc: "Pregunta siempre antes de dejar que tu perro se acerque a otro."
+});
+
+const de = createLang({
+    nav_home: 'Start', nav_dogs: 'Rudel', nav_walk: 'Los', nav_stats: 'Aktivität', nav_settings: 'Einst.',
+    hi: 'Hallo', ready: 'Bereit?', beautifulDay: "Ein pfotenstarker Tag!", greeting_adventure: "Abenteuer wartet!", greeting_great: "Lass uns gehen!", greeting_sniff: "Zeit zum Schnüffeln!",
+    totalDist: 'Gesamt Km', totalWalks: 'Gänge', pack: 'Dein Rudel', start: 'Starten', addDog: 'Hinzufügen',
+    myDogs: 'Mein Rudel', activity: 'Protokoll', settings: 'Einstellungen', appearance: 'Design', darkMode: 'Nachtmodus', general: 'Allgemein', language: 'Sprache', notifications: 'Mitteilungen', privacy: 'Datenschutz', logOut: 'Abmelden',
+    whosWalking: "Wer kommt mit?", selectPups: "Wähle die Begleiter.", cancel: "Abbrechen",
+    name: "Name", breed: "Rasse", age: "Alter", weight: "Gewicht", save: "Speichern", editDog: "Bearbeiten", newDog: "Neuer Hund", deleteDog: "Löschen", pickColor: "Farbe", pickMascot: "Avatar", deleteConfirm: "Wirklich löschen?", years: "Jahre", kg: "kg", days: "Tage",
+    analytics: "Statistik", time: "Dauer",
+    about: "Über PawGo", learning: "Tipps", version: "Version", developer: "Entwickler", credits: "Credits", next: "Weiter", back: "Zurück", finish: "Los",
+    ai_welcome: "Wuff {name}! Ich bin PawGo AI. Wie kann ich helfen? 🐾",
+    accentColor: 'Akzentfarbe', backgroundTheme: 'Hintergrund', lockedDarkMode: 'Nachtmodus', support: 'Hilfe', editProfile: 'Profil bearbeiten',
+    yourName: 'Dein Name', chooseAvatar: 'Avatar', designedBy: 'Entwurf', craftedWithLove: 'Mit Liebe gemacht.', close: 'Schließen',
+    enableNotif: 'Mitteilungen an', masterSwitch: 'Hauptschalter', walkReminders: 'Erinnerungen', achievements: 'Erfolge',
+    shareLoc: 'Standort teilen', shareLocDesc: 'Für Tracking', analyticsData: 'Analysen', analyticsDataDesc: 'Anonyme Daten',
+    whistle: 'Pfeife', clicker: 'Clicker', whistleDesc: 'Rufe dein Rudel.', clickerDesc: 'Markiere Verhalten.',
+    noPaws: 'Keine Pfoten!', addFirstPaw: 'Erste Pfote hinzufügen', deletePawConfirm: 'Sicher löschen?', noPawsDesc: "Erst Pfote hinzufügen!", packLeader: "Rudelführer", gotIt: "Verstanden", cancelWalkConfirm: "Abbrechen?",
+    selectPawError: 'Bitte wähle eine Pfote.', whosComing: "Wer kommt?", tracking: 'Tracking...', calories: 'Kalorien', distance: 'Distanz',
+    missionComplete: 'Ziel Erreicht!', highPaws: 'High Paws!', thePack: 'Das Rudel', backHome: 'Nach Hause',
+    thisWeek: 'Diese Woche', history: 'Verlauf', topPerformance: 'Top Leistung', onFire: "Du brennst!", topPack: 'Top 5%', allPaws: 'Alle',
+    streak: 'Serie', goal: 'Ziel', trends: 'Trends', layout: 'Layout', done: 'Fertig', dayLog: 'Protokoll', noActivity: 'Keine Aktivität',
+    addActivity: 'Aktivität', editActivity: 'Bearbeiten', logActivity: 'Loggen', addPastWalk: 'Nachtragen', participation: 'Teilnahme',
+    distLabel: 'Dist (km)', timeLabel: 'Zeit (min)', saveRecord: 'Speichern', deleteRecord: 'Löschen',
+    voiceAssist: 'Sprachassistent', listening: 'Zuhören...', askPlaceholder: 'Frag über {name}...', managePack: 'Verwalten',
+    filter_daily: 'Täglich', filter_weekly: 'Woche', filter_monthly: 'Monat', today: 'Heute', thisMonth: 'Monat',
+    activityGoal: 'Ziel', goalDaily: 'Tag', goalWeekly: 'Woche', goalDist: 'Km', goalMin: 'Min',
+    goalReached: 'Geschafft! 🎉', keepGoing: 'Weiter so', goalsMet: 'Ziele erreicht', goalsMetDesc: 'Super!', allGoalsMet: 'Alle Ziele!', allGoalsMetDesc: 'Fantastisch!', pawsOnTrack: 'Auf Kurs',
+    awayFromGoal: 'entfernt', toReachGoal: "vom {period} Ziel für {name}",
+    tip_walk_title: "Meister des Gehens", tip_walk_desc: "Lass die Leine locker!",
+    tip_time_title: "Timing ist alles", tip_time_desc: "Meide heißen Asphalt!",
+    tip_hydration_title: "Hydration", tip_hydration_desc: "Nimm Wasser mit.",
+    tip_check_title: "Pfoten-Check", tip_check_desc: "Prüfe Pfoten oft.",
+    tip_social_title: "Soziales", tip_social_desc: "Frage immer erst."
+});
+
+const fr = createLang({
+    nav_home: 'Accueil', nav_dogs: 'Meute', nav_walk: 'Go', nav_stats: 'Activité', nav_settings: 'Réglages',
+    hi: 'Salut', ready: 'Prêt ?', beautifulDay: "Journée parfaite !", greeting_adventure: "L'aventure attend !", greeting_great: "Allons-y !", greeting_sniff: "On renifle !",
+    totalDist: 'Km Total', totalWalks: 'Marches', pack: 'Ta Meute', start: 'Démarrer', addDog: 'Ajouter',
+    myDogs: 'Ma Meute', activity: 'Journal', settings: 'Réglages', appearance: 'Thème', darkMode: 'Mode Nuit', general: 'Général', language: 'Langue', notifications: 'Notifs', privacy: 'Privé', logOut: 'Déconnexion',
+    whosWalking: "Qui vient ?", selectPups: "Sélectionnez.", cancel: "Annuler",
+    name: "Nom", breed: "Race", age: "Âge", weight: "Poids", save: "Sauver", editDog: "Modifier", newDog: "Nouveau", deleteDog: "Supprimer", pickColor: "Couleur", pickMascot: "Avatar", deleteConfirm: "Sûr ?", years: "ans", kg: "kg", days: "jours",
+    analytics: "Stats", time: "Durée",
+    about: "À propos", learning: "Conseils", version: "Vers.", developer: "Dev", credits: "Crédits", next: "Suivant", back: "Retour", finish: "Go",
+    ai_welcome: "Wouf {name}! Je suis PawGo AI. Comment aider ? 🐾",
+    accentColor: 'Couleur', backgroundTheme: 'Fond', lockedDarkMode: 'Mode nuit', support: 'Aide', editProfile: 'Profil',
+    yourName: 'Nom', chooseAvatar: 'Avatar', designedBy: 'Conçu par', craftedWithLove: 'Fait avec amour.', close: 'Fermer',
+    enableNotif: 'Notifications', masterSwitch: 'Principal', walkReminders: 'Rappels', achievements: 'Succès',
+    shareLoc: 'Position', shareLocDesc: 'Pour le suivi', analyticsData: 'Analytique', analyticsDataDesc: 'Anonyme',
+    whistle: 'Sifflet', clicker: 'Clicker', whistleDesc: 'Appel.', clickerDesc: 'Marqueur.',
+    noPaws: 'Pas de pattes !', addFirstPaw: 'Ajouter', deletePawConfirm: 'Supprimer ?', noPawsDesc: "Ajoutez une patte d'abord !", packLeader: "Chef de Meute", gotIt: "Compris", cancelWalkConfirm: "Annuler ?",
+    selectPawError: 'Sélectionnez une patte.', whosComing: "Qui vient ?", tracking: 'Suivi...', calories: 'Calories', distance: 'Distance',
+    missionComplete: 'Terminé !', highPaws: 'Bravo !', thePack: 'La Meute', backHome: 'Retour',
+    thisWeek: 'Cette Semaine', history: 'Historique', topPerformance: 'Top Perf', onFire: "En feu !", topPack: 'Top 5%', allPaws: 'Toutes',
+    streak: 'Série', goal: 'Objectif', trends: 'Tendances', layout: 'Disposition', done: 'Fait', dayLog: 'Journal', noActivity: 'Rien',
+    addActivity: 'Ajouter', editActivity: 'Modifier', logActivity: 'Noter', addPastWalk: 'Passé', participation: 'Participation',
+    distLabel: 'Dist (km)', timeLabel: 'Temps (min)', saveRecord: 'Sauver', deleteRecord: 'Supprimer',
+    voiceAssist: 'Vocal', listening: 'Écoute...', askPlaceholder: 'Demandez...', managePack: 'Gérer',
+    filter_daily: 'Jour', filter_weekly: 'Hebdo', filter_monthly: 'Mois', today: "Auj.", thisMonth: 'Ce Mois',
+    activityGoal: "Objectif", goalDaily: 'Jour', goalWeekly: 'Semaine', goalDist: 'Km', goalMin: 'Min',
+    goalReached: 'Atteint ! 🎉', keepGoing: 'Continuez', goalsMet: 'Objectifs atteints', goalsMetDesc: 'Bravo !', allGoalsMet: 'Tout atteint !', allGoalsMetDesc: 'Super !', pawsOnTrack: 'En piste',
+    awayFromGoal: 'restant', toReachGoal: "pour l'obj. {period} de {name}",
+    tip_walk_title: "Promenade", tip_walk_desc: "Laisse lâche !", tip_time_title: "Timing", tip_time_desc: "Évitez le chaud.", tip_hydration_title: "Eau", tip_hydration_desc: "Apportez de l'eau.", tip_check_title: "Pattes", tip_check_desc: "Vérifiez les pattes.", tip_social_title: "Social", tip_social_desc: "Demandez toujours."
+});
+
+const it = createLang({
+    nav_home: 'Home', nav_dogs: 'Branco', nav_walk: 'Via', nav_stats: 'Attività', nav_settings: 'Opzioni',
+    hi: 'Ciao', ready: 'Pronto?', beautifulDay: "Giornata top!", greeting_adventure: "Avventura!", greeting_great: "Andiamo!", greeting_sniff: "Si annusa!",
+    totalDist: 'Km Tot', totalWalks: 'Giri', pack: 'Branco', start: 'Inizia', addDog: 'Aggiungi',
+    myDogs: 'Mio Branco', activity: 'Diario', settings: 'Opzioni', appearance: 'Tema', darkMode: 'Notte', general: 'Generale', language: 'Lingua', notifications: 'Notifiche', privacy: 'Privacy', logOut: 'Esci',
+    whosWalking: "Chi c'è?", selectPups: "Scegli.", cancel: "Annulla",
+    name: "Nome", breed: "Razza", age: "Età", weight: "Peso", save: "Salva", editDog: "Modifica", newDog: "Nuovo", deleteDog: "Elimina", pickColor: "Colore", pickMascot: "Avatar", deleteConfirm: "Sicuro?", years: "anni", kg: "kg", days: "gg",
+    analytics: "Dati", time: "Durata",
+    about: "Info", learning: "Consigli", version: "Ver.", developer: "Dev", credits: "Crediti", next: "Avanti", back: "Indietro", finish: "Vai",
+    ai_welcome: "Bau {name}! Sono PawGo AI. 🐾",
+    accentColor: 'Colore', backgroundTheme: 'Sfondo', lockedDarkMode: 'Bloccato', support: 'Aiuto', editProfile: 'Profilo',
+    yourName: 'Nome', chooseAvatar: 'Avatar', designedBy: 'Design', craftedWithLove: 'Con amore.', close: 'Chiudi',
+    enableNotif: 'Notifiche', masterSwitch: 'Generale', walkReminders: 'Promemoria', achievements: 'Premi',
+    shareLoc: 'Posizione', shareLocDesc: 'Tracciamento', analyticsData: 'Dati', analyticsDataDesc: 'Anonimi',
+    whistle: 'Fischio', clicker: 'Clicker', whistleDesc: 'Chiama.', clickerDesc: 'Segna.',
+    noPaws: 'Nessuna zampa!', addFirstPaw: 'Aggiungi', deletePawConfirm: 'Eliminare?', noPawsDesc: "Aggiungi una zampa!", packLeader: "Capo Branco", gotIt: "Capito", cancelWalkConfirm: "Annullare?",
+    selectPawError: 'Seleziona una zampa.', whosComing: "Chi viene?", tracking: 'Tracciamento...', calories: 'Calorie', distance: 'Distanza',
+    missionComplete: 'Finito!', highPaws: 'Batti 5!', thePack: 'Branco', backHome: 'Home',
+    thisWeek: 'Settimana', history: 'Storico', topPerformance: 'Top', onFire: "Vai forte!", topPack: 'Top 5%', allPaws: 'Tutti',
+    streak: 'Serie', goal: 'Obiettivo', trends: 'Trend', layout: 'Layout', done: 'Fatto', dayLog: 'Diario', noActivity: 'Nulla',
+    addActivity: 'Aggiungi', editActivity: 'Modifica', logActivity: 'Registra', addPastWalk: 'Passato', participation: 'Cani',
+    distLabel: 'Dist (km)', timeLabel: 'Tempo', saveRecord: 'Salva', deleteRecord: 'Elimina',
+    voiceAssist: 'Voce', listening: 'Ascolto...', askPlaceholder: 'Chiedi...', managePack: 'Gestisci',
+    filter_daily: 'Giorno', filter_weekly: 'Sett.', filter_monthly: 'Mese', today: 'Oggi', thisMonth: 'Mese',
+    activityGoal: 'Obiettivo', goalDaily: 'Giorno', goalWeekly: 'Sett.', goalDist: 'Km', goalMin: 'Min',
+    goalReached: 'Fatto! 🎉', keepGoing: 'Dai!', goalsMet: 'Fatti', goalsMetDesc: 'Bene!', allGoalsMet: 'Tutti!', allGoalsMetDesc: 'Fantastico!', pawsOnTrack: 'In pista',
+    awayFromGoal: 'mancanti', toReachGoal: "per {period} di {name}",
+    tip_walk_title: "Passeggiata", tip_walk_desc: "Guinzaglio lento.", tip_time_title: "Tempo", tip_time_desc: "No asfalto caldo.", tip_hydration_title: "Acqua", tip_hydration_desc: "Porta acqua.", tip_check_title: "Zampe", tip_check_desc: "Controlla.", tip_social_title: "Sociale", tip_social_desc: "Chiedi prima."
+});
+
+const pt = createLang({
+    nav_home: 'Início', nav_dogs: 'Matilha', nav_walk: 'Passear', nav_stats: 'Atividade', nav_settings: 'Ajustes',
+    hi: 'Olá', ready: 'Pronto?', beautifulDay: "Dia perfeito!", greeting_adventure: "Aventura!", greeting_great: "Vamos!", greeting_sniff: "Farejar!",
+    totalDist: 'Km Total', totalWalks: 'Passeios', pack: 'Matilha', start: 'Iniciar', addDog: 'Add',
+    myDogs: 'Matilha', activity: 'Histórico', settings: 'Ajustes', appearance: 'Tema', darkMode: 'Escuro', general: 'Geral', language: 'Idioma', notifications: 'Notificações', privacy: 'Privacidade', logOut: 'Sair',
+    whosWalking: "Quem vai?", selectPups: "Escolha.", cancel: "Cancelar",
+    name: "Nome", breed: "Raça", age: "Idade", weight: "Peso", save: "Salvar", editDog: "Editar", newDog: "Novo", deleteDog: "Excluir", pickColor: "Cor", pickMascot: "Avatar", deleteConfirm: "Certeza?", years: "anos", kg: "kg", days: "dias",
+    analytics: "Dados", time: "Tempo",
+    about: "Sobre", learning: "Dicas", version: "Ver.", developer: "Dev", credits: "Créditos", next: "Próx", back: "Voltar", finish: "Ir",
+    ai_welcome: "Au au {name}! Sou PawGo AI. 🐾",
+    accentColor: 'Destaque', backgroundTheme: 'Fundo', lockedDarkMode: 'Travado', support: 'Suporte', editProfile: 'Perfil',
+    yourName: 'Nome', chooseAvatar: 'Avatar', designedBy: 'Design', craftedWithLove: 'Com amor.', close: 'Fechar',
+    enableNotif: 'Ativar Notif.', masterSwitch: 'Geral', walkReminders: 'Lembretes', achievements: 'Conquistas',
+    shareLoc: 'Local', shareLocDesc: 'Rastreio', analyticsData: 'Dados', analyticsDataDesc: 'Anônimos',
+    whistle: 'Apito', clicker: 'Clicker', whistleDesc: 'Chame.', clickerDesc: 'Marque.',
+    noPaws: 'Sem patas!', addFirstPaw: 'Adicione', deletePawConfirm: 'Remover?', noPawsDesc: "Adicione uma pata!", packLeader: "Líder", gotIt: "Entendi", cancelWalkConfirm: "Cancelar?",
+    selectPawError: 'Selecione.', whosComing: "Quem vem?", tracking: 'Rastreando...', calories: 'Calorias', distance: 'Distância',
+    missionComplete: 'Fim!', highPaws: 'Toca aqui!', thePack: 'Matilha', backHome: 'Início',
+    thisWeek: 'Semana', history: 'Histórico', topPerformance: 'Melhor', onFire: "Fogo!", topPack: 'Top 5%', allPaws: 'Todas',
+    streak: 'Série', goal: 'Meta', trends: 'Tendências', layout: 'Layout', done: 'Pronto', dayLog: 'Diário', noActivity: 'Nada',
+    addActivity: 'Add', editActivity: 'Editar', logActivity: 'Registrar', addPastWalk: 'Passado', participation: 'Cães',
+    distLabel: 'Dist (km)', timeLabel: 'Tempo', saveRecord: 'Salvar', deleteRecord: 'Excluir',
+    voiceAssist: 'Voz', listening: 'Ouvindo...', askPlaceholder: 'Pergunte...', managePack: 'Gerenciar',
+    filter_daily: 'Diário', filter_weekly: 'Semana', filter_monthly: 'Mês', today: 'Hoje', thisMonth: 'Mês',
+    activityGoal: 'Meta', goalDaily: 'Dia', goalWeekly: 'Semana', goalDist: 'Km', goalMin: 'Min',
+    goalReached: 'Feito! 🎉', keepGoing: 'Continue', goalsMet: 'Atingidas', goalsMetDesc: 'Boa!', allGoalsMet: 'Todas!', allGoalsMetDesc: 'Fantástico!', pawsOnTrack: 'No caminho',
+    awayFromGoal: 'falta', toReachGoal: "p/ meta {period} de {name}",
+    tip_walk_title: "Passeio", tip_walk_desc: "Guia frouxa.", tip_time_title: "Timing", tip_time_desc: "Evite calor.", tip_hydration_title: "Hidratação", tip_hydration_desc: "Água sempre.", tip_check_title: "Patas", tip_check_desc: "Cheque sempre.", tip_social_title: "Social", tip_social_desc: "Pergunte antes."
+});
+
+const nl = createLang({
+    nav_home: 'Home', nav_dogs: 'Mijn Roedel', nav_walk: 'Wandelen', nav_stats: 'Activiteit', nav_settings: 'Instellingen',
+    hi: 'Hallo', ready: 'Klaar voor avontuur?', beautifulDay: "Mooie dag!", greeting_adventure: "Avontuur wacht!", greeting_great: "Laten we gaan!", greeting_sniff: "Snuffeltijd!",
+    totalDist: 'Totaal Km', totalWalks: 'Wandelingen', pack: 'Je Roedel', start: 'Start', addDog: 'Toevoegen',
+    myDogs: 'Mijn Roedel', activity: 'Logboek', settings: 'Instellingen', appearance: 'Thema', darkMode: 'Nachtmodus', general: 'Algemeen', language: 'Taal', notifications: 'Meldingen', privacy: 'Privacy', logOut: 'Uitloggen',
+    whosWalking: "Wie gaat mee?", selectPups: "Kies honden.", cancel: "Annuleren",
+    name: "Naam", breed: "Ras", age: "Leeftijd", weight: "Gewicht", save: "Opslaan", editDog: "Bewerk", newDog: "Nieuw", deleteDog: "Verwijder", pickColor: "Kleur", pickMascot: "Avatar", deleteConfirm: "Zeker weten?", years: "jaar", kg: "kg", days: "dagen",
+    analytics: "Statistieken", time: "Tijd",
+    about: "Over", learning: "Tips", version: "Versie", developer: "Ontwikkelaar", credits: "Credits", next: "Volgende", back: "Terug", finish: "Start",
+    ai_welcome: "Woef {name}! Ik ben PawGo AI. 🐾",
+    accentColor: 'Accentkleur', backgroundTheme: 'Achtergrond', lockedDarkMode: 'Nachtmodus aan', support: 'Hulp', editProfile: 'Profiel',
+    yourName: 'Naam', chooseAvatar: 'Avatar', designedBy: 'Ontwerp', craftedWithLove: 'Met liefde.', close: 'Sluiten',
+    enableNotif: 'Meldingen', masterSwitch: 'Hoofd', walkReminders: 'Herinneringen', achievements: 'Prestaties',
+    shareLoc: 'Locatie delen', shareLocDesc: 'Voor tracking', analyticsData: 'Data', analyticsDataDesc: 'Anoniem',
+    whistle: 'Fluit', clicker: 'Clicker', whistleDesc: 'Roep roedel.', clickerDesc: 'Markeer gedrag.',
+    noPaws: 'Geen poten!', addFirstPaw: 'Voeg toe', deletePawConfirm: 'Verwijderen?', noPawsDesc: "Voeg eerst een poot toe!", packLeader: "Roedelleider", gotIt: "Begrepen", cancelWalkConfirm: "Stoppen?",
+    selectPawError: 'Kies een poot.', whosComing: "Wie komt?", tracking: 'Tracken...', calories: 'Calorieën', distance: 'Afstand',
+    missionComplete: 'Klaar!', highPaws: 'Pootje!', thePack: 'Roedel', backHome: 'Home',
+    thisWeek: 'Deze Week', history: 'Geschiedenis', topPerformance: 'Top', onFire: "Lekker bezig!", topPack: 'Top 5%', allPaws: 'Alle',
+    streak: 'Reeks', goal: 'Doel', trends: 'Trends', layout: 'Layout', done: 'Klaar', dayLog: 'Dagboek', noActivity: 'Geen activiteit',
+    addActivity: 'Toevoegen', editActivity: 'Bewerk', logActivity: 'Log', addPastWalk: 'Historie', participation: 'Deelname',
+    distLabel: 'Afst (km)', timeLabel: 'Tijd (min)', saveRecord: 'Opslaan', deleteRecord: 'Verwijder',
+    voiceAssist: 'Stem', listening: 'Luisteren...', askPlaceholder: 'Vraag...', managePack: 'Beheer',
+    filter_daily: 'Dag', filter_weekly: 'Week', filter_monthly: 'Maand', today: 'Vandaag', thisMonth: 'Maand',
+    activityGoal: 'Doel', goalDaily: 'Dag', goalWeekly: 'Week', goalDist: 'Km', goalMin: 'Min',
+    goalReached: 'Klaar! 🎉', keepGoing: 'Ga zo door', goalsMet: 'Behaald', goalsMetDesc: 'Super!', allGoalsMet: 'Alles behaald!', allGoalsMetDesc: 'Fantastisch!', pawsOnTrack: 'Op koers',
+    awayFromGoal: 'te gaan', toReachGoal: "voor {period} doel van {name}",
+    tip_walk_title: "Wandelen", tip_walk_desc: "Losse riem.", tip_time_title: "Tijd", tip_time_desc: "Vermijd hitte.", tip_hydration_title: "Water", tip_hydration_desc: "Neem mee.", tip_check_title: "Poten", tip_check_desc: "Controleer.", tip_social_title: "Sociaal", tip_social_desc: "Vraag eerst."
+});
+
+const sv = createLang({
+    nav_home: 'Hem', nav_dogs: 'Flock', nav_walk: 'Gå', nav_stats: 'Aktivitet', nav_settings: 'Inställningar',
+    hi: 'Hej', ready: 'Redo?', beautifulDay: "Fin dag!", greeting_adventure: "Äventyr!", greeting_great: "Nu går vi!", greeting_sniff: "Sniffa på!",
+    totalDist: 'Total Km', totalWalks: 'Promenader', pack: 'Din Flock', start: 'Starta', addDog: 'Lägg till',
+    myDogs: 'Min Flock', activity: 'Logg', settings: 'Inställningar', appearance: 'Tema', darkMode: 'Nattläge', general: 'Allmänt', language: 'Språk', notifications: 'Notiser', privacy: 'Integritet', logOut: 'Logga ut',
+    whosWalking: "Vem följer?", selectPups: "Välj.", cancel: "Avbryt",
+    name: "Namn", breed: "Ras", age: "Ålder", weight: "Vikt", save: "Spara", editDog: "Redigera", newDog: "Ny Hund", deleteDog: "Ta bort", pickColor: "Färg", pickMascot: "Avatar", deleteConfirm: "Säker?", years: "år", kg: "kg", days: "dagar",
+    analytics: "Statistik", time: "Tid",
+    about: "Om", learning: "Tips", version: "Ver.", developer: "Utv.", credits: "Credits", next: "Nästa", back: "Bakåt", finish: "Gå",
+    ai_welcome: "Voff {name}! Jag är PawGo AI. 🐾",
+    accentColor: 'Accentfärg', backgroundTheme: 'Bakgrund', lockedDarkMode: 'Låst', support: 'Support', editProfile: 'Profil',
+    yourName: 'Namn', chooseAvatar: 'Avatar', designedBy: 'Design', craftedWithLove: 'Med kärlek.', close: 'Stäng',
+    enableNotif: 'Notiser', masterSwitch: 'Huvud', walkReminders: 'Påminnelser', achievements: 'Bedrifter',
+    shareLoc: 'Plats', shareLocDesc: 'Spårning', analyticsData: 'Data', analyticsDataDesc: 'Anonym',
+    whistle: 'Visselpipa', clicker: 'Klicker', whistleDesc: 'Kalla.', clickerDesc: 'Markera.',
+    noPaws: 'Inga tassar!', addFirstPaw: 'Lägg till', deletePawConfirm: 'Ta bort?', noPawsDesc: "Lägg till en tass först!", packLeader: "Flockledare", gotIt: "Fattar", cancelWalkConfirm: "Avbryt?",
+    selectPawError: 'Välj en tass.', whosComing: "Vem kommer?", tracking: 'Spårar...', calories: 'Kalorier', distance: 'Distans',
+    missionComplete: 'Klart!', highPaws: 'High Paws!', thePack: 'Flocken', backHome: 'Hem',
+    thisWeek: 'Vecka', history: 'Historik', topPerformance: 'Topp', onFire: "Grymt!", topPack: 'Topp 5%', allPaws: 'Alla',
+    streak: 'Svit', goal: 'Mål', trends: 'Trender', layout: 'Layout', done: 'Klar', dayLog: 'Dagbok', noActivity: 'Inget',
+    addActivity: 'Lägg till', editActivity: 'Redigera', logActivity: 'Logga', addPastWalk: 'Tidigare', participation: 'Deltagande',
+    distLabel: 'Dist (km)', timeLabel: 'Tid (min)', saveRecord: 'Spara', deleteRecord: 'Ta bort',
+    voiceAssist: 'Röst', listening: 'Lyssnar...', askPlaceholder: 'Fråga...', managePack: 'Hantera',
+    filter_daily: 'Dag', filter_weekly: 'Vecka', filter_monthly: 'Månad', today: 'Idag', thisMonth: 'Månad',
+    activityGoal: 'Mål', goalDaily: 'Dag', goalWeekly: 'Vecka', goalDist: 'Km', goalMin: 'Min',
+    goalReached: 'Klart! 🎉', keepGoing: 'Kör på', goalsMet: 'Mål nådda', goalsMetDesc: 'Bra jobbat!', allGoalsMet: 'Alla mål!', allGoalsMetDesc: 'Fantastiskt!', pawsOnTrack: 'På spåret',
+    awayFromGoal: 'kvar', toReachGoal: "för {period} mål",
+    tip_walk_title: "Promenad", tip_walk_desc: "Löst koppel.", tip_time_title: "Tid", tip_time_desc: "Undvik värme.", tip_hydration_title: "Vatten", tip_hydration_desc: "Ta med vatten.", tip_check_title: "Tassar", tip_check_desc: "Kolla tassar.", tip_social_title: "Socialt", tip_social_desc: "Fråga först."
+});
+
+const pl = createLang({
+    nav_home: 'Start', nav_dogs: 'Stado', nav_walk: 'Spacer', nav_stats: 'Aktywność', nav_settings: 'Opcje',
+    hi: 'Cześć', ready: 'Gotowy?', beautifulDay: "Piękny dzień!", greeting_adventure: "Przygoda!", greeting_great: "Ruszamy!", greeting_sniff: "Wąchamy!",
+    totalDist: 'Dystans', totalWalks: 'Spacery', pack: 'Twoje Stado', start: 'Start', addDog: 'Dodaj',
+    myDogs: 'Moje Stado', activity: 'Dziennik', settings: 'Opcje', appearance: 'Motyw', darkMode: 'Tryb Nocny', general: 'Ogólne', language: 'Język', notifications: 'Powiadomienia', privacy: 'Prywatność', logOut: 'Wyloguj',
     whosWalking: "Kto idzie?", selectPups: "Wybierz.", cancel: "Anuluj",
-    name: "Imię", breed: "Rasa", age: "Wiek", weight: "Waga", save: "Zapisz", editDog: "Edytuj", newDog: "Nowa Łapa", deleteDog: "Usuń", pickColor: "Kolor", pickMascot: "Maskotka", deleteConfirm: "Czy na pewno chcesz usunąć tego przyjaciela?", years: "lat", kg: "kg", days: "dni",
-    weather_sunny: "Słonecznie", weather_cloudy: "Pochmurno", weather_rain: "Deszczowo", weather_snow: "Śnieżnie", weather_storm: "Burzowo",
-    tip_sunny: "Idealna pogoda! ☀️", tip_cloudy: "Przyjemnie chłodno. ☁️", tip_rain: "Nie zapomnij o ręczniku! ☔", tip_snow: "Uwaga na lód! ❄️", tip_storm: "Może zostań w domu? ⚡",
-    location_mock: "Warszawa, PL",
-    analytics: "Analityka", time: "Czas", dogwise: "Wyniki", avg_pace: "Śr. Tempo",
-    about: "O PawGo", learning: "Wskazówki", howToUse: "Instrukcja", version: "Wersja", developer: "Twórca", credits: "Podziękowania", next: "Dalej", back: "Wstecz", finish: "Zakończ",
-    guide_welcome_title: "Witaj w PawGo!", guide_welcome_desc: "Najlepszy skandynawski towarzysz dla Ciebie i Twoich czworonożnych przyjaciół.",
-    guide_pack_title: "Zarządzaj stadem", guide_pack_desc: "Dodaj swoje łapy, śledź ich rasy i wagę oraz oglądaj ich awatary 3D.",
-    guide_tracking_title: "Śledzenie w czasie rzeczywistym", guide_tracking_desc: "Rozpocznij spacer i śledź swoją trasę w czasie rzeczywistym.",
-    guide_stats_title: "Inteligentne analizy", guide_stats_desc: "Wizualizuj swoje postępy za pomocą szczegółowych wykresów aktywności.",
-    ai_welcome: "Cześć {name}! Jestem PawGo. Wiem wszystko o {dogs}. Jak mogę dziś pomóc Twojemu stadu? 🐾"
-  } as any,
-  pt: { 
-    nav_home: 'Início', nav_dogs: 'Matilha', nav_walk: 'Passeio', nav_stats: 'Estat.', nav_settings: 'Definições', 
-    hi: 'Olá', ready: 'Pronto?', 
-    beautifulDay: 'Belo dia!', greeting_adventure: "Pronto para a aventura?", greeting_great: "Ótimo dia para passear!", greeting_sniff: "Hora de farejar!",
-    totalDist: 'Distância', totalWalks: 'Passeios', pack: 'Matilha', start: 'Começar', addDog: 'Adic.', 
-    myDogs: 'Minha Matilha', activity: 'Atividade', settings: 'Definições', appearance: 'Aparência', darkMode: 'Modo Escuro', general: 'Geral', language: 'Idioma', notifications: 'Notificações', privacy: 'Privacidade', logOut: 'Sair', 
-    whosWalking: "Quem vai?", selectPups: "Selecione.", cancel: "Cancelar",
-    name: "Nome", breed: "Raça", age: "Idade", weight: "Peso", save: "Guardar", editDog: "Editar", newDog: "Novo Amigo", deleteDog: "Eliminar", pickColor: "Cor", pickMascot: "Mascote", deleteConfirm: "Tem certeza que deseja remover este amigo?", years: "anos", kg: "kg", days: "dias",
-    weather_sunny: "Ensolarado", weather_cloudy: "Nublado", weather_rain: "Chuvoso", weather_snow: "Neve", weather_storm: "Tempestade",
-    tip_sunny: "Tempo perfeito! ☀️", tip_cloudy: "Fresco e agradável. ☁️", tip_rain: "Não esqueça a toalha! ☔", tip_snow: "Cuidado com o gelo! ❄️", tip_storm: "Melhor ficar em casa? ⚡",
-    location_mock: "Lisboa, PT",
-    analytics: "Analítica", time: "Tempo", dogwise: "Desempenho", avg_pace: "Ritmo Méd.",
-    about: "Sobre o PawGo", learning: "Dicas", howToUse: "Como usar", version: "Versão", developer: "Desenvolvedor", credits: "Créditos", next: "Próximo", back: "Anterior", finish: "Finalizar",
-    guide_welcome_title: "Bem-vindo ao PawGo!", guide_welcome_desc: "O melhor companheiro com design escandinavo para si e para os seus amigos peludos.",
-    guide_pack_title: "Gira a sua matilha", guide_pack_desc: "Adicione os seus amigos, acompanhe as suas raças e pesos e veja os seus avatars 3D.",
-    guide_tracking_title: "Rastreio em tempo real", guide_tracking_desc: "Inicie um passeio e acompanhe a sua rota em tempo real.",
-    guide_stats_title: "Análises inteligentes", guide_stats_desc: "Visualize o seu progresso com gráficos de atividade detalhados.",
-    ai_welcome: "Olá {name}! Sou o PawGo. Sei tudo sobre {dogs}. Como posso ajudar a sua matilha hoje? 🐾"
-  } as any,
-  ru: { 
-    nav_home: 'Главная', nav_dogs: 'Стая', nav_walk: 'Прогулка', nav_stats: 'Стат.', nav_settings: 'Настр.', 
-    hi: 'Привет', ready: 'Готовы?', 
-    beautifulDay: 'Отличный день!', greeting_adventure: "Готовы к приключениям?", greeting_great: "Отличный день для прогулки!", greeting_sniff: "Время понюхать!",
-    totalDist: 'Дистанция', totalWalks: 'Прогулки', pack: 'Стая', start: 'Начать', addDog: 'Добавить', 
-    myDogs: 'Моя Стая', activity: 'Активность', settings: 'Настройки', appearance: 'Вид', darkMode: 'Темная тема', general: 'Общее', language: 'Язык', notifications: 'Уведомления', privacy: 'Приватность', logOut: 'Выйти', 
-    whosWalking: "Кто идет?", selectPups: "Выберите.", cancel: "Отмена",
-    name: "Имя", breed: "Порода", age: "Возраст", weight: "Вес", save: "Сохранить", editDog: "Ред.", newDog: "Новая лапа", deleteDog: "Удалить", pickColor: "Цвет", pickMascot: "Маскот", deleteConfirm: "Вы уверены, что хотите удалить этого друга?", years: "лет", kg: "кг", days: "дней",
-    weather_sunny: "Солнечно", weather_cloudy: "Облачно", weather_rain: "Дождливо", weather_snow: "Снежно", weather_storm: "Шторм",
-    tip_sunny: "Отличная погода! ☀️", tip_cloudy: "Прохладно и свежо. ☁️", tip_rain: "Не забудьте полотенце! ☔", tip_snow: "Осторожно, скользко! ❄️", tip_storm: "Лучше остаться дома? ⚡",
-    location_mock: "Москва, RU",
-    analytics: "Аналитика", time: "Время", dogwise: "Показатели", avg_pace: "Ср. Темп",
-    about: "О приложении", learning: "Советы", howToUse: "Инструкция", version: "Версия", developer: "Разработчик", credits: "Благодарности", next: "Далее", back: "Назад", finish: "Готово",
-    guide_welcome_title: "Добро пожаловать в PawGo!", guide_welcome_desc: "Лучший помощник в скандинавском дизайне для вас и ваших четвероногих друзей.",
-    guide_pack_title: "Управляйте стаей", guide_pack_desc: "Добавляйте лапы, следите за их породой и весом, и любуйтесь их 3D-аватарами.",
-    guide_tracking_title: "Отслеживание в реальном времени", guide_tracking_desc: "Начинайте прогулку и следите за маршрутом в реальном времени.",
-    guide_stats_title: "Умная аналитика", guide_stats_desc: "Визуализируйте прогресс с помощью детальных графиков активности.",
-    ai_welcome: "Привет, {name}! Я PawGo. Я знаю всё о {dogs}. Чем могу помочь твоей стае сегодня? 🐾"
-  } as any,
-  tr: { 
-    nav_home: 'Giriş', nav_dogs: 'Sürü', nav_walk: 'Yürüyüş', nav_stats: 'İstat.', nav_settings: 'Ayarlar', 
-    hi: 'Selam', ready: 'Hazır mısın?', 
-    beautifulDay: 'Güzel bir gün!', greeting_adventure: "Maceraya hazır mısın?", greeting_great: "Yürüyüş için harika bir gün!", greeting_sniff: "Koklama zamanı!",
-    totalDist: 'Mesafe', totalWalks: 'Yürüyüş', pack: 'Sürün', start: 'Başla', addDog: 'Ekle', 
-    myDogs: 'Sürüm', activity: 'Aktivite', settings: 'Ayarlar', appearance: 'Görünüm', darkMode: 'Karanlık Mod', general: 'Genel', language: 'Dil', notifications: 'Bildirimler', privacy: 'Gizlilik', logOut: 'Çıkış', 
-    whosWalking: "Kim yürüyor?", selectPups: "Seç.", cancel: "İptal",
-    name: "İsim", breed: "Cins", age: "Yaş", weight: "Kilo", save: "Kaydet", editDog: "Düzenle", newDog: "Yeni Pati", deleteDog: "Sil", pickColor: "Renk", pickMascot: "Maskot", deleteConfirm: "Bu arkadaşı silmek istediğinize emin misiniz?", years: "yıl", kg: "kg", days: "gün",
-    weather_sunny: "Güneşli", weather_cloudy: "Bulutlu", weather_rain: "Yağmurlu", weather_snow: "Karlı", weather_storm: "Fırtınalı",
-    tip_sunny: "Harika bir hava! ☀️", tip_cloudy: "Serin ve güzel. ☁️", tip_rain: "Havluyu unutma! ☔", tip_snow: "Buzlanmaya dikkat! ❄️", tip_storm: "Belki içeride kalmalı? ⚡",
-    location_mock: "İstanbul, TR",
-    analytics: "Analitik", time: "Zaman", dogwise: "Performans", avg_pace: "Ort. Hız",
-    about: "PawGo Hakkında", learning: "İpuçları", howToUse: "Kullanım Kılavuzu", version: "Versiyon", developer: "Geliştirici", credits: "Katkıda Bulunanlar", next: "İleri", back: "Geri", finish: "Bitir",
-    guide_welcome_title: "PawGo'ya Hoş Geldiniz!", guide_welcome_desc: "Sizin ve tüylü dostlarınız için mükemmel İskandinav tasarımlı refakatçi.",
-    guide_pack_title: "Sürünüzü Yönetin", guide_pack_desc: "Patilerinizi ekleyin, cinslerini ve kilolarını takip edin, 3D avatarlarını görün.",
-    guide_tracking_title: "Gerçek Zamanlı Takip", guide_tracking_desc: "Yürüyüşe başlayın ve rotanızı gerçek zamanlı olarak takip edin.",
-    guide_stats_title: "Akıllı Analizler", guide_stats_desc: "İlerlemenizi detaylı etkinlik grafikleriyle görselleştirin.",
-    ai_welcome: "Selam {name}! Ben PawGo. {dogs} hakkında her şeyi biliyorum. Sürüne nasıl yardımcı olabilirim? 🐾"
-  } as any,
-  uk: { 
-    nav_home: 'Головна', nav_dogs: 'Зграя', nav_walk: 'Прогулянка', nav_stats: 'Стат.', nav_settings: 'Налаш.', 
-    hi: 'Привіт', ready: 'Готові?', 
-    beautifulDay: 'Гарний день!', greeting_adventure: "Готові до пригод?", greeting_great: "Чудовий день для прогулянки!", greeting_sniff: "Час понюхати!",
-    totalDist: 'Дистанція', totalWalks: 'Прогулянки', pack: 'Зграя', start: 'Почати', addDog: 'Додати', 
-    myDogs: 'Моя Зграя', activity: 'Активність', settings: 'Налаштування', appearance: 'Вигляд', darkMode: 'Темна тема', general: 'Загальне', language: 'Мова', notifications: 'Сповіщення', privacy: 'Приватность', logOut: 'Вийти', 
-    whosWalking: "Хто йде?", selectPups: "Оберіть.", cancel: "Скасувати",
-    name: "Ім'я", breed: "Порода", age: "Вік", weight: "Вага", save: "Зберегти", editDog: "Ред.", newDog: "Нова лапа", deleteDog: "Вилучити", pickColor: "Колір", pickMascot: "Маскот", deleteConfirm: "Ви впевнені, що хочете видалити цього друга?", years: "років", kg: "кг", days: "днів",
-    weather_sunny: "Сонячно", weather_cloudy: "Хмарно", weather_rain: "Дощить", weather_snow: "Сніжно", weather_storm: "Шторм",
-    tip_sunny: "Чудова погода! ☀️", tip_cloudy: "Прохолодно. ☁️", tip_rain: "Не забудьте рушник! ☔", tip_snow: "Обережно, слизько! ❄️", tip_storm: "Краще залишитись вдома? ⚡",
-    location_mock: "Київ, UA",
-    analytics: "Аналітика", time: "Час", dogwise: "Показники", avg_pace: "Сер. Темп",
-    about: "Про PawGo", learning: "Поради", howToUse: "Інструкція", version: "Версія", developer: "Розробник", credits: "Подяки", next: "Далі", back: "Назад", finish: "Готово",
-    guide_welcome_title: "Ласкаво просимо до PawGo!", guide_welcome_desc: "Найкращий компаньйон у скандинавському дизайні для вас та ваших чотирилапих друзів.",
-    guide_pack_title: "Керуйте зграєю", guide_pack_desc: "Додавайте лапи, слідкуйте за їхньою породою та вагою, та милуйтеся їхніми 3D-аватарами.",
-    guide_tracking_title: "Відстеження в реальному часі", guide_tracking_desc: "Починайте прогулянку та слідкуйте за маршрутом у реальному часі.",
-    guide_stats_title: "Розумна аналітика", guide_stats_desc: "Візуалізуйте свій прогрес за допомогою детальних графіків активності.",
-    ai_welcome: "Привіт, {name}! Я PawGo. Я знаю все про {dogs}. Як я можу допомогти вашій зграї сьогодні? 🐾"
-  } as any,
-  ro: { 
-    nav_home: 'Acasă', nav_dogs: 'Haita', nav_walk: 'Plimbare', nav_stats: 'Stat.', nav_settings: 'Setări', 
-    hi: 'Salut', ready: 'Gata?', 
-    beautifulDay: 'O zi frumoasă!', greeting_adventure: "Gata de aventură?", greeting_great: "O zi superbă de plimbare!", greeting_sniff: "Timpul să adulmecăm!",
-    totalDist: 'Distanță', totalWalks: 'Plimbări', pack: 'Haita', start: 'Start', addDog: 'Adaugă', 
-    myDogs: 'Haita Mea', activity: 'Activitate', settings: 'Setări', appearance: 'Aspect', darkMode: 'Mod Întunecat', general: 'General', language: 'Limbă', notifications: 'Notificări', privacy: 'Confidențialitate', logOut: 'Ieșire', 
-    whosWalking: "Cine merge?", selectPups: "Alege.", cancel: "Anulare",
-    name: "Nume", breed: "Rasǎ", age: "Vârstă", weight: "Greutate", save: "Salvează", editDog: "Editare", newDog: "Labă Nouă", deleteDog: "Șterge", pickColor: "Culoare", pickMascot: "Mascotă", deleteConfirm: "Sigur dorești să ștergi acest prieten?", years: "ani", kg: "kg", days: "zile",
-    weather_sunny: "Însorit", weather_cloudy: "Înnorat", weather_rain: "Ploaie", weather_snow: "Ninsoare", weather_storm: "Furtună",
-    tip_sunny: "Vreme perfectă! ☀️", tip_cloudy: "Răcoare plăcută. ☁️", tip_rain: "Nu uita prosopul! ☔", tip_snow: "Atenție la gheață! ❄️", tip_storm: "Mai bine stai în casă? ⚡",
-    location_mock: "București, RO",
-    analytics: "Analiză", time: "Timp", dogwise: "Performanță", avg_pace: "Ritm Mediu",
-    about: "Despre PawGo", learning: "Sfaturi", howToUse: "Ghid de Utilizare", version: "Versiune", developer: "Dezvoltator", credits: "Credite", next: "Înainte", back: "Înapoi", finish: "Finalizare",
-    guide_welcome_title: "Bine ați venit la PawGo!", guide_welcome_desc: "Partenerul suprem cu design scandinav pentru tine și prietenii tăi blănoși.",
-    guide_pack_title: "Gestionează-ți haita", guide_pack_desc: "Adaugă-ți labele, urmărește-le rasele și greutățile și vezi-le avatarurile 3D.",
-    guide_tracking_title: "Urmărire în timp real", guide_tracking_desc: "Începe o plimbare și urmărește-ți traseul în timp real.",
-    guide_stats_title: "Analize inteligente", guide_stats_desc: "Vizualizează-ți progresul cu grafice de activitate detaliate.",
-    ai_welcome: "Salut {name}! Sunt PawGo. Știu totul despre {dogs}. Cum pot ajuta haita ta astăzi? 🐾"
-  } as any,
-  cs: { 
-    nav_home: 'Domů', nav_dogs: 'Smečka', nav_walk: 'Procházka', nav_stats: 'Stat.', nav_settings: 'Nastavení', 
-    hi: 'Ahoj', ready: 'Připraven?', 
-    beautifulDay: 'Krásný den!', greeting_adventure: "Připraveni na dobrodružství?", greeting_great: "Skvělý den na procházku!", greeting_sniff: "Čas na čmuchání!",
-    totalDist: 'Vzdálenost', totalWalks: 'Procházky', pack: 'Smečka', start: 'Start', addDog: 'Přidat', 
-    myDogs: 'Moje Smečka', activity: 'Aktivita', settings: 'Nastavení', appearance: 'Vzhled', darkMode: 'Tmavý režim', general: 'Obecné', language: 'Jazyk', notifications: 'Upozornění', privacy: 'Soukromí', logOut: 'Odhlásit', 
-    whosWalking: "Kdo jde?", selectPups: "Vyberte.", cancel: "Zrušit",
-    name: "Jméno", breed: "Plemeno", age: "Věk", weight: "Váha", save: "Uložit", editDog: "Upravit", newDog: "Nová Tlapka", deleteDog: "Smazat", pickColor: "Barva", pickMascot: "Maskot", deleteConfirm: "Opravdu chcete smazat tohoto přítele?", years: "let", kg: "kg", days: "dny",
-    weather_sunny: "Slunečno", weather_cloudy: "Zataženo", weather_rain: "Déšť", weather_snow: "Sněží", weather_storm: "Bouřka",
-    tip_sunny: "Ideální počasí! ☀️", tip_cloudy: "Příjemný chládek. ☁️", tip_rain: "Nezapomeň ručník! ☔", tip_snow: "Pozor na náledí! ❄️", tip_storm: "Možná zůstaň doma? ⚡",
-    location_mock: "Praha, CZ",
-    analytics: "Analytika", time: "Čas", dogwise: "Výkon", avg_pace: "Prům. Tempo",
-    about: "O aplikaci PawGo", learning: "Tipy", howToUse: "Návod k použití", version: "Verze", developer: "Vývojář", credits: "Kredity", next: "Další", back: "Zpět", finish: "Dokončit",
-    guide_welcome_title: "Vítejte v PawGo!", guide_welcome_desc: "Dokonalý společník ve skandinávském stylu pro vás i vaše čtyřnohé přátele.",
-    guide_pack_title: "Spravujte svou smečku", guide_pack_desc: "Přidejte své tlapky, sledujte jejich plemena a váhu a prohlédněte si jejich 3D avatary.",
-    guide_tracking_title: "Sledování v reálném čase", guide_tracking_desc: "Začněte procházku a sledujte svou trasu v reálném čase.",
-    guide_stats_title: "Chytrá analytika", guide_stats_desc: "Vizualizujte svůj pokrok pomocí podrobných grafů aktivity.",
-    ai_welcome: "Ahoj {name}! Jsem PawGo. Vím vše o {dogs}. Jak mohu dnes pomoci tvé smečce? 🐾"
-  } as any,
-  hu: { 
-    nav_home: 'Főoldal', nav_dogs: 'Falka', nav_walk: 'Séta', nav_stats: 'Stat.', nav_settings: 'Beállít.', 
-    hi: 'Szia', ready: 'Kész?', 
-    beautifulDay: 'Szép nap!', greeting_adventure: "Készen állsz a kalandra?", greeting_great: "Remek nap a sétára!", greeting_sniff: "Itt az ideje szaglászni!",
-    totalDist: 'Táv', totalWalks: 'Séták', pack: 'Falka', start: 'Indítás', addDog: 'Új Mancs', 
-    myDogs: 'Falkám', activity: 'Aktivitás', settings: 'Beállítások', appearance: 'Megjelenés', darkMode: 'Sötét mód', general: 'Általános', language: 'Nyelv', notifications: 'Értesítések', privacy: 'Adatvédelem', logOut: 'Kijelentkezés', 
-    whosWalking: "Ki jön?", selectPups: "Válassz.", cancel: "Mégse",
-    name: "Név", breed: "Fajta", age: "Kor", weight: "Súly", save: "Mentés", editDog: "Szerkesztés", newDog: "Új Mancs", deleteDog: "Törlés", pickColor: "Szín", pickMascot: "Kabala", deleteConfirm: "Biztosan törölni szeretnéd ezt a barátot?", years: "év", kg: "kg", days: "nap",
-    weather_sunny: "Napos", weather_cloudy: "Felhős", weather_rain: "Esős", weather_snow: "Havazás", weather_storm: "Vihar",
-    tip_sunny: "Tökéletes idő! ☀️", tip_cloudy: "Kellemes hűvös. ☁️", tip_rain: "Törölközőt ne felejts! ☔", tip_snow: "Vigyázz, csúszik! ❄️", tip_storm: "Maradj inkább bent? ⚡",
-    location_mock: "Budapest, HU",
-    analytics: "Elemzés", time: "Idő", dogwise: "Teljesítmény", avg_pace: "Átl. Tempó",
-    about: "A PawGo-ról", learning: "Tippek", howToUse: "Használati útmutató", version: "Verzió", developer: "Fejlesztő", credits: "Készítők", next: "Következő", back: "Vissza", finish: "Kész",
-    guide_welcome_title: "Üdvözöljük a PawGo-ban!", guide_welcome_desc: "A tökéletes skandináv dizájnú társ Önnek és szőrös barátainak.",
-    guide_pack_title: "Kezelje falkáját", guide_pack_desc: "Adja hozzá mancsait, kövesse fajtájukat és súlyukat, és nézze meg 3D avatarjaikat.",
-    guide_tracking_title: "Valós idejű követés", guide_tracking_desc: "Indítson el egy sétát, és kövesse az útvonalat valós időben.",
-    guide_stats_title: "Okos elemzés", guide_stats_desc: "Vizualizálja fejlődését részletes aktivitási grafikonokkal.",
-    ai_welcome: "Szia {name}! PawGo vagyok. Mindent tudok {dogs}-ról. Miben segíthetek ma a falkádnak? 🐾"
-  } as any,
-  el: { 
-    nav_home: 'Αρχική', nav_dogs: 'Αγέλη', nav_walk: 'Βόλτα', nav_stats: 'Στατ.', nav_settings: 'Ρυθμ.', 
-    hi: 'Γεια', ready: 'Έτοιμοι;', 
-    beautifulDay: 'Ωραία μέρα!', greeting_adventure: "Έτοιμοι για περιπέτεια;", greeting_great: "Υπέροχη μέρα για βόλτα!", greeting_sniff: "Ώρα για μυρωδιές!",
-    totalDist: 'Απόσταση', totalWalks: 'Βόλτες', pack: 'Αγέλη', start: 'Έναρξη', addDog: 'Προσθήκη', 
-    myDogs: 'Η Αγέλη μου', activity: 'Δραστηριότητα', settings: 'Ρυθμίσεις', appearance: 'Εμφάνιση', darkMode: 'Σκούρο θέμα', general: 'Γενικά', language: 'Γλώσσα', notifications: 'Ειδοποιήσεις', privacy: 'Απόρρητο', logOut: 'Έξοδος', 
-    whosWalking: "Ποιος πάει;", selectPups: "Επίλεξε.", cancel: "Άκυρο",
-    name: "Όνομα", breed: "Ράτσα", age: "Ηλικία", weight: "Βάρος", save: "Αποθήκευση", editDog: "Επεξεργασία", newDog: "Νέα Πατούσα", deleteDog: "Διαγραφή", pickColor: "Χρώμα", pickMascot: "Μασκότ", deleteConfirm: "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτόν τον φίλο;", years: "ετών", kg: "kg", days: "ημέρες",
-    weather_sunny: "Ηλιόλουστος", weather_cloudy: "Συννεφιά", weather_rain: "Βροχερός", weather_snow: "Χιονόπτωση", weather_storm: "Καταιγίδα",
-    tip_sunny: "Τέλειος καιρός! ☀️", tip_cloudy: "Δροσερά. ☁️", tip_rain: "Μην ξεχάσεις πετσέτα! ☔", tip_snow: "Προσοχή στον πάγο! ❄️", tip_storm: "Μείνε μέσα καλύτερα; ⚡",
-    location_mock: "Αθήνα, GR",
-    analytics: "Αναλυτικά", time: "Χρόνος", dogwise: "Απόδοση", avg_pace: "Μ.Ο. Ρυθμού",
-    about: "Σχετικά με το PawGo", learning: "Συμβουλές", howToUse: "Οδηγίες Χρήσης", version: "Έκδοση", developer: "Προγραμματιστής", credits: "Ευχαριστίες", next: "Επόμενο", back: "Πίσω", finish: "Τέλος",
-    guide_welcome_title: "Καλώς ήρθατε στο PawGo!", guide_welcome_desc: "Ο απόλυτος σκανδιναβικός σύντροφος για εσάς και τους τετράποδους φίλους σας.",
-    guide_pack_title: "Διαχειριστείτε την αγέλη σας", guide_pack_desc: "Προσθέστε τις πατούσες σας, παρακολουθήστε τη ράτσα και το βάρος τους και δείτε τα 3D avatar τους.",
-    guide_tracking_title: "Παρακολούθηση σε πραγματικό χρόνο", guide_tracking_desc: "Ξεκινήστε μια βόλτα και παρακολουθήστε τη διαδρομή σας σε πραγματικό χρόνο.",
-    guide_stats_title: "Έξυπνα στατιστικά", guide_stats_desc: "Δείτε την πρόοδό σας με λεπτομερή διαγράμματα δραστηριότητας.",
-    ai_welcome: "Γεια {name}! Είμαι ο PawGo. Ξέρω τα πάντα για {dogs}. Πώς μπορώ να βοηθήσω την αγέλη σου σήμερα; 🐾"
-  } as any,
-  da: { 
-    nav_home: 'Hjem', nav_dogs: 'Flok', nav_walk: 'Gåtur', nav_stats: 'Stat.', nav_settings: 'Indst.', 
-    hi: 'Hej', ready: 'Klar?', 
-    beautifulDay: 'Skøn dag!', greeting_adventure: "Klar til eventyr?", greeting_great: "God dag til en gåtur!", greeting_sniff: "Tid til at snuse rundt!",
-    totalDist: 'Afstand', totalWalks: 'Ture', pack: 'Flok', start: 'Start', addDog: 'Tilføj', 
-    myDogs: 'Min Flok', activity: 'Aktivitet', settings: 'Indstillinger', appearance: 'Udseende', darkMode: 'Mørk tilstand', general: 'Generelt', language: 'Sprog', notifications: 'Notifikationer', privacy: 'Privatliv', logOut: 'Log ud', 
-    whosWalking: "Hvem skal med?", selectPups: "Vælg.", cancel: "Annuller",
-    name: "Navn", breed: "Race", age: "Alder", weight: "Vægt", save: "Gem", editDog: "Rediger", newDog: "Ny Pote", deleteDog: "Slet", pickColor: "Farve", pickMascot: "Maskot", deleteConfirm: "Er du sikker på, at du vil slette denne ven?", years: "år", kg: "kg", days: "dage",
-    weather_sunny: "Solrigt", weather_cloudy: "Skyet", weather_rain: "Regnfuldt", weather_snow: "Sne", weather_storm: "Storm",
-    tip_sunny: "Perfekt vejr! ☀️", tip_cloudy: "Dejligt køligt. ☁️", tip_rain: "Husk håndklædet! ☔", tip_snow: "Pas på isen! ❄️", tip_storm: "Bliv hellere inde? ⚡",
-    location_mock: "København, DK",
-    analytics: "Analyse", time: "Tid", dogwise: "Præstation", avg_pace: "Gns. Tempo",
-    about: "Om PawGo", learning: "Tips", howToUse: "Brugermanual", version: "Version", developer: "Udvikler", credits: "Credits", next: "Næste", back: "Tilbage", finish: "Færdig",
-    guide_welcome_title: "Velkommen til PawGo!", guide_welcome_desc: "Den ultimative skandinavisk-designede ledsager til dig og dine firbenede venner.",
-    guide_pack_title: "Administrer din flok", guide_pack_desc: "Tilføj dine poter, spor deres racer og vægt, og se deres 3D-avatarer.",
-    guide_tracking_title: "Sporing i realtid", guide_tracking_desc: "Start en gåtur, og følg din rute i realtid.",
-    guide_stats_title: "Smarte analyser", guide_stats_desc: "Visualiser din fremgang med detaljerede aktivitetsdiagrammer.",
-    ai_welcome: "Hej {name}! Jeg er PawGo. Jeg ved alt om {dogs}. Hvordan kan jeg hjælpe din flok i dag? 🐾"
-  } as any,
-  fi: { 
-    nav_home: 'Koti', nav_dogs: 'Lauma', nav_walk: 'Lenkki', nav_stats: 'Tilastot', nav_settings: 'Aset.', 
-    hi: 'Hei', ready: 'Valmis?', 
-    beautifulDay: 'Kaunis päivä!', greeting_adventure: "Valmiina seikkailuun?", greeting_great: "Hieno päivä kävelylle!", greeting_sniff: "Aika nuuskia!",
-    totalDist: 'Matka', totalWalks: 'Lenkit', pack: 'Lauma', start: 'Aloita', addDog: 'Lisää', 
-    myDogs: 'Minun Laumani', activity: 'Aktiviteetti', settings: 'Asetukset', appearance: 'Ulkoasu', darkMode: 'Tumma tila', general: 'Yleiset', language: 'Kieli', notifications: 'Ilmoitukset', privacy: 'Yksityisyys', logOut: 'Kirjaudu ulos', 
-    whosWalking: "Kuka lähtee?", selectPups: "Valitse.", cancel: "Peruuta",
-    name: "Nimi", breed: "Rotu", age: "Ikä", weight: "Paino", save: "Tallenna", editDog: "Muokkaa", newDog: "Uusi Tassu", deleteDog: "Poista", pickColor: "Väri", pickMascot: "Maskotti", deleteConfirm: "Haluatko varmasti poistaa tämän ystävän?", years: "vuotta", kg: "kg", days: "päivää",
-    weather_sunny: "Aurinkoista", weather_cloudy: "Pilvistä", weather_rain: "Sateista", weather_snow: "Lumisade", weather_storm: "Myrsky",
-    tip_sunny: "Täydellinen sää! ☀️", tip_cloudy: "Mukavan viileää. ☁️", tip_rain: "Muista pyyhe! ☔", tip_snow: "Varo liukkautta! ❄️", tip_storm: "Ehkä pysyä sisällä? ⚡",
-    location_mock: "Helsinki, FI",
-    analytics: "Analytiikka", time: "Aika", dogwise: "Suorituskyky", avg_pace: "Keskivauhti",
-    about: "Tietoja PawGosta", learning: "Vinkkejä", howToUse: "Käyttöohje", version: "Versio", developer: "Kehittäjä", credits: "Kiitokset", next: "Seuraava", back: "Takaisin", finish: "Valmis",
-    guide_welcome_title: "Tervetuloa PawGoon!", guide_welcome_desc: "Lopullinen skandinaavisesti suunniteltu kumppani sinulle ja karvaisille ystävillesi.",
-    guide_pack_title: "Hallitse laumaasi", guide_pack_desc: "Lisää tassusi, seuraa niiden rotuja ja painoja ja näe niiden 3D-avatarit.",
-    guide_tracking_title: "Reaaliaikainen seuranta", guide_tracking_desc: "Aloita lenkki ja seuraa reittiäsi reaaliajassa.",
-    guide_stats_title: "Älykäs analytiikka", guide_stats_desc: "Visualisoi edistymisesi yksityiskohtaisilla aktiivisuuskaavioilla.",
-    ai_welcome: "Hei {name}! Olen PawGo. Tiedän kaiken {dogs}:sta. Miten voin auttaa laumaasi tänään? 🐾"
-  } as any,
-  no: { 
-    nav_home: 'Hjem', nav_dogs: 'Flokk', nav_walk: 'Tur', nav_stats: 'Stat.', nav_settings: 'Innst.', 
-    hi: 'Hei', ready: 'Klar?', 
-    beautifulDay: 'Fin dag!', greeting_adventure: "Klar for eventyr?", greeting_great: "Flott dag for tur!", greeting_sniff: "Tid for å snuse!",
-    totalDist: 'Distanse', totalWalks: 'Turer', pack: 'Flokken', start: 'Start', addDog: 'Legg til', 
-    myDogs: 'Min Flokk', activity: 'Aktivitet', settings: 'Innstillinger', appearance: 'Utseende', darkMode: 'Mørk modus', general: 'Generelt', language: 'Språk', notifications: 'Varsler', privacy: 'Personvern', logOut: 'Logg ut', 
-    whosWalking: "Hvem blir med?", selectPups: "Velg.", cancel: "Avbryt",
-    name: "Navn", breed: "Rase", age: "Alder", weight: "Vekt", save: "Lagre", editDog: "Rediger", newDog: "Ny Pote", deleteDog: "Slett", pickColor: "Farge", pickMascot: "Maskot", deleteConfirm: "Er du sikker på at du vil slette denne vennen?", years: "år", kg: "kg", days: "dager",
-    weather_sunny: "Solrikt", weather_cloudy: "Overskyet", weather_rain: "Regn", weather_snow: "Snø", weather_storm: "Storm",
-    tip_sunny: "Perfekt turvær! ☀️", tip_cloudy: "Behagelig kjølig. ☁️", tip_rain: "Husk håndkle! ☔", tip_snow: "Se opp for isen! ❄️", tip_storm: "Kanskje bli inne? ⚡",
-    location_mock: "Oslo, NO",
-    analytics: "Analyse", time: "Tid", dogwise: "Prestasjon", avg_pace: "Gj.sn. fart",
-    about: "Om PawGo", learning: "Tips", howToUse: "Brukermanual", version: "Versjon", developer: "Utvikler", credits: "Kreditt", next: "Neste", back: "Tilbake", finish: "Ferdig",
-    guide_welcome_title: "Velkommen til PawGo!", guide_welcome_desc: "Den ultimate skandinavisk-designede følgesvennen for deg og dine pelskledde venner.",
-    guide_pack_title: "Administrer flokken din", guide_pack_desc: "Legg til potene dine, spor raser og vekt, og se deres 3D-avatarer.",
-    guide_tracking_title: "Sanntidssporing", guide_tracking_desc: "Start en tur og følg ruten din i sanntid.",
-    guide_stats_title: "Smarte analyser", guide_stats_desc: "Visualiser fremgangen din med detaljerte aktivitetsdiagrammer.",
-    ai_welcome: "Hei {name}! Jeg er PawGo. Jeg vet alt om {dogs}. Hvordan kan jeg hjelpe flokken din i dag? 🐾"
-  } as any,
-  hr: { 
-    nav_home: 'Dom', nav_dogs: 'Čopor', nav_walk: 'Šetnja', nav_stats: 'Stat.', nav_settings: 'Postavke', 
-    hi: 'Bok', ready: 'Spreman?', 
-    beautifulDay: 'Lijep dan!', greeting_adventure: "Spreman za avanturu?", greeting_great: "Sjajan dan za šetnju!", greeting_sniff: "Vrijeme je za njuškanje!",
-    totalDist: 'Udaljenost', totalWalks: 'Šetnje', pack: 'Čopor', start: 'Kreni', addDog: 'Dodaj', 
-    myDogs: 'Moj Čopor', activity: 'Aktivnost', settings: 'Postavke', appearance: 'Izgled', darkMode: 'Tamni način', general: 'Općenito', language: 'Jezik', notifications: 'Obavijesti', privacy: 'Privatnost', logOut: 'Odjava', 
-    whosWalking: "Tko ide?", selectPups: "Odaberi.", cancel: "Odustani",
-    name: "Ime", breed: "Pasmina", age: "Dob", weight: "Težina", save: "Spremi", editDog: "Uredi", newDog: "Nova Šapa", deleteDog: "Izbriši", pickColor: "Boja", pickMascot: "Maskota", deleteConfirm: "Jeste li sigurni da želite izbrisati ovog prijatelja?", years: "god", kg: "kg", days: "dana",
-    weather_sunny: "Sunčano", weather_cloudy: "Oblačno", weather_rain: "Kišovito", weather_snow: "Snježno", weather_storm: "Olujno",
-    tip_sunny: "Savršeno za šetnju! ☀️", tip_cloudy: "Ugodno svježe. ☁️", tip_rain: "Ne zaboravi ručnik! ☔", tip_snow: "Pazi na led! ❄️", tip_storm: "Možda ostani unutra? ⚡",
-    location_mock: "Zagreb, HR",
-    analytics: "Analitika", time: "Vrijeme", dogwise: "Učinak", avg_pace: "Prosj. Tempo",
-    about: "O PawGo", learning: "Savjeti", howToUse: "Kako koristiti", version: "Verzija", developer: "Developer", credits: "Zasluge", next: "Dalje", back: "Natrag", finish: "Završi",
-    guide_welcome_title: "Dobrodošli u PawGo!", guide_welcome_desc: "Vrhunski skandinavski dizajniran pratitelj za vas i vaše dlakave prijatelje.",
-    guide_pack_title: "Upravljajte svojim čoporom", guide_pack_desc: "Dodajte svoje šape, pratite njihove pasmine i težinu i vidite njihove 3D avatare.",
-    guide_tracking_title: "Praćenje u stvarnom vremenu", guide_tracking_desc: "Započnite šetnju i pratite svoju rutu u stvarnom vremenu.",
-    guide_stats_title: "Pametna analitika", guide_stats_desc: "Vizualizirajte svoj napredak uz detaljne grafikone aktivnosti.",
-    ai_welcome: "Bok {name}! Ja sam PawGo. Znam sve o {dogs}. Kako mogu pomoći tvom čoporu danas? 🐾"
-  } as any,
+    name: "Imię", breed: "Rasa", age: "Wiek", weight: "Waga", save: "Zapisz", editDog: "Edytuj", newDog: "Nowy Pies", deleteDog: "Usuń", pickColor: "Kolor", pickMascot: "Awatar", deleteConfirm: "Pewien?", years: "lat", kg: "kg", days: "dni",
+    analytics: "Statystyki", time: "Czas",
+    about: "O nas", learning: "Porady", version: "Wersja", developer: "Dev", credits: "Credits", next: "Dalej", back: "Wstecz", finish: "Start",
+    ai_welcome: "Hau {name}! Jestem PawGo AI. 🐾",
+    accentColor: 'Akcent', backgroundTheme: 'Tło', lockedDarkMode: 'Zablokowany', support: 'Pomoc', editProfile: 'Profil',
+    yourName: 'Imię', chooseAvatar: 'Awatar', designedBy: 'Projekt', craftedWithLove: 'Z miłością.', close: 'Zamknij',
+    enableNotif: 'Powiadomienia', masterSwitch: 'Główne', walkReminders: 'Przypomnienia', achievements: 'Osiągnięcia',
+    shareLoc: 'Lokalizacja', shareLocDesc: 'Śledzenie', analyticsData: 'Dane', analyticsDataDesc: 'Anonimowe',
+    whistle: 'Gwizdek', clicker: 'Kliker', whistleDesc: 'Zawołaj.', clickerDesc: 'Zaznacz.',
+    noPaws: 'Brak łap!', addFirstPaw: 'Dodaj', deletePawConfirm: 'Usunąć?', noPawsDesc: "Dodaj łapę najpierw!", packLeader: "Lider Stada", gotIt: "Jasne", cancelWalkConfirm: "Anulować?",
+    selectPawError: 'Wybierz psa.', whosComing: "Kto idzie?", tracking: 'Śledzenie...', calories: 'Kalorie', distance: 'Dystans',
+    missionComplete: 'Koniec!', highPaws: 'Brawo!', thePack: 'Stado', backHome: 'Start',
+    thisWeek: 'Tydzień', history: 'Historia', topPerformance: 'Top', onFire: "Ogień!", topPack: 'Top 5%', allPaws: 'Wszystkie',
+    streak: 'Seria', goal: 'Cel', trends: 'Trendy', layout: 'Układ', done: 'Gotowe', dayLog: 'Dziennik', noActivity: 'Brak',
+    addActivity: 'Dodaj', editActivity: 'Edytuj', logActivity: 'Zapisz', addPastWalk: 'Miniony', participation: 'Udział',
+    distLabel: 'Dyst (km)', timeLabel: 'Czas (min)', saveRecord: 'Zapisz', deleteRecord: 'Usuń',
+    voiceAssist: 'Głos', listening: 'Słucham...', askPlaceholder: 'Zapytaj...', managePack: 'Zarządzaj',
+    filter_daily: 'Dzień', filter_weekly: 'Tydzień', filter_monthly: 'Miesiąc', today: 'Dziś', thisMonth: 'Miesiąc',
+    activityGoal: 'Cel', goalDaily: 'Dzień', goalWeekly: 'Tydzień', goalDist: 'Km', goalMin: 'Min',
+    goalReached: 'Udało się! 🎉', keepGoing: 'Tak trzymaj', goalsMet: 'Cele', goalsMetDesc: 'Super!', allGoalsMet: 'Wszystkie cele!', allGoalsMetDesc: 'Ekstra!', pawsOnTrack: 'W normie',
+    awayFromGoal: 'brakuje', toReachGoal: "do celu {period} dla {name}",
+    tip_walk_title: "Spacer", tip_walk_desc: "Luźna smycz.", tip_time_title: "Czas", tip_time_desc: "Unikaj upału.", tip_hydration_title: "Woda", tip_hydration_desc: "Weź wodę.", tip_check_title: "Łapy", tip_check_desc: "Sprawdź łapy.", tip_social_title: "Etykieta", tip_social_desc: "Zapytaj."
+});
+
+const tr = createLang({
+    nav_home: 'Ana Sayfa', nav_dogs: 'Sürü', nav_walk: 'Yürü', nav_stats: 'Aktivite', nav_settings: 'Ayarlar',
+    hi: 'Merhaba', ready: 'Hazır mısın?', beautifulDay: "Harika gün!", greeting_adventure: "Macera!", greeting_great: "Hadi!", greeting_sniff: "Koklama zamanı!",
+    totalDist: 'Toplam Km', totalWalks: 'Yürüyüş', pack: 'Sürün', start: 'Başla', addDog: 'Ekle',
+    myDogs: 'Sürüm', activity: 'Günlük', settings: 'Ayarlar', appearance: 'Tema', darkMode: 'Gece Modu', general: 'Genel', language: 'Dil', notifications: 'Bildirimler', privacy: 'Gizlilik', logOut: 'Çıkış',
+    whosWalking: "Kim geliyor?", selectPups: "Seç.", cancel: "İptal",
+    name: "İsim", breed: "Irk", age: "Yaş", weight: "Ağırlık", save: "Kaydet", editDog: "Düzenle", newDog: "Yeni", deleteDog: "Sil", pickColor: "Renk", pickMascot: "Avatar", deleteConfirm: "Emin misin?", years: "yıl", kg: "kg", days: "gün",
+    analytics: "Analiz", time: "Süre",
+    about: "Hakkında", learning: "İpuçları", version: "Sürüm", developer: "Geliştirici", credits: "Emeği Geçenler", next: "İleri", back: "Geri", finish: "Git",
+    ai_welcome: "Hav {name}! Ben PawGo AI. 🐾",
+    accentColor: 'Vurgu', backgroundTheme: 'Arka Plan', lockedDarkMode: 'Kilitli', support: 'Destek', editProfile: 'Profil',
+    yourName: 'İsim', chooseAvatar: 'Avatar', designedBy: 'Tasarım', craftedWithLove: 'Sevgiyle.', close: 'Kapat',
+    enableNotif: 'Bildirimler', masterSwitch: 'Ana', walkReminders: 'Hatırlatıcı', achievements: 'Başarılar',
+    shareLoc: 'Konum', shareLocDesc: 'Takip için', analyticsData: 'Veri', analyticsDataDesc: 'Anonim',
+    whistle: 'Düdük', clicker: 'Kliker', whistleDesc: 'Çağır.', clickerDesc: 'İşaretle.',
+    noPaws: 'Pati yok!', addFirstPaw: 'Ekle', deletePawConfirm: 'Sil?', noPawsDesc: "Önce pati ekle!", packLeader: "Sürü Lideri", gotIt: "Tamam", cancelWalkConfirm: "İptal?",
+    selectPawError: 'Pati seç.', whosComing: "Kim geliyor?", tracking: 'Takip...', calories: 'Kalori', distance: 'Mesafe',
+    missionComplete: 'Tamamlandı!', highPaws: 'Çak!', thePack: 'Sürü', backHome: 'Dön',
+    thisWeek: 'Bu Hafta', history: 'Geçmiş', topPerformance: 'En İyi', onFire: "Harika!", topPack: 'Top 5%', allPaws: 'Hepsi',
+    streak: 'Seri', goal: 'Hedef', trends: 'Trendler', layout: 'Düzen', done: 'Bitti', dayLog: 'Günlük', noActivity: 'Yok',
+    addActivity: 'Ekle', editActivity: 'Düzenle', logActivity: 'Kaydet', addPastWalk: 'Geçmiş', participation: 'Katılım',
+    distLabel: 'Mes (km)', timeLabel: 'Süre', saveRecord: 'Kaydet', deleteRecord: 'Sil',
+    voiceAssist: 'Ses', listening: 'Dinliyor...', askPlaceholder: 'Sor...', managePack: 'Yönet',
+    filter_daily: 'Gün', filter_weekly: 'Hafta', filter_monthly: 'Ay', today: 'Bugün', thisMonth: 'Ay',
+    activityGoal: 'Hedef', goalDaily: 'Gün', goalWeekly: 'Hafta', goalDist: 'Km', goalMin: 'Dk',
+    goalReached: 'Bitti! 🎉', keepGoing: 'Devam', goalsMet: 'Hedefler', goalsMetDesc: 'Süper!', allGoalsMet: 'Hepsi Tamam!', allGoalsMetDesc: 'Harika!', pawsOnTrack: 'Yolda',
+    awayFromGoal: 'kaldı', toReachGoal: "{period} hedefi {name}",
+    tip_walk_title: "Yürüyüş", tip_walk_desc: "Gevşek tasma.", tip_time_title: "Zaman", tip_time_desc: "Sıcaktan kaçın.", tip_hydration_title: "Su", tip_hydration_desc: "Su taşı.", tip_check_title: "Patiler", tip_check_desc: "Kontrol et.", tip_social_title: "Sosyal", tip_social_desc: "Önce sor."
+});
+
+const ru = createLang({
+    nav_home: 'Главная', nav_dogs: 'Стая', nav_walk: 'Гулять', nav_stats: 'Активность', nav_settings: 'Настройки',
+    hi: 'Привет', ready: 'Готовы?', beautifulDay: "Отличный день!", greeting_adventure: "Приключения!", greeting_great: "Вперед!", greeting_sniff: "Время нюхать!",
+    totalDist: 'Всего км', totalWalks: 'Прогулки', pack: 'Твоя Стая', start: 'Старт', addDog: 'Добавить',
+    myDogs: 'Моя Стая', activity: 'Журнал', settings: 'Настройки', appearance: 'Тема', darkMode: 'Ночь', general: 'Общее', language: 'Язык', notifications: 'Уведомления', privacy: 'Приватность', logOut: 'Выйти',
+    whosWalking: "Кто идет?", selectPups: "Выбери.", cancel: "Отмена",
+    name: "Имя", breed: "Порода", age: "Возраст", weight: "Вес", save: "Сохранить", editDog: "Изменить", newDog: "Новая", deleteDog: "Удалить", pickColor: "Цвет", pickMascot: "Аватар", deleteConfirm: "Уверен?", years: "лет", kg: "кг", days: "дн.",
+    analytics: "Статистика", time: "Время",
+    about: "О нас", learning: "Советы", version: "Версия", developer: "Разраб.", credits: "Кредиты", next: "Далее", back: "Назад", finish: "Вперед",
+    ai_welcome: "Гав {name}! Я PawGo AI. 🐾",
+    accentColor: 'Акцент', backgroundTheme: 'Фон', lockedDarkMode: 'Закрыто', support: 'Помощь', editProfile: 'Профиль',
+    yourName: 'Имя', chooseAvatar: 'Аватар', designedBy: 'Дизайн', craftedWithLove: 'С любовью.', close: 'Закрыть',
+    enableNotif: 'Вкл.', masterSwitch: 'Главный', walkReminders: 'Напом.', achievements: 'Достижения',
+    shareLoc: 'Геопозиция', shareLocDesc: 'Трекинг', analyticsData: 'Данные', analyticsDataDesc: 'Анонимно',
+    whistle: 'Свисток', clicker: 'Кликер', whistleDesc: 'Позови.', clickerDesc: 'Отметь.',
+    noPaws: 'Нет лап!', addFirstPaw: 'Добавить', deletePawConfirm: 'Удалить?', noPawsDesc: "Добавь лапу!", packLeader: "Вожак", gotIt: "Понятно", cancelWalkConfirm: "Отменить?",
+    selectPawError: 'Выбери лапу.', whosComing: "Кто идет?", tracking: 'Трекинг...', calories: 'Ккал', distance: 'Дистанция',
+    missionComplete: 'Готово!', highPaws: 'Дай пять!', thePack: 'Стая', backHome: 'Домой',
+    thisWeek: 'Неделя', history: 'История', topPerformance: 'Топ', onFire: "Огонь!", topPack: 'Топ 5%', allPaws: 'Все',
+    streak: 'Серия', goal: 'Цель', trends: 'Тренды', layout: 'Макет', done: 'Готово', dayLog: 'День', noActivity: 'Нет данных',
+    addActivity: 'Добавить', editActivity: 'Изменить', logActivity: 'Запись', addPastWalk: 'Прошлое', participation: 'Участие',
+    distLabel: 'Км', timeLabel: 'Мин', saveRecord: 'Сохр.', deleteRecord: 'Удалить',
+    voiceAssist: 'Голос', listening: 'Слушаю...', askPlaceholder: 'Спроси...', managePack: 'Управлять',
+    filter_daily: 'День', filter_weekly: 'Неделя', filter_monthly: 'Месяц', today: 'Сегодня', thisMonth: 'Месяц',
+    activityGoal: 'Цель', goalDaily: 'День', goalWeekly: 'Неделя', goalDist: 'Км', goalMin: 'Мин',
+    goalReached: 'Готово! 🎉', keepGoing: 'Так держать', goalsMet: 'Цели', goalsMetDesc: 'Супер!', allGoalsMet: 'Все цели!', allGoalsMetDesc: 'Отлично!', pawsOnTrack: 'В норме',
+    awayFromGoal: 'осталось', toReachGoal: "до цели {period} для {name}",
+    tip_walk_title: "Прогулка", tip_walk_desc: "Свободный поводок.", tip_time_title: "Время", tip_time_desc: "Избегай жары.", tip_hydration_title: "Вода", tip_hydration_desc: "Бери воду.", tip_check_title: "Лапы", tip_check_desc: "Проверяй лапы.", tip_social_title: "Этикет", tip_social_desc: "Спроси сначала."
+});
+
+// Using 'createLang' to quickly polyfill the rest with English fallback + basic localization where names are obvious
+const uk = createLang({
+    nav_home: 'Головна', nav_dogs: 'Зграя', nav_walk: 'Гуляти', nav_stats: 'Активність', nav_settings: 'Налаштування',
+    hi: 'Привіт', ready: 'Готові?', beautifulDay: "Гарний день!", greeting_adventure: "Пригоди!", greeting_great: "Вперед!", greeting_sniff: "Час нюхати!",
+    totalDist: 'Всього км', totalWalks: 'Прогулянки', pack: 'Твоя Зграя', start: 'Старт', addDog: 'Додати',
+    myDogs: 'Моя Зграя', activity: 'Журнал', settings: 'Налаштування', appearance: 'Тема', darkMode: 'Ніч', general: 'Загальне', language: 'Мова', notifications: 'Сповіщення', privacy: 'Приватність', logOut: 'Вийти',
+    cancel: "Скасувати", name: "Ім'я", breed: "Порода", age: "Вік", weight: "Вага", save: "Зберегти", editDog: "Змінити", newDog: "Новий", deleteDog: "Видалити", years: "років", kg: "кг", days: "дн.",
+    noPaws: 'Немає лап!', addFirstPaw: 'Додати', noPawsDesc: "Додай лапу!", packLeader: "Ватажок", gotIt: "Зрозуміло", cancelWalkConfirm: "Скасувати?"
+});
+
+const ro = createLang({
+    nav_home: 'Acasă', nav_dogs: 'Haită', nav_walk: 'Plimbare', nav_stats: 'Activitate', nav_settings: 'Setări',
+    hi: 'Salut', ready: 'Gata?', beautifulDay: "Zi frumoasă!", totalDist: 'Km Total', totalWalks: 'Plimbări', pack: 'Haita Ta', start: 'Start', addDog: 'Adaugă',
+    myDogs: 'Haita Mea', activity: 'Jurnal', settings: 'Setări', appearance: 'Temă', darkMode: 'Noapte', general: 'General', language: 'Limbă', notifications: 'Notificări', privacy: 'Confidențialitate', logOut: 'Ieșire',
+    cancel: "Anulare", name: "Nume", breed: "Rasǎ", age: "Vârstă", weight: "Greutate", save: "Salvează", editDog: "Editează", newDog: "Nou", deleteDog: "Șterge", years: "ani", kg: "kg", days: "zile",
+    noPaws: 'Nicio labă!', addFirstPaw: 'Adaugă', noPawsDesc: "Adaugă o labă!", packLeader: "Lider", gotIt: "Am înțeles", cancelWalkConfirm: "Anulare?"
+});
+
+const cs = createLang({
+    nav_home: 'Domů', nav_dogs: 'Smečka', nav_walk: 'Jít', nav_stats: 'Aktivita', nav_settings: 'Nastavení',
+    hi: 'Ahoj', ready: 'Připraven?', totalDist: 'Celkem km', totalWalks: 'Procházky', pack: 'Tvá Smečka', start: 'Start', addDog: 'Přidat',
+    myDogs: 'Moje Smečka', activity: 'Deník', settings: 'Nastavení', appearance: 'Vzhled', darkMode: 'Tmavý režim', general: 'Obecné', language: 'Jazyk', notifications: 'Oznámení', privacy: 'Soukromí', logOut: 'Odhlásit',
+    cancel: "Zrušit", name: "Jméno", breed: "Plemeno", age: "Věk", weight: "Váha", save: "Uložit", editDog: "Upravit", newDog: "Nový", deleteDog: "Smazat", years: "let", kg: "kg", days: "dní",
+    noPaws: 'Žádné tlapky!', addFirstPaw: 'Přidat', noPawsDesc: "Přidej tlapku!", packLeader: "Vůdce", gotIt: "Rozumím", cancelWalkConfirm: "Zrušit?"
+});
+
+const hu = createLang({
+    nav_home: 'Főoldal', nav_dogs: 'Falka', nav_walk: 'Séta', nav_stats: 'Aktivitás', nav_settings: 'Beállítások',
+    hi: 'Szia', ready: 'Kész?', totalDist: 'Összes km', totalWalks: 'Séták', pack: 'A Falkád', start: 'Indítás', addDog: 'Hozzáad',
+    myDogs: 'Falkám', activity: 'Napló', settings: 'Beállítások', appearance: 'Téma', darkMode: 'Éjszakai', general: 'Általános', language: 'Nyelv', notifications: 'Értesítések', privacy: 'Adatvédelem', logOut: 'Kilépés',
+    cancel: "Mégse", name: "Név", breed: "Fajta", age: "Kor", weight: "Súly", save: "Mentés", editDog: "Szerkeszt", newDog: "Új", deleteDog: "Törlés", years: "év", kg: "kg", days: "nap",
+    noPaws: 'Nincs mancs!', addFirstPaw: 'Hozzáad', noPawsDesc: "Adj hozzá mancsot!", packLeader: "Vezér", gotIt: "Értem", cancelWalkConfirm: "Mégsem?"
+});
+
+const el = createLang({
+    nav_home: 'Αρχική', nav_dogs: 'Αγέλη', nav_walk: 'Βόλτα', nav_stats: 'Δραστ.', nav_settings: 'Ρυθμίσεις',
+    hi: 'Γεια', ready: 'Έτοιμοι;', totalDist: 'Χλμ', totalWalks: 'Βόλτες', pack: 'Η Αγέλη', start: 'Έναρξη', addDog: 'Προσθήκη',
+    myDogs: 'Η Αγέλη μου', activity: 'Ιστορικό', settings: 'Ρυθμίσεις', appearance: 'Εμφάνιση', darkMode: 'Νύχτα', general: 'Γενικά', language: 'Γλώσσα', notifications: 'Ειδοποιήσεις', privacy: 'Απόρρητο', logOut: 'Έξοδος',
+    cancel: "Ακύρωση", name: "Όνομα", breed: "Ράτσα", age: "Ηλικία", weight: "Βάρος", save: "Αποθήκευση", editDog: "Επεξεργασία", newDog: "Νέο", deleteDog: "Διαγραφή", years: "ετών", kg: "κιλά", days: "μέρες",
+    noPaws: 'Όχι πατούσες!', addFirstPaw: 'Προσθήκη', noPawsDesc: "Πρόσθεσε πατούσα!", packLeader: "Αρχηγός", gotIt: "Εντάξει", cancelWalkConfirm: "Ακύρωση;"
+});
+
+const da = createLang({
+    nav_home: 'Hjem', nav_dogs: 'Flok', nav_walk: 'Gå', nav_stats: 'Aktivitet', nav_settings: 'Indstillinger',
+    hi: 'Hej', ready: 'Klar?', totalDist: 'Total Km', totalWalks: 'Gåture', pack: 'Din Flok', start: 'Start', addDog: 'Tilføj',
+    myDogs: 'Min Flok', activity: 'Log', settings: 'Indstillinger', appearance: 'Tema', darkMode: 'Nat', general: 'Generelt', language: 'Sprog', notifications: 'Notifikationer', privacy: 'Privatliv', logOut: 'Log ud',
+    cancel: "Annuller", name: "Navn", breed: "Race", age: "Alder", weight: "Vægt", save: "Gem", editDog: "Rediger", newDog: "Ny", deleteDog: "Slet", years: "år", kg: "kg", days: "dage",
+    noPaws: 'Ingen poter!', addFirstPaw: 'Tilføj', noPawsDesc: "Tilføj en pote!", packLeader: "Leder", gotIt: "Forstået", cancelWalkConfirm: "Annuller?"
+});
+
+const fi = createLang({
+    nav_home: 'Koti', nav_dogs: 'Lauma', nav_walk: 'Kävely', nav_stats: 'Aktiivisuus', nav_settings: 'Asetukset',
+    hi: 'Hei', ready: 'Valmis?', totalDist: 'Km Yht.', totalWalks: 'Lenkit', pack: 'Laumasi', start: 'Aloita', addDog: 'Lisää',
+    myDogs: 'Laumani', activity: 'Loki', settings: 'Asetukset', appearance: 'Teema', darkMode: 'Yö', general: 'Yleiset', language: 'Kieli', notifications: 'Ilmoitukset', privacy: 'Yksityisyys', logOut: 'Kirjaudu ulos',
+    cancel: "Peruuta", name: "Nimi", breed: "Rotu", age: "Ikä", weight: "Paino", save: "Tallenna", editDog: "Muokkaa", newDog: "Uusi", deleteDog: "Poista", years: "v", kg: "kg", days: "pv",
+    noPaws: 'Ei tassuja!', addFirstPaw: 'Lisää', noPawsDesc: "Lisää tassu!", packLeader: "Johtaja", gotIt: "Selvä", cancelWalkConfirm: "Peruuta?"
+});
+
+const no = createLang({
+    nav_home: 'Hjem', nav_dogs: 'Flokk', nav_walk: 'Gå', nav_stats: 'Aktivitet', nav_settings: 'Innstillinger',
+    hi: 'Hei', ready: 'Klar?', totalDist: 'Total Km', totalWalks: 'Turer', pack: 'Din Flokk', start: 'Start', addDog: 'Legg til',
+    myDogs: 'Min Flokk', activity: 'Logg', settings: 'Innstillinger', appearance: 'Tema', darkMode: 'Natt', general: 'Generelt', language: 'Språk', notifications: 'Varsler', privacy: 'Personvern', logOut: 'Logg ut',
+    cancel: "Avbryt", name: "Navn", breed: "Rase", age: "Alder", weight: "Vekt", save: "Lagre", editDog: "Rediger", newDog: "Ny", deleteDog: "Slett", years: "år", kg: "kg", days: "dager",
+    noPaws: 'Ingen poter!', addFirstPaw: 'Legg til', noPawsDesc: "Legg til en pote!", packLeader: "Leder", gotIt: "Den er grei", cancelWalkConfirm: "Avbryt?"
+});
+
+const hr = createLang({
+    nav_home: 'Doma', nav_dogs: 'Čopor', nav_walk: 'Šetnja', nav_stats: 'Aktivnost', nav_settings: 'Postavke',
+    hi: 'Bok', ready: 'Spreman?', totalDist: 'Ukupno Km', totalWalks: 'Šetnje', pack: 'Tvoj Čopor', start: 'Start', addDog: 'Dodaj',
+    myDogs: 'Moj Čopor', activity: 'Dnevnik', settings: 'Postavke', appearance: 'Tema', darkMode: 'Noć', general: 'Općenito', language: 'Jezik', notifications: 'Obavijesti', privacy: 'Privatnost', logOut: 'Odjava',
+    cancel: "Odustani", name: "Ime", breed: "Pasmina", age: "Dob", weight: "Težina", save: "Spremi", editDog: "Uredi", newDog: "Novi", deleteDog: "Obriši", years: "god", kg: "kg", days: "dana",
+    noPaws: 'Nema šapa!', addFirstPaw: 'Dodaj', noPawsDesc: "Dodaj šapu!", packLeader: "Vođa", gotIt: "Razumijem", cancelWalkConfirm: "Odustati?"
+});
+
+const dictionary: Record<LanguageCode, Record<TranslationKey, string>> = {
+  en, de, fr, es, it, pt, nl, sv, pl, tr, ru, uk, ro, cs, hu, el, da, fi, no, hr
 };
 
 export const t = (lang: LanguageCode, key: TranslationKey): string => {

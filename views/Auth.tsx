@@ -13,10 +13,12 @@ interface AuthProps {
 
 export const AuthView: React.FC<AuthProps> = ({ onLogin }) => {
   const [isRegistering, setIsRegistering] = useState(false);
+  const [isResettingPassword, setIsResettingPassword] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   
@@ -27,9 +29,26 @@ export const AuthView: React.FC<AuthProps> = ({ onLogin }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setSuccessMessage('');
     setIsLoading(true);
 
     try {
+      if (isResettingPassword) {
+        if (!email) {
+          setError('Please enter your email address');
+          setIsLoading(false);
+          return;
+        }
+        const result = await db.resetPassword(email);
+        if (result.success) {
+          setSuccessMessage('Reset link sent! Check your email.');
+        } else {
+          setError(result.error || 'Failed to send reset link.');
+        }
+        setIsLoading(false);
+        return;
+      }
+
       if (isRegistering) {
         if (!name || !email || !password) {
           setError('Please fill in all fields');
@@ -94,6 +113,13 @@ export const AuthView: React.FC<AuthProps> = ({ onLogin }) => {
     }
   };
 
+  const getHeaderText = () => {
+    if (pendingVerificationEmail) return 'Check your inbox';
+    if (isResettingPassword) return 'Reset Password';
+    if (isRegistering) return 'Join the Family';
+    return 'Welcome Back!';
+  };
+
   return (
     <div className="h-full relative w-full overflow-hidden bg-gray-50 dark:bg-gray-900 flex flex-col items-center justify-center p-6">
       
@@ -123,9 +149,7 @@ export const AuthView: React.FC<AuthProps> = ({ onLogin }) => {
             </div>
             <h1 className="text-3xl font-display font-bold text-black dark:text-white mb-1">PawGo</h1>
             <p className="text-gray-500 dark:text-gray-400 font-black uppercase text-[10px] tracking-widest opacity-70">
-              {pendingVerificationEmail 
-                ? 'Check your inbox' 
-                : isRegistering ? 'Join the Family' : 'Welcome Back!'}
+              {getHeaderText()}
             </p>
           </div>
 
@@ -164,7 +188,7 @@ export const AuthView: React.FC<AuthProps> = ({ onLogin }) => {
           ) : (
             <>
               <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                {isRegistering && (
+                {isRegistering && !isResettingPassword && (
                   <div className="space-y-1">
                     <input 
                       type="text" 
@@ -186,15 +210,34 @@ export const AuthView: React.FC<AuthProps> = ({ onLogin }) => {
                   />
                 </div>
 
-                <div className="space-y-1">
-                  <input 
-                    type="password" 
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Password"
-                    className="w-full bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-600 rounded-2xl p-4 font-bold text-black dark:text-white focus:outline-none focus:border-pawgo-green focus:ring-2 focus:ring-pawgo-green/20 transition-all placeholder-gray-400 text-sm"
-                  />
-                </div>
+                {!isResettingPassword && (
+                  <div className="space-y-1">
+                    <input 
+                      type="password" 
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="Password"
+                      className="w-full bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-600 rounded-2xl p-4 font-bold text-black dark:text-white focus:outline-none focus:border-pawgo-green focus:ring-2 focus:ring-pawgo-green/20 transition-all placeholder-gray-400 text-sm"
+                    />
+                  </div>
+                )}
+
+                {/* Forgot Password Link */}
+                {!isRegistering && !isResettingPassword && (
+                  <div className="flex justify-end -mt-1">
+                    <button 
+                      type="button"
+                      onClick={() => {
+                        setIsResettingPassword(true);
+                        setError('');
+                        setSuccessMessage('');
+                      }}
+                      className="text-[10px] font-bold text-pawgo-blue hover:text-pawgo-blueDark hover:underline uppercase tracking-wide px-1 transition-colors"
+                    >
+                      Forgot Password?
+                    </button>
+                  </div>
+                )}
 
                 {error && (
                   <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-300 p-3 rounded-xl text-xs font-bold text-center border border-red-100 dark:border-red-900/50 flex flex-col items-center justify-center gap-2">
@@ -208,6 +251,13 @@ export const AuthView: React.FC<AuthProps> = ({ onLogin }) => {
                   </div>
                 )}
 
+                {successMessage && (
+                  <div className="bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-300 p-3 rounded-xl text-xs font-bold text-center border border-green-100 dark:border-green-900/50 flex items-center justify-center gap-2">
+                    <IconCheck size={14} />
+                    {successMessage}
+                  </div>
+                )}
+
                 <Button 
                   type="submit" 
                   size="lg" 
@@ -218,43 +268,54 @@ export const AuthView: React.FC<AuthProps> = ({ onLogin }) => {
                   {isLoading ? (
                     <span className="animate-pulse">Loading...</span>
                   ) : (
-                    isRegistering ? 'Sign Up' : 'Log In'
+                    isResettingPassword ? 'Send Reset Link' : (isRegistering ? 'Sign Up' : 'Log In')
                   )}
                 </Button>
               </form>
 
-              <div className="flex items-center gap-4 my-6">
-                 <div className="h-px bg-gray-200 dark:bg-gray-700 flex-1"></div>
-                 <span className="text-[10px] font-black uppercase text-gray-400 tracking-widest">OR</span>
-                 <div className="h-px bg-gray-200 dark:bg-gray-700 flex-1"></div>
-              </div>
+              {!isResettingPassword && (
+                <>
+                  <div className="flex items-center gap-4 my-6">
+                     <div className="h-px bg-gray-200 dark:bg-gray-700 flex-1"></div>
+                     <span className="text-[10px] font-black uppercase text-gray-400 tracking-widest">OR</span>
+                     <div className="h-px bg-gray-200 dark:bg-gray-700 flex-1"></div>
+                  </div>
 
-              <button 
-                type="button"
-                onClick={handleGoogleLogin}
-                disabled={isLoading || isGoogleLoading}
-                className="w-full bg-white dark:bg-gray-700 border-2 border-gray-100 dark:border-gray-600 rounded-2xl p-3.5 flex items-center justify-center gap-3 transition-all active:scale-[0.98] hover:bg-gray-50 dark:hover:bg-gray-600"
-              >
-                 {isGoogleLoading ? (
-                   <span className="animate-pulse text-sm font-bold text-gray-500">Connecting...</span>
-                 ) : (
-                   <>
-                     <IconGoogle size={20} />
-                     <span className="font-bold text-sm text-gray-700 dark:text-white">Continue with Google</span>
-                   </>
-                 )}
-              </button>
+                  <button 
+                    type="button"
+                    onClick={handleGoogleLogin}
+                    disabled={isLoading || isGoogleLoading}
+                    className="w-full bg-white dark:bg-gray-700 border-2 border-gray-100 dark:border-gray-600 rounded-2xl p-3.5 flex items-center justify-center gap-3 transition-all active:scale-[0.98] hover:bg-gray-50 dark:hover:bg-gray-600"
+                  >
+                     {isGoogleLoading ? (
+                       <span className="animate-pulse text-sm font-bold text-gray-500">Connecting...</span>
+                     ) : (
+                       <>
+                         <IconGoogle size={20} />
+                         <span className="font-bold text-sm text-gray-700 dark:text-white">Continue with Google</span>
+                       </>
+                     )}
+                  </button>
+                </>
+              )}
 
               <div className="text-center mt-4">
                 <button 
                   type="button"
                   onClick={() => {
-                    setIsRegistering(!isRegistering);
+                    if (isResettingPassword) {
+                        setIsResettingPassword(false);
+                    } else {
+                        setIsRegistering(!isRegistering);
+                    }
                     setError('');
+                    setSuccessMessage('');
                   }}
                   className="text-gray-500 dark:text-gray-400 hover:text-pawgo-blue text-xs font-black uppercase tracking-widest transition-colors p-2"
                 >
-                  {isRegistering ? 'Already have an account? Log In' : "Don't have an account? Sign Up"}
+                  {isResettingPassword 
+                    ? 'Back to Log In' 
+                    : (isRegistering ? 'Already have an account? Log In' : "Don't have an account? Sign Up")}
                 </button>
               </div>
             </>

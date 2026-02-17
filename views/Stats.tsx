@@ -1,10 +1,10 @@
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Dog, WalkLog, LanguageCode, AccentColor } from '../types';
-import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
+import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, TooltipProps } from 'recharts';
 import { t } from '../utils/translations';
 import { DogAvatar } from '../components/DogAvatar';
-import { IconClock, IconMap, IconCalendar, IconTrendingUp, IconChevronLeft, IconChevronRight, IconPlus, IconX, IconCheck, IconTrash, IconEdit, IconTrophy } from '../components/Icons';
+import { IconClock, IconMap, IconCalendar, IconChevronLeft, IconChevronRight, IconPlus, IconX, IconCheck, IconTrash, IconEdit, IconTrophy3D, IconFire3D, IconChartBar, IconChartLine } from '../components/Icons';
 import { ACCENT_COLORS } from '../constants';
 import { Button } from '../components/ui/Button';
 
@@ -18,14 +18,84 @@ interface StatsProps {
   onDeleteWalk: (id: string) => void;
 }
 
-type TimeRange = '1W' | '1M' | '1Y';
+// Removed 'Monthly' from TimeRange
+type TimeRange = 'Daily' | 'Weekly';
 type Metric = 'distance' | 'time';
 type SectionId = 'ANALYTICS' | 'HISTORY' | 'PERFORMANCE';
 
+// Helper to extract hex color from Tailwind class
+const getColorFromClass = (cls: string) => {
+  if (cls.includes('blue')) return '#1CB0F6';
+  if (cls.includes('green')) return '#58CC02';
+  if (cls.includes('yellow')) return '#FFC800';
+  if (cls.includes('red')) return '#FF4B4B';
+  if (cls.includes('purple')) return '#A78BFA';
+  return '#1CB0F6'; // Default
+};
+
+// Custom Tooltip Component
+const CustomTooltip = ({ active, payload, label, dogs, metric }: any) => {
+  if (active && payload && payload.length) {
+    // Calculate total for this tooltip
+    const total = payload.reduce((sum: number, entry: any) => sum + (Number(entry.value) || 0), 0);
+    const metricLabel = metric === 'distance' ? 'km' : 'min';
+
+    // Sort payload by value descending for better readability
+    const sortedPayload = [...payload].sort((a, b) => b.value - a.value);
+
+    return (
+      <div className="bg-white/95 dark:bg-gray-900/95 p-4 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 backdrop-blur-sm min-w-[160px]">
+        <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2">{label}</p>
+        <div className="space-y-2">
+          {sortedPayload.map((entry: any) => {
+            // Find dog based on dataKey which is the dog ID
+            const dog = dogs.find((d: Dog) => d.id === entry.dataKey);
+            if (!dog && entry.dataKey !== 'value') return null;
+            
+            // If it's the generic 'value' key (single dog view), find that dog or show generic
+            const isSingleView = entry.dataKey === 'value';
+            const displayColor = isSingleView ? entry.color : getColorFromClass(dog?.avatarColor || '');
+            
+            return (
+              <div key={entry.dataKey} className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2">
+                  {dog && (
+                    <div className={`w-5 h-5 rounded-md ${dog.avatarColor} flex items-center justify-center p-0.5 shadow-sm`}>
+                      <DogAvatar mascotId={dog.mascotId} />
+                    </div>
+                  )}
+                  <span className="font-bold text-xs text-black dark:text-gray-200" style={{ color: isSingleView ? undefined : displayColor }}>
+                    {dog ? dog.name : 'Total'}
+                  </span>
+                </div>
+                <span className="font-display font-bold text-sm text-black dark:text-white">
+                  {Number(entry.value).toFixed(1)} <span className="text-[9px] opacity-60 font-sans">{metricLabel}</span>
+                </span>
+              </div>
+            );
+          })}
+          {/* Show Total if multiple dogs */}
+          {payload.length > 1 && (
+             <div className="pt-2 mt-2 border-t border-gray-100 dark:border-gray-700 flex justify-between items-center">
+                <span className="text-[9px] font-black uppercase text-gray-400">Total</span>
+                <span className="font-display font-bold text-sm text-black dark:text-white">
+                  {total.toFixed(1)} {metricLabel}
+                </span>
+             </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+  return null;
+};
+
 export const StatsView: React.FC<StatsProps> = ({ walks, dogs, language, accentColor, onAddWalk, onUpdateWalk, onDeleteWalk }) => {
-  const [timeRange, setTimeRange] = useState<TimeRange>('1W');
+  const [timeRange, setTimeRange] = useState<TimeRange>('Weekly');
   const [metric, setMetric] = useState<Metric>('distance');
   const [selectedDogId, setSelectedDogId] = useState<string | 'all'>('all');
+  const [chartType, setChartType] = useState<'area' | 'bar'>('area');
+  const [chartDate, setChartDate] = useState(new Date()); 
   
   // Layout Management
   const [isReordering, setIsReordering] = useState(false);
@@ -43,48 +113,137 @@ export const StatsView: React.FC<StatsProps> = ({ walks, dogs, language, accentC
   const [manualDuration, setManualDuration] = useState('20');
   const [manualSelectedDogs, setManualSelectedDogs] = useState<string[]>([]);
 
-  // Resolve current accent hex
   const accentHex = ACCENT_COLORS.find(c => c.id === accentColor)?.primary || '#58CC02';
-
-  // Calendar State
   const [calendarDate, setCalendarDate] = useState(new Date());
+
+  // Chart readiness state to prevent initial render warnings
+  const [isChartReady, setIsChartReady] = useState(false);
+
+  useEffect(() => {
+    // Delay chart rendering slightly to ensure container is laid out
+    const timer = setTimeout(() => setIsChartReady(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    setChartDate(new Date());
+  }, [timeRange]);
+
+  const getPeriodRange = (date: Date, range: TimeRange) => {
+    const start = new Date(date);
+    const end = new Date(date);
+    start.setHours(0, 0, 0, 0);
+    end.setHours(23, 59, 59, 999);
+
+    if (range === 'Daily') {
+      // no op
+    } else if (range === 'Weekly') {
+      const day = start.getDay(); 
+      const diff = start.getDate() - day + (day === 0 ? -6 : 1); 
+      start.setDate(diff);
+      end.setDate(diff + 6);
+    } 
+    // Removed Monthly Logic
+    return { start, end };
+  };
+
+  const handleChartPrev = () => {
+    const newDate = new Date(chartDate);
+    if (timeRange === 'Daily') newDate.setDate(newDate.getDate() - 1);
+    else if (timeRange === 'Weekly') newDate.setDate(newDate.getDate() - 7);
+    setChartDate(newDate);
+  };
+
+  const handleChartNext = () => {
+    const newDate = new Date(chartDate);
+    if (timeRange === 'Daily') newDate.setDate(newDate.getDate() + 1);
+    else if (timeRange === 'Weekly') newDate.setDate(newDate.getDate() + 7);
+    
+    const today = new Date();
+    // Prevent navigating past today if in Daily mode, or generally if start of period is in future
+    // However, typical charts allow seeing empty future weeks, but let's restrict slightly for UX
+    const { start } = getPeriodRange(newDate, timeRange);
+    if (start > today) return; 
+
+    setChartDate(newDate);
+  };
+
+  const isNextDisabled = useMemo(() => {
+    const today = new Date();
+    const { end } = getPeriodRange(chartDate, timeRange);
+    return end >= today;
+  }, [chartDate, timeRange]);
+
+  const filteredWalks = useMemo(() => {
+    const { start, end } = getPeriodRange(chartDate, timeRange);
+    return walks.filter(w => {
+        const d = new Date(w.date);
+        return d >= start && d <= end;
+    });
+  }, [walks, timeRange, chartDate]);
 
   // --- Chart Data Processing ---
   const chartData = useMemo(() => {
-    const dataPoints = [];
-    const now = new Date();
+    const dataPoints: any[] = [];
+    // const { start, end } = getPeriodRange(chartDate, timeRange); // Not used in loop directly but logic depends on timeRange
     
-    let points = 7;
-    let format = (d: Date) => d.toLocaleDateString('en-US', { weekday: 'short' });
+    // Create aggregation map. Key = TimeLabel, Value = { total: 0, d1: 0, d2: 0... }
+    const aggMap = new Map<string, any>();
 
-    if (timeRange === '1M') {
-      points = 30;
-      format = (d: Date) => d.getDate().toString();
-    } else if (timeRange === '1Y') {
-      points = 12;
-      format = (d: Date) => d.toLocaleDateString('en-US', { month: 'short' });
-    }
+    // Helper to get key
+    const getKey = (date: Date) => {
+        if (timeRange === 'Daily') return date.getHours().toString();
+        // Weekly
+        let dayIx = date.getDay();
+        return (dayIx === 0 ? 6 : dayIx - 1).toString();
+    };
 
-    const aggMap = new Map<string, number>();
+    // Initialize template with 0 for all dogs
+    const template: any = { value: 0 }; 
+    dogs.forEach(d => template[d.id] = 0);
 
-    walks.forEach(walk => {
-        const wDate = new Date(walk.date);
-        const key = format(wDate);
+    // Populate data
+    filteredWalks.forEach(walk => {
+        // If single dog selected, filter here for total 'value' calculation consistency
         if (selectedDogId !== 'all' && !walk.dogIds.includes(selectedDogId)) return;
-        const val = metric === 'distance' ? walk.distanceKm : walk.durationSeconds / 3600;
-        aggMap.set(key, (aggMap.get(key) || 0) + val);
+
+        const key = getKey(new Date(walk.date));
+        if (!aggMap.has(key)) aggMap.set(key, { ...template });
+        
+        const entry = aggMap.get(key);
+        const val = metric === 'distance' ? walk.distanceKm : walk.durationSeconds / 60;
+
+        // Add to total
+        entry.value += val;
+
+        // Distribute to individual dogs
+        walk.dogIds.forEach(dId => {
+            if (entry[dId] !== undefined) {
+                entry[dId] += val;
+            }
+        });
     });
 
-    for (let i = points - 1; i >= 0; i--) {
-      const d = new Date();
-      if (timeRange === '1Y') d.setMonth(now.getMonth() - i);
-      else d.setDate(now.getDate() - i);
-      const key = format(d);
-      const val = aggMap.get(key) || 0;
-      dataPoints.push({ name: key, value: parseFloat(val.toFixed(2)) });
-    }
+    // Generate full timeline with defaults
+    if (timeRange === 'Daily') {
+      for (let i = 0; i <= 23; i++) {
+         const key = i.toString();
+         const data = aggMap.get(key) || { ...template };
+         dataPoints.push({ name: i % 4 === 0 ? `${i}:00` : '', fullLabel: `${i}:00`, ...data });
+      }
+    } else { 
+      // Weekly
+      const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+      for (let i = 0; i < 7; i++) {
+        const key = i.toString();
+        const data = aggMap.get(key) || { ...template };
+        dataPoints.push({ name: weekDays[i], fullLabel: weekDays[i], ...data });
+      }
+    } 
+    // Removed Monthly Loop
+
     return dataPoints;
-  }, [timeRange, metric, selectedDogId, walks]);
+  }, [timeRange, metric, selectedDogId, filteredWalks, chartDate, dogs]);
 
   const walkDatesMap = useMemo(() => {
     const dates = new Map<string, WalkLog[]>();
@@ -97,9 +256,21 @@ export const StatsView: React.FC<StatsProps> = ({ walks, dogs, language, accentC
     return dates;
   }, [walks]);
 
+  // Total value for the big number display (sum of 'value' field which represents selected scope)
   const totalValue = chartData.reduce((acc, curr) => acc + curr.value, 0);
-  const getMetricLabel = () => metric === 'distance' ? 'km' : 'hrs';
-  const getMetricColor = () => metric === 'distance' ? '#1CB0F6' : accentHex; 
+  const getMetricLabel = () => metric === 'distance' ? 'km' : 'min';
+  
+  const getRangeLabel = () => {
+    const { start, end } = getPeriodRange(chartDate, timeRange);
+    const now = new Date();
+    
+    if (timeRange === 'Daily') {
+        if (start.toDateString() === now.toDateString()) return t(language, 'today');
+        return start.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+    }
+    // Weekly
+    return `${start.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })} - ${end.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}`;
+  };
 
   const handlePrevMonth = () => setCalendarDate(new Date(calendarDate.getFullYear(), calendarDate.getMonth() - 1, 1));
   const handleNextMonth = () => setCalendarDate(new Date(calendarDate.getFullYear(), calendarDate.getMonth() + 1, 1));
@@ -107,6 +278,12 @@ export const StatsView: React.FC<StatsProps> = ({ walks, dogs, language, accentC
   const handleDateClick = (d: number) => {
     if (isReordering) return;
     const clickedDate = new Date(calendarDate.getFullYear(), calendarDate.getMonth(), d);
+    
+    // Future date restriction: Check against Today (00:00:00 to match just date part comparison roughly, or strict now)
+    // We want to block anything strictly after today
+    const now = new Date();
+    if (clickedDate > now) return;
+
     setSelectedDayDate(clickedDate);
     setShowDayModal(true);
   };
@@ -149,6 +326,10 @@ export const StatsView: React.FC<StatsProps> = ({ walks, dogs, language, accentC
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     const firstDayIndex = (new Date(year, month, 1).getDay() + 6) % 7; 
     const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Normalize today for comparison
+
     return (
       <div className="grid grid-cols-7 gap-1.5 p-1">
         {weekDays.map(d => (
@@ -157,12 +338,30 @@ export const StatsView: React.FC<StatsProps> = ({ walks, dogs, language, accentC
         {Array.from({ length: firstDayIndex }).map((_, i) => <div key={`pad-${i}`} className="h-10 w-10" />)}
         {Array.from({ length: daysInMonth }).map((_, i) => {
           const d = i + 1;
+          const dateObj = new Date(year, month, d);
+          // Check if date is in the future relative to today (ignoring time for the day itself, but to restrict entry we treat > today as future)
+          // We allow selecting Today. Future dates are blocked.
+          const isFuture = dateObj > new Date(); // Compares with 'now' including time. 
+                                                 // dateObj is 00:00:00. 
+                                                 // if dateObj is tomorrow, it is > now.
+                                                 // if dateObj is today, it is < now (unless now is exactly 00:00:00).
+                                                 // So standard comparison works for blocking "Tomorrow" onwards.
+
           const dateKey = `${year}-${month}-${d}`;
           const dayWalks = walkDatesMap.get(dateKey);
           const hasWalk = !!dayWalks && dayWalks.length > 0;
-          const isToday = new Date().toDateString() === new Date(year, month, d).toDateString();
+          const isToday = today.toDateString() === dateObj.toDateString();
+          
           return (
-            <button key={d} onClick={() => handleDateClick(d)} disabled={isReordering} className={`aspect-square flex flex-col items-center justify-center relative transition-all ${!isReordering ? 'active:scale-90 hover:scale-105' : 'opacity-50'}`}>
+            <button 
+                key={d} 
+                onClick={() => handleDateClick(d)} 
+                disabled={isReordering || isFuture} 
+                className={`
+                    aspect-square flex flex-col items-center justify-center relative transition-all 
+                    ${isFuture ? 'opacity-20 cursor-not-allowed' : (!isReordering ? 'active:scale-90 hover:scale-105' : 'opacity-50')}
+                `}
+            >
                 <div className={`w-10 h-10 flex items-center justify-center rounded-2xl text-xs font-black transition-all duration-300 border-2 ${hasWalk ? 'bg-pawgo-green border-pawgo-green text-white shadow-md' : isToday ? 'bg-white dark:bg-gray-700 text-pawgo-blue border-pawgo-blue' : 'text-black dark:text-gray-300 bg-gray-50 dark:bg-gray-800 border-transparent hover:bg-gray-100 dark:hover:bg-gray-700'}`}>
                     {d}
                 </div>
@@ -172,6 +371,111 @@ export const StatsView: React.FC<StatsProps> = ({ walks, dogs, language, accentC
         })}
       </div>
     );
+  };
+
+  const dogGoalStatuses = useMemo(() => {
+    return dogs.map(dog => {
+      const dogWalks = filteredWalks.filter(w => w.dogIds.includes(dog.id));
+      const dogDist = dogWalks.reduce((acc, w) => acc + w.distanceKm, 0);
+      const dogTime = dogWalks.reduce((acc, w) => acc + (w.durationSeconds / 60), 0); 
+
+      const goal = dog.goal || { frequency: 'daily', metric: 'distance', target: 3 };
+      let targetValue = goal.target;
+
+      if (timeRange === 'Daily') {
+          if (goal.frequency === 'weekly') targetValue /= 7;
+      } else if (timeRange === 'Weekly') {
+          if (goal.frequency === 'daily') targetValue *= 7;
+      }
+      // Removed Monthly Logic
+
+      const actualValue = goal.metric === 'distance' ? dogDist : dogTime; 
+      const remaining = Math.max(0, targetValue - actualValue);
+      const percentage = Math.min(100, Math.round((actualValue / (targetValue || 1)) * 100)); 
+      
+      return { 
+        id: dog.id, 
+        percentage, 
+        isMet: percentage >= 100,
+        remaining,
+        metricLabel: goal.metric === 'distance' ? 'km' : 'min',
+        goalMetric: goal.metric
+      };
+    });
+  }, [dogs, filteredWalks, timeRange, chartDate]);
+
+  const allGoalsMet = dogs.length > 0 && dogGoalStatuses.every(s => s.isMet);
+  const metCount = dogGoalStatuses.filter(s => s.isMet).length;
+
+  const getHeaderContent = () => {
+    let title = allGoalsMet ? t(language, 'allGoalsMet') : `${metCount}/${dogs.length} ${t(language, 'goalsMet')}`;
+    let desc = allGoalsMet ? t(language, 'allGoalsMetDesc') : t(language, 'goalsMetDesc');
+    let HeaderIcon = IconTrophy3D;
+    let iconAnimation = allGoalsMet ? 'animate-bounce' : '';
+    let gradientClass = allGoalsMet ? 'from-pawgo-green to-pawgo-greenDark' : 'from-pawgo-blue to-pawgo-blueDark';
+
+    if (selectedDogId !== 'all') {
+        const dogStatus = dogGoalStatuses.find(s => s.id === selectedDogId);
+        const dog = dogs.find(d => d.id === selectedDogId);
+        
+        if (dogStatus && dog) {
+            if (dogStatus.isMet) {
+                title = `${dog.name}: ${t(language, 'goalReached')}`;
+                desc = t(language, 'keepGoing');
+                gradientClass = 'from-pawgo-green to-pawgo-greenDark';
+                HeaderIcon = IconTrophy3D;
+                iconAnimation = 'animate-bounce';
+            } else {
+                const isDistance = dogStatus.goalMetric === 'distance';
+                const unitLabel = isDistance ? t(language, 'goalDist') : t(language, 'goalMin');
+                let val = '';
+                if (isDistance) {
+                    val = dogStatus.remaining < 1 
+                       ? (dogStatus.remaining * 1000).toFixed(0) + 'm' 
+                       : dogStatus.remaining.toFixed(1) + ' ' + unitLabel;
+                } else {
+                    val = Math.ceil(dogStatus.remaining) + ' ' + unitLabel;
+                }
+                title = `${val} ${t(language, 'awayFromGoal')}`;
+                desc = t(language, 'toReachGoal').replace('{name}', dog.name).replace('{period}', t(language, timeRange === 'Daily' ? 'goalDaily' : 'goalWeekly' as any));
+                gradientClass = 'from-orange-400 to-pawgo-red';
+                HeaderIcon = IconFire3D;
+                iconAnimation = 'animate-pulse';
+            }
+        }
+    } else if (!allGoalsMet && (timeRange === 'Daily' || timeRange === 'Weekly')) {
+      let focusDogStatus = dogGoalStatuses.find(s => !s.isMet);
+      if (focusDogStatus) {
+         const dog = dogs.find(d => d.id === focusDogStatus.id);
+         if (dog) {
+             const isDistance = focusDogStatus.goalMetric === 'distance';
+             const unitLabel = isDistance ? t(language, 'goalDist') : t(language, 'goalMin');
+             let val = '';
+             if (isDistance) {
+                 val = focusDogStatus.remaining < 1 
+                    ? (focusDogStatus.remaining * 1000).toFixed(0) + 'm' 
+                    : focusDogStatus.remaining.toFixed(1) + ' ' + unitLabel;
+             } else {
+                 val = Math.ceil(focusDogStatus.remaining) + ' ' + unitLabel;
+             }
+             title = `${val} ${t(language, 'awayFromGoal')}`;
+             desc = t(language, 'toReachGoal').replace('{name}', dog.name).replace('{period}', t(language, timeRange === 'Daily' ? 'goalDaily' : 'goalWeekly' as any));
+             HeaderIcon = IconFire3D;
+             iconAnimation = 'animate-pulse';
+             gradientClass = 'from-orange-400 to-pawgo-red';
+         }
+      }
+    }
+    return { title, desc, HeaderIcon, iconAnimation, gradientClass };
+  };
+
+  const headerContent = getHeaderContent();
+  const CurrentHeaderIcon = headerContent.HeaderIcon;
+
+  // Chart Rendering Helpers
+  const getDogColor = (dogId: string) => {
+    const dog = dogs.find(d => d.id === dogId);
+    return dog ? getColorFromClass(dog.avatarColor) : '#1CB0F6';
   };
 
   const sections = {
@@ -185,21 +489,100 @@ export const StatsView: React.FC<StatsProps> = ({ walks, dogs, language, accentC
               <IconClock size={18} /><span className="font-black uppercase tracking-widest text-[10px]">{t(language, 'time')}</span>
            </button>
         </div>
-        <div className="bg-white dark:bg-gray-800 p-7 rounded-[2.5rem] shadow-sm border border-gray-100 dark:border-gray-700">
-           <div className="flex justify-between items-end mb-8">
-              <div><p className="text-black dark:text-gray-400 text-[10px] font-black uppercase tracking-widest mb-1.5 opacity-80">{t(language, 'thisWeek')}</p><h2 className="text-4xl font-display font-bold text-black dark:text-white leading-none">{totalValue.toFixed(1)} <span className="text-lg text-black dark:text-gray-400 font-sans ml-1 font-black opacity-60">{getMetricLabel()}</span></h2></div>
-              <div className="text-right"><div className="flex items-center gap-1 text-pawgo-green font-black text-[10px] bg-pawgo-green/10 px-2 py-1 rounded-lg uppercase tracking-wider"><IconTrendingUp size={12} /> +12%</div></div>
+        <div className="bg-white dark:bg-gray-800 p-7 rounded-[2.5rem] shadow-sm border border-gray-100 dark:border-gray-700 relative">
+           <div className="absolute top-7 right-7 flex gap-1 bg-gray-100 dark:bg-gray-700 p-1 rounded-xl z-20">
+              <button 
+                onClick={() => setChartType('area')}
+                className={`p-1.5 rounded-lg transition-all ${chartType === 'area' ? 'bg-white dark:bg-gray-600 shadow-sm text-pawgo-blue' : 'text-gray-400 hover:text-gray-600'}`}
+              >
+                <IconChartLine size={16} />
+              </button>
+              <button 
+                onClick={() => setChartType('bar')}
+                className={`p-1.5 rounded-lg transition-all ${chartType === 'bar' ? 'bg-white dark:bg-gray-600 shadow-sm text-pawgo-blue' : 'text-gray-400 hover:text-gray-600'}`}
+              >
+                <IconChartBar size={16} />
+              </button>
            </div>
-           <div className="h-60 w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                 <AreaChart data={chartData}>
-                    <defs><linearGradient id="colorMetric" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor={getMetricColor()} stopOpacity={0.4}/><stop offset="95%" stopColor={getMetricColor()} stopOpacity={0}/></linearGradient></defs>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" opacity={0.4} />
-                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#9CA3AF', fontWeight: 900, fontFamily: 'Fredoka' }} dy={10} />
-                    <YAxis hide={true} /><Tooltip cursor={{ stroke: getMetricColor(), strokeWidth: 2 }} contentStyle={{ borderRadius: '16px', border: 'none', fontWeight: 'bold', fontFamily: 'Fredoka', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)' }} />
-                    <Area type="monotone" dataKey="value" stroke={getMetricColor()} strokeWidth={4} fillOpacity={1} fill="url(#colorMetric)" animationDuration={1000} />
-                 </AreaChart>
-              </ResponsiveContainer>
+
+           <div className="flex justify-between items-end mb-8 relative z-10">
+              <div>
+                <div className="flex items-center gap-2 mb-1.5">
+                   <button onClick={handleChartPrev} className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 active:scale-90 transition-all"><IconChevronLeft size={16} className="text-gray-400 dark:text-gray-500" /></button>
+                   <p className="text-black dark:text-gray-400 text-[10px] font-black uppercase tracking-widest opacity-80 min-w-[80px] text-center">{getRangeLabel()}</p>
+                   <button onClick={handleChartNext} disabled={isNextDisabled} className={`p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 active:scale-90 transition-all ${isNextDisabled ? 'opacity-30 cursor-not-allowed' : ''}`}><IconChevronRight size={16} className="text-gray-400 dark:text-gray-500" /></button>
+                </div>
+                <h2 className="text-4xl font-display font-bold text-black dark:text-white leading-none">{totalValue.toFixed(1)} <span className="text-lg text-black dark:text-gray-400 font-sans ml-1 font-black opacity-60">{getMetricLabel()}</span></h2>
+              </div>
+           </div>
+           
+           <div className="h-60 w-full min-w-0">
+              {isChartReady && (
+                <ResponsiveContainer width="100%" height="100%" minWidth={0} debounce={200}>
+                  {chartType === 'area' ? (
+                    <AreaChart data={chartData}>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" opacity={0.4} />
+                        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#9CA3AF', fontWeight: 900, fontFamily: 'Fredoka' }} dy={10} interval={0} />
+                        <YAxis hide={true} />
+                        <Tooltip content={<CustomTooltip dogs={dogs} metric={metric} />} cursor={{ stroke: '#ccc', strokeWidth: 2 }} />
+                        
+                        {selectedDogId === 'all' ? (
+                          dogs.map(dog => (
+                            <Area 
+                              key={dog.id}
+                              type="monotone" 
+                              dataKey={dog.id} 
+                              stroke={getDogColor(dog.id)} 
+                              strokeWidth={3} 
+                              fill={getDogColor(dog.id)} 
+                              fillOpacity={0.1}
+                              animationDuration={1000}
+                            />
+                          ))
+                        ) : (
+                          <Area 
+                            type="monotone" 
+                            dataKey="value" 
+                            stroke={getDogColor(selectedDogId)} 
+                            strokeWidth={4} 
+                            fill={getDogColor(selectedDogId)}
+                            fillOpacity={0.2}
+                            animationDuration={1000}
+                          />
+                        )}
+                    </AreaChart>
+                  ) : (
+                    <BarChart data={chartData}>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" opacity={0.4} />
+                        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#9CA3AF', fontWeight: 900, fontFamily: 'Fredoka' }} dy={10} interval={0} />
+                        <YAxis hide={true} />
+                        <Tooltip content={<CustomTooltip dogs={dogs} metric={metric} />} cursor={{ fill: 'transparent' }} />
+                        
+                        {selectedDogId === 'all' ? (
+                          dogs.map(dog => (
+                            <Bar 
+                              key={dog.id}
+                              dataKey={dog.id} 
+                              stackId="a" // Stack bars for total view
+                              fill={getDogColor(dog.id)} 
+                              radius={[4, 4, 4, 4]} 
+                              barSize={24} 
+                              animationDuration={1000}
+                            />
+                          ))
+                        ) : (
+                          <Bar 
+                            dataKey="value" 
+                            fill={getDogColor(selectedDogId)} 
+                            radius={[6, 6, 6, 6]} 
+                            barSize={24} 
+                            animationDuration={1000}
+                          />
+                        )}
+                    </BarChart>
+                  )}
+                </ResponsiveContainer>
+              )}
            </div>
         </div>
       </div>
@@ -219,9 +602,13 @@ export const StatsView: React.FC<StatsProps> = ({ walks, dogs, language, accentC
     ),
     PERFORMANCE: (
       <div key="PERFORMANCE" className="space-y-4">
-        <div className="bg-gradient-to-br from-pawgo-green to-pawgo-greenDark p-6 rounded-[2.5rem] text-white shadow-xl shadow-pawgo-green/20 flex items-center justify-between mb-2">
-           <div><p className="text-[10px] font-black uppercase tracking-widest opacity-90 mb-1">{t(language, 'topPerformance')}</p><h3 className="text-2xl font-display font-bold">{t(language, 'onFire')}</h3><p className="text-sm opacity-90 font-black">{t(language, 'topPack')}</p></div>
-           <IconTrophy size={50} className="text-white opacity-40 -rotate-12" />
+        <div className={`bg-gradient-to-br ${headerContent.gradientClass} p-6 rounded-[2.5rem] text-white shadow-xl flex items-center justify-between mb-2 transition-colors duration-500 overflow-visible relative`}>
+           <div className="relative z-10">
+             <p className="text-[10px] font-black uppercase tracking-widest opacity-90 mb-1">{t(language, 'topPerformance')}</p>
+             <h3 className="text-2xl font-display font-bold">{headerContent.title}</h3>
+             <p className="text-sm opacity-90 font-black">{headerContent.desc}</p>
+           </div>
+           <CurrentHeaderIcon size={80} className={`-rotate-6 translate-x-2 ${headerContent.iconAnimation} drop-shadow-lg`} />
         </div>
         <div className="flex gap-3 overflow-x-auto no-scrollbar pb-1 px-1">
             <button onClick={() => setSelectedDogId('all')} disabled={isReordering} className={`whitespace-nowrap px-4 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest border-2 transition-all ${selectedDogId === 'all' ? 'bg-gray-900 text-white border-gray-900' : 'bg-white dark:bg-gray-800 text-black dark:text-gray-300 border-gray-100 dark:border-gray-700'}`}>{t(language, 'allPaws')}</button>
@@ -231,13 +618,22 @@ export const StatsView: React.FC<StatsProps> = ({ walks, dogs, language, accentC
          </div>
          <div className="space-y-4">
           {dogs.filter(d => selectedDogId === 'all' || d.id === selectedDogId).map(dog => {
-                const dogWalks = walks.filter(w => w.dogIds.includes(dog.id));
+                const dogWalks = filteredWalks.filter(w => w.dogIds.includes(dog.id));
                 const dogDist = dogWalks.reduce((acc, w) => acc + w.distanceKm, 0);
                 const dogTime = dogWalks.reduce((acc, w) => acc + (w.durationSeconds / 3600), 0);
+                const goalStatus = dogGoalStatuses.find(s => s.id === dog.id) || { percentage: 0, isMet: false };
+
                 return (
                     <div key={dog.id} className="bg-white dark:bg-gray-800 p-5 rounded-[2.2rem] border-b-4 border-gray-100 dark:border-gray-700 flex flex-col gap-4 animate-pop shadow-sm group">
                       <div className="flex items-center gap-4"><div className={`w-14 h-14 rounded-2xl ${dog.avatarColor} flex items-center justify-center p-1.5 shadow-inner border border-white/20`}><DogAvatar mascotId={dog.mascotId} /></div><div className="flex-1"><div className="flex justify-between items-start"><h4 className="font-bold text-lg text-black dark:text-white">{dog.name}</h4><span className="text-xl font-display font-bold text-black dark:text-gray-100">{(metric === 'distance' ? dogDist : dogTime).toFixed(1)} <span className="text-[10px] text-black dark:text-gray-400 uppercase tracking-widest font-black">{getMetricLabel()}</span></span></div><p className="text-[10px] text-black dark:text-gray-400 font-black uppercase tracking-widest leading-none opacity-80">{dog.breed}</p></div></div>
-                      <div className="grid grid-cols-3 gap-2 bg-gray-50 dark:bg-gray-700/50 p-3.5 rounded-2xl border border-gray-100 dark:border-gray-600/30"><div className="text-center"><span className="block text-[8px] text-black dark:text-gray-400 font-black uppercase mb-1 tracking-widest">{t(language, 'totalWalks')}</span><span className="font-bold text-sm text-black dark:text-gray-200">{dogWalks.length}</span></div><div className="text-center border-x border-gray-200 dark:border-gray-600"><span className="block text-[8px] text-black dark:text-gray-400 font-black uppercase mb-1 tracking-widest">{t(language, 'streak')}</span><span className="font-bold text-sm text-orange-600">🔥 {dog.streak}</span></div><div className="text-center"><span className="block text-[8px] text-black dark:text-gray-400 font-black uppercase mb-1 tracking-widest">{t(language, 'goal')}</span><span className="font-bold text-sm text-pawgo-blue">94%</span></div></div>
+                      <div className="grid grid-cols-3 gap-2 bg-gray-50 dark:bg-gray-700/50 p-3.5 rounded-2xl border border-gray-100 dark:border-gray-600/30"><div className="text-center"><span className="block text-[8px] text-black dark:text-gray-400 font-black uppercase mb-1 tracking-widest">{t(language, 'totalWalks')}</span><span className="font-bold text-sm text-black dark:text-gray-200">{dogWalks.length}</span></div><div className="text-center border-x border-gray-200 dark:border-gray-600"><span className="block text-[8px] text-black dark:text-gray-400 font-black uppercase mb-1 tracking-widest">{t(language, 'streak')}</span><span className="font-bold text-sm text-orange-600">🔥 {dog.streak}</span></div>
+                        <div className="text-center">
+                          <span className="block text-[8px] text-black dark:text-gray-400 font-black uppercase mb-1 tracking-widest">{t(language, 'goal')}</span>
+                          <span className={`font-bold text-sm ${goalStatus.isMet ? 'text-pawgo-green' : 'text-pawgo-blue'}`}>
+                            {goalStatus.isMet ? t(language, 'goalReached') : `${goalStatus.percentage}%`}
+                          </span>
+                        </div>
+                      </div>
                     </div>
                 );
               })}
@@ -251,27 +647,26 @@ export const StatsView: React.FC<StatsProps> = ({ walks, dogs, language, accentC
   return (
     <div className="p-6 pt-safe-top pb-36 h-full overflow-y-auto no-scrollbar">
       <div className="pt-14">
-        <div className="flex justify-between items-center mb-6">
-          <div>
-            <h1 className="text-3xl font-display font-bold text-black dark:text-white">{t(language, 'analytics')}</h1>
-            <p className="text-black dark:text-gray-400 font-black text-[10px] uppercase tracking-widest mt-1 opacity-80">{t(language, 'trends')}</p>
-          </div>
-          <div className="flex gap-2">
-             <button 
-               onClick={() => setIsReordering(!isReordering)}
-               className={`p-2.5 rounded-xl border-2 transition-all flex items-center gap-2 ${isReordering ? 'bg-pawgo-green border-pawgo-green text-white shadow-lg' : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-black dark:text-gray-300'}`}
-             >
+        <div className="mb-6 space-y-4">
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-3xl font-display font-bold text-black dark:text-white">{t(language, 'analytics')}</h1>
+              <p className="text-black dark:text-gray-400 font-black text-[10px] uppercase tracking-widest mt-1 opacity-80">{t(language, 'trends')}</p>
+            </div>
+            <button onClick={() => setIsReordering(!isReordering)} className={`p-2.5 rounded-xl border-2 transition-all flex items-center gap-2 ${isReordering ? 'bg-pawgo-green border-pawgo-green text-white shadow-lg' : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-black dark:text-gray-300'}`}>
                 {isReordering ? <IconCheck size={16} /> : <IconEdit size={16} />}
                 <span className="text-[10px] font-black uppercase tracking-widest">{isReordering ? t(language, 'done') : t(language, 'layout')}</span>
              </button>
-             {!isReordering && (
-              <div className="bg-white/50 dark:bg-gray-800/50 p-1 rounded-xl border-2 border-white dark:border-gray-700 flex backdrop-blur-sm">
-                {(['1W', '1M', '1Y'] as TimeRange[]).map(r => (
-                  <button key={r} onClick={() => setTimeRange(r)} className={`px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${timeRange === r ? 'bg-gray-900 text-white dark:bg-white dark:text-black shadow-md' : 'text-black dark:text-gray-400 hover:text-black'}`}>{r}</button>
-                ))}
-              </div>
-             )}
           </div>
+          {!isReordering && (
+            <div className="bg-white/50 dark:bg-gray-800/50 p-1 rounded-xl border-2 border-white dark:border-gray-700 flex backdrop-blur-sm w-full">
+              {(['Daily', 'Weekly'] as TimeRange[]).map(r => (
+                <button key={r} onClick={() => setTimeRange(r)} className={`flex-1 px-3 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${timeRange === r ? 'bg-gray-900 text-white dark:bg-white dark:text-black shadow-md' : 'text-black dark:text-gray-400 hover:text-black'}`}>
+                  {t(language, `filter_${r.toLowerCase()}` as any)}
+                </button>
+              ))}
+            </div>
+           )}
         </div>
         <div className="space-y-8">
           {sectionOrder.map((sid, idx) => (

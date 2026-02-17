@@ -1,15 +1,7 @@
-import { Dog, User, Achievement, LanguageCode, AccentColor, BackgroundTheme } from './types';
 
-export const MOCK_USER: User = {
-  id: 'u1',
-  name: 'Alex',
-  email: 'alex@pawgo.app',
-  avatar: 'https://api.dicebear.com/7.x/big-smile/svg?seed=Liam',
-  isOwner: true,
-};
+import { LanguageCode, AccentColor, BackgroundTheme } from './types';
 
 export const USER_AVATARS = [
-  // 8 Male-coded avatars (Top of list)
   'https://api.dicebear.com/7.x/big-smile/svg?seed=Liam',
   'https://api.dicebear.com/7.x/big-smile/svg?seed=Noah',
   'https://api.dicebear.com/7.x/big-smile/svg?seed=Oliver',
@@ -18,7 +10,6 @@ export const USER_AVATARS = [
   'https://api.dicebear.com/7.x/big-smile/svg?seed=William',
   'https://api.dicebear.com/7.x/big-smile/svg?seed=Benjamin',
   'https://api.dicebear.com/7.x/big-smile/svg?seed=Lucas',
-  // 8 Female-coded avatars (Bottom of list)
   'https://api.dicebear.com/7.x/big-smile/svg?seed=Emma',
   'https://api.dicebear.com/7.x/big-smile/svg?seed=Charlotte',
   'https://api.dicebear.com/7.x/big-smile/svg?seed=Amelia',
@@ -30,41 +21,6 @@ export const USER_AVATARS = [
 ];
 
 export const MASCOT_IDS = Array.from({ length: 20 }, (_, i) => `dog-${i + 1}`);
-
-export const INITIAL_DOGS: Dog[] = [
-  {
-    id: 'd1',
-    ownerId: 'u1',
-    name: 'Bruno',
-    breed: 'French Bulldog',
-    age: 3,
-    weight: 12,
-    avatarColor: 'bg-pawgo-blue',
-    mascotId: 'dog-4',
-    streak: 5,
-    totalDistanceKm: 124.5,
-    totalWalks: 42,
-  },
-  {
-    id: 'd2',
-    ownerId: 'u1',
-    name: 'Luna',
-    breed: 'Golden Retriever',
-    age: 2,
-    weight: 28,
-    avatarColor: 'bg-pawgo-yellow',
-    mascotId: 'dog-1',
-    streak: 12,
-    totalDistanceKm: 340.2,
-    totalWalks: 89,
-  },
-];
-
-export const INITIAL_ACHIEVEMENTS: Achievement[] = [
-  { id: 'a1', title: 'First Steps', description: 'Complete your first walk', icon: '🐾', unlocked: true },
-  { id: 'a2', title: 'Week Warrior', description: 'Walk 7 days in a row', icon: '🔥', unlocked: true },
-  { id: 'a3', title: 'Marathon Dog', description: 'Walk 42km total', icon: '🏆', unlocked: false },
-];
 
 export const LANGUAGES: { code: LanguageCode; name: string; flag: string }[] = [
   { code: 'en', name: 'English', flag: '🇬🇧' },

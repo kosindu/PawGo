@@ -7,6 +7,7 @@ import {
   signOut, 
   updateProfile, 
   sendEmailVerification,
+  sendPasswordResetEmail,
   onAuthStateChanged,
   GoogleAuthProvider,
   signInWithPopup,
@@ -76,19 +77,22 @@ export const db = {
 
       return { user: mapUser(userCredential.user) };
     } catch (error: any) {
-      console.error("Login error code:", error.code);
-      let errorMessage = "An error occurred";
+      // Don't log expected auth errors to console
       if (
         error.code === 'auth/invalid-credential' || 
         error.code === 'auth/user-not-found' || 
         error.code === 'auth/wrong-password' ||
         error.code === 'auth/invalid-email'
       ) {
-        errorMessage = "Email or password is incorrect";
-      } else {
-        errorMessage = error.message;
+        return { user: null, error: "Email or password is incorrect" };
       }
-      return { user: null, error: errorMessage };
+      
+      if (error.code === 'auth/too-many-requests') {
+        return { user: null, error: "Too many attempts. Please try again later." };
+      }
+
+      console.error("Login error code:", error.code);
+      return { user: null, error: error.message };
     }
   },
 
@@ -151,6 +155,19 @@ export const db = {
       }
     } catch (error: any) {
       return { success: false, error: error.message };
+    }
+  },
+
+  resetPassword: async (email: string): Promise<{ success: boolean, error?: string }> => {
+    try {
+      await sendPasswordResetEmail(auth, email);
+      return { success: true };
+    } catch (error: any) {
+      console.error("Reset password error:", error.code, error.message);
+      let errorMessage = error.message;
+      if (error.code === 'auth/user-not-found') errorMessage = "No user found with this email.";
+      if (error.code === 'auth/invalid-email') errorMessage = "Invalid email address.";
+      return { success: false, error: errorMessage };
     }
   },
 
